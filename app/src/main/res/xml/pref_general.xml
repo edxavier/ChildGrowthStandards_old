@@ -1,0 +1,37 @@
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+
+    <SwitchPreference
+        android:icon="@drawable/bookmark_png"
+        android:defaultValue="true"
+        android:key="show_marker"
+        android:summary="@string/show_marker_desc"
+        android:title="@string/show_marker" />
+
+    <!--
+     NOTE: Hide buttons to simplify the UI. Users can touch outside the dialog to
+             dismiss it. -->
+    <!-- NOTE: ListPreference's summary should be set to its value by the activity code. -->
+    <ListPreference
+        android:icon="@drawable/scale__png"
+        android:defaultValue="0"
+        android:entries="@array/weight_units"
+        android:entryValues="@array/weight_units_values"
+        android:key="weight_unit"
+        android:negativeButtonText="@null"
+        android:positiveButtonText="@null"
+        android:summary="@string/pref_summary"
+        android:title="@string/pref_weight_unit_title" />
+
+    <ListPreference
+        android:icon="@drawable/orange_ruler"
+        android:defaultValue="2"
+        android:entries="@array/height_units"
+        android:entryValues="@array/height_units_values"
+        android:key="height_unit"
+        android:negativeButtonText="@null"
+        android:positiveButtonText="@null"
+        android:summary="@string/pref_summary"
+        android:title="@string/pref_height_unit_title" />
+
+</PreferenceScreen>

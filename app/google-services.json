@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "287771902051",
+    "firebase_url": "https://child-growth-standards.firebaseio.com",
+    "project_id": "child-growth-standards",
+    "storage_bucket": "child-growth-standards.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:287771902051:android:4378910a362e19b3",
+        "android_client_info": {
+          "package_name": "com.edxavier.childgrowthstandards"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "287771902051-lf18obh27glp8udhgn012flgkacrvi44.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCEVI2E3D2w7Jypew4hEr7mqf34_HlQ11A"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

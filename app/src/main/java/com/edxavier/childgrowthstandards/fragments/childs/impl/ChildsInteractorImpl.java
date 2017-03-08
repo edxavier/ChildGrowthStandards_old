@@ -1,0 +1,44 @@
+package com.edxavier.childgrowthstandards.fragments.childs.impl;
+
+import android.util.Log;
+
+
+import com.edxavier.childgrowthstandards.db.Child;
+import com.edxavier.childgrowthstandards.db.ChildHistory;
+import com.edxavier.childgrowthstandards.fragments.childs.Contracts;
+import com.edxavier.childgrowthstandards.helpers.RxBus;
+
+import io.realm.Realm;
+import io.realm.RealmResults;
+import io.realm.Sort;
+import rx.Subscription;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
+
+/**
+ * Created by Eder Xavier Rojas on 17/09/2016.
+ */
+public class ChildsInteractorImpl implements Contracts.ChildsInteractor {
+    private RxBus eventBus;
+    Realm realm;
+    private Subscription apiSubscription;
+
+    public ChildsInteractorImpl() {
+        this.eventBus = RxBus.getInstance();
+        this.realm = Realm.getDefaultInstance();
+    }
+
+    @Override
+    public RealmResults<Child> getChilds() {
+        return realm.where(Child.class)
+        .findAll().sort("created", Sort.DESCENDING);
+    }
+
+    @Override
+    public void onDestroy() {
+        realm.close();
+        if(!apiSubscription.isUnsubscribed())
+            apiSubscription.unsubscribe();
+    }
+
+}

@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+
+        <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal">
+
+            <ImageView
+                android:layout_gravity="center_vertical"
+                android:layout_margin="8dp"
+                app:srcCompat="@drawable/balance"
+                android:layout_width="30dp"
+                android:layout_height="30dp"/>
+
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/poundsContainer"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="4"
+                app:errorTextAppearance="@style/login_input_error_appearance">
+
+                <EditText
+                    android:id="@+id/txtPounds"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/weight"
+                    android:inputType="numberDecimal|numberSigned"
+                    android:textSize="24sp" />
+            </android.support.design.widget.TextInputLayout>
+
+            <RadioGroup
+                android:paddingLeft="@dimen/dimen_16_dp"
+                android:paddingStart="@dimen/dimen_16_dp"
+                android:id="@+id/rdGroup_peso"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="2">
+                <RadioButton
+                    android:id="@+id/chk_lb_peso"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/lb_av" />
+                <RadioButton
+                    android:id="@+id/chk_kg_peso"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/kg_av" />
+            </RadioGroup>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal">
+
+            <ImageView
+                android:layout_gravity="center_vertical"
+                android:layout_margin="8dp"
+                app:srcCompat="@drawable/height"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                />
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/alturaContainer"
+                android:layout_weight="4"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                app:errorTextAppearance="@style/login_input_error_appearance">
+                <EditText
+                    android:hint="@string/len_Height"
+                    android:id="@+id/txtAltura"
+                    android:inputType="numberDecimal|numberSigned"
+                    android:textSize="24sp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+            </android.support.design.widget.TextInputLayout>
+
+            <RadioGroup
+                android:paddingLeft="@dimen/dimen_16_dp"
+                android:paddingStart="@dimen/dimen_16_dp"
+                android:id="@+id/rdGroup_altura"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="2">
+
+                <RadioButton
+                    android:id="@+id/chk_altura_cm"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/cm_av" />
+
+                <RadioButton
+                    android:id="@+id/chk_altura_pulg"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/in_av" />
+            </RadioGroup>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal">
+
+            <ImageView
+                android:layout_gravity="center_vertical"
+                android:layout_margin="8dp"
+                app:srcCompat="@drawable/child_head"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                />
+
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/periemterContainer"
+                android:layout_weight="4"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                app:errorTextAppearance="@style/login_input_error_appearance">
+                <EditText
+                    android:hint="@string/cefalic_perimeter"
+                    android:id="@+id/txtPerimetro"
+                    android:inputType="numberDecimal|numberSigned"
+                    android:textSize="24sp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+            </android.support.design.widget.TextInputLayout>
+
+            <RadioGroup
+                android:paddingLeft="@dimen/dimen_16_dp"
+                android:paddingStart="@dimen/dimen_16_dp"
+                android:layout_width="0dp"
+                android:layout_weight="2"
+                android:layout_height="wrap_content">
+                <RadioButton
+                    android:id="@+id/chk_perim_cm"
+                    android:text="@string/cm_av"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+                <RadioButton
+                    android:id="@+id/chk_perim_pulg"
+                    android:text="@string/in_av"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+            </RadioGroup>
+
+        </LinearLayout>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    </LinearLayout>
+

@@ -1,0 +1,198 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_height="match_parent">
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal">
+
+
+        <android.support.design.widget.TextInputLayout
+            android:id="@+id/poundsContainer"
+            android:layout_weight="4"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:errorTextAppearance="@style/login_input_error_appearance">
+            <EditText
+                android:hint="@string/pounds"
+                android:id="@+id/txtPounds"
+                android:gravity="center"
+                android:inputType="numberDecimal|numberSigned"
+                android:textSize="28sp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+        </android.support.design.widget.TextInputLayout>
+
+        <ImageView
+            android:layout_gravity="center"
+            android:rotation="90"
+            app:srcCompat="@drawable/unfold_more"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content" />
+
+        <android.support.design.widget.TextInputLayout
+            android:layout_weight="4"
+            android:id="@+id/kilogramContainer"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:errorTextAppearance="@style/login_input_error_appearance">
+
+            <EditText
+                android:gravity="center"
+                android:id="@+id/txtKilogram"
+                android:hint="@string/kilogram"
+                android:inputType="numberDecimal"
+                android:textSize="30sp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+        </android.support.design.widget.TextInputLayout>
+
+    </LinearLayout>
+
+    <com.edxavier.childgrowthstandards.helpers.MyTextView
+        app:font="@string/FontRobotoRegular"
+        android:layout_marginLeft="12dp"
+        android:layout_marginStart="12dp"
+        android:layout_marginTop="8dp"
+        android:text="@string/weight"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal">
+
+        <ImageView
+            android:layout_gravity="center_vertical"
+            android:layout_margin="8dp"
+            app:srcCompat="@drawable/balance"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            />
+
+        <com.appyvet.rangebar.RangeBar
+            xmlns:custom="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/rangebarWeight"
+            android:layout_width="match_parent"
+            android:layout_height="66dp"
+            custom:rangeBar="false"
+            custom:tickEnd="180"
+            custom:tickStart="2"
+            custom:tickInterval="1"
+            custom:connectingLineColor="@color/md_pink_600"
+            custom:tickColor="@color/md_grey_200"
+            custom:pinRadius="13dp"
+            custom:selectorColor="@color/colorAccent"
+            custom:selectorSize="10dp"
+            custom:pinColor="@color/colorAccent"
+            custom:barWeight="1dp"
+            custom:rangeBarColor="@color/md_secondary_text_icons"
+            custom:pinMaxFont="10sp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"/>
+
+    </LinearLayout>
+
+
+    <com.edxavier.childgrowthstandards.helpers.MyTextView
+        app:font="@string/FontRobotoRegular"
+        android:layout_marginLeft="12dp"
+        android:layout_marginStart="12dp"
+        android:layout_marginTop="16dp"
+        android:text="@string/len_Height_cm"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal">
+
+        <ImageView
+            android:layout_gravity="center_vertical"
+            android:layout_margin="8dp"
+            app:srcCompat="@drawable/height"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            />
+
+        <com.appyvet.rangebar.RangeBar
+            xmlns:custom="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/rangebarHeight"
+            android:layout_width="match_parent"
+            android:layout_height="66dp"
+            custom:rangeBar="false"
+            custom:tickEnd="190"
+            custom:tickStart="30"
+            custom:tickInterval="1"
+            custom:connectingLineColor="@color/md_pink_600"
+            custom:tickColor="@color/md_grey_200"
+            custom:pinRadius="13dp"
+            custom:selectorColor="@color/colorAccent"
+            custom:selectorSize="10dp"
+            custom:pinColor="@color/colorAccent"
+            custom:barWeight="1dp"
+            custom:rangeBarColor="@color/md_secondary_text_icons"
+            custom:pinMaxFont="10sp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"/>
+
+    </LinearLayout>
+
+
+    <com.edxavier.childgrowthstandards.helpers.MyTextView
+        app:font="@string/FontRobotoRegular"
+        android:layout_marginLeft="12dp"
+        android:layout_marginStart="12dp"
+        android:layout_marginTop="16dp"
+        android:text="@string/cefalic_perimeter_cm"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal">
+
+        <ImageView
+            android:layout_gravity="center_vertical"
+            android:layout_margin="8dp"
+            app:srcCompat="@drawable/child_head"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            />
+
+        <com.appyvet.rangebar.RangeBar
+            xmlns:custom="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/rangebarCefalicPerimeter"
+            android:layout_width="match_parent"
+            android:layout_height="66dp"
+            custom:rangeBar="false"
+            custom:tickEnd="70"
+            custom:tickStart="25"
+            custom:tickInterval="1"
+            custom:connectingLineColor="@color/md_pink_600"
+            custom:tickColor="@color/md_grey_200"
+            custom:pinRadius="13dp"
+            custom:selectorColor="@color/colorAccent"
+            custom:selectorSize="10dp"
+            custom:pinColor="@color/colorAccent"
+            custom:barWeight="1dp"
+            custom:rangeBarColor="@color/md_secondary_text_icons"
+            custom:pinMaxFont="10sp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"/>
+
+    </LinearLayout>
+
+
+</LinearLayout>

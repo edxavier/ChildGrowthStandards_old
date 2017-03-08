@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/container"
+    android:background="@color/md_white_1000"
+    tools:context="com.edxavier.childgrowthstandards.SplashScreen">
+
+
+    <com.edxavier.childgrowthstandards.helpers.MyTextView
+        android:id="@+id/appName"
+        android:text="@string/splash_subtitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        style="@style/Base.TextAppearance.AppCompat.Headline"
+        android:layout_above="@+id/splash"
+        android:layout_centerHorizontal="true" />
+
+    <com.edxavier.childgrowthstandards.helpers.MyTextView
+        android:id="@+id/appVersion"
+        android:text="Version 1.0.1-1611"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:textStyle="bold"
+        style="@style/Base.TextAppearance.AppCompat.Subhead"
+        android:layout_below="@+id/splash"
+        android:layout_centerHorizontal="true" />
+
+    <ImageView
+        android:layout_margin="8dp"
+        android:id="@+id/splash"
+        android:layout_centerInParent="true"
+        app:srcCompat="@drawable/graph"
+        android:layout_width="64dp"
+        android:layout_height="64dp" />
+
+
+    <com.wang.avi.AVLoadingIndicatorView
+        android:id="@+id/avi"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        style="@style/AVLoadingIndicatorView.Small"
+        android:visibility="visible"
+        app:indicatorName="BallBeatIndicator"
+        app:indicatorColor="@color/colorAccent"
+        android:layout_below="@+id/appVersion"
+        android:layout_centerHorizontal="true" />
+
+    <com.edxavier.childgrowthstandards.helpers.MyTextView
+        android:id="@+id/init_text"
+        app:font="@string/FontPierRegular"
+        android:text="@string/initialize"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:textStyle="bold"
+        style="@style/Base.TextAppearance.AppCompat.Caption"
+        android:layout_below="@+id/avi"
+        android:layout_centerHorizontal="true" />
+</RelativeLayout>

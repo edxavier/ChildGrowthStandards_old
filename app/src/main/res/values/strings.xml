@@ -1,0 +1,374 @@
+<resources>
+
+    <string name="FontBigJohn" translatable="false">BigJohn.otf</string>
+    <string name="FontMadrasExtraLight" translatable="false">MadrasExtraLight.otf</string>
+    <string name="FontPierBold" translatable="false">pierBold.otf</string>
+    <string name="FontPierItalic" translatable="false">PierItalic.otf</string>
+    <string name="FontPierRegular" translatable="false">pierRegular.otf</string>
+    <string name="FontRobotoBold" translatable="false">RobotoBold.ttf</string>
+    <string name="FontRobotoItalic" translatable="false">RobotoItalic.ttf</string>
+    <string name="FontRobotoLight" translatable="false">RobotoLight.ttf</string>
+    <string name="FontRobotoMedium" translatable="false">RobotoMedium.ttf</string>
+    <string name="FontRobotoRegular" translatable="false">RobotoRegular.ttf</string>
+    <string name="FontRobotoThin" translatable="false">RobotoThin.ttf</string>
+    <string name="FontRobotoCondensedRegular" translatable="false">RobotoCondensedRegular.ttf</string>
+    <string name="FontSlimJoe" translatable="false">Slimjoe.otf</string>
+
+    <string name="admob_app_id" translatable="false">ca-app-pub-9964109306515647~8922665812</string>
+    <string name="admob_m001" translatable="false">ca-app-pub-9964109306515647/5829598610</string>
+    <string name="admob_s001" translatable="false">ca-app-pub-9964109306515647/1199092619</string>
+    <string name="admob_banner" translatable="false">ca-app-pub-9964109306515647/4012958215</string>
+
+    <string name="app_name">Patrones de Crecimiento Infantil</string>
+    <string name="action_add_favourite" translatable="false">Add to Favourites</string>
+    <string name="action_play_next" translatable="false">Play Next</string>
+    <string name="backdrop_title" translatable="false">LISTADO DE NIÑOS</string>
+    <string name="backdrop_subtitle" translatable="false">Child Growth Standards</string>
+    <string name="splash_subtitle">Patrones de Crecimiento Infantil</string>
+
+    <string-array name="weight_units">
+        <item>Kilogramos</item>
+        <item>Libras</item>
+    </string-array>
+
+    <string-array translatable="false" name="weight_units_values">
+        <item>0</item>
+        <item>1</item>
+    </string-array>
+
+    <string-array name="height_units">
+        <item>Centimetros</item>
+        <item>Pulgadas</item>
+    </string-array>
+
+    <string-array translatable="false" name="height_units_values">
+        <item>2</item>
+        <item>3</item>
+    </string-array>
+    <string name="title_activity_welcome" translatable="false">Home Screen</string>
+    <string name="next">Siguiente</string>
+    <string name="skip">Saltar</string>
+    <string name="start">Entiendo</string>
+
+    <string name="slide_1_title">¡Bienvenido!</string>
+    <string name="slide_1_desc">¡La manera más fácil para dar seguimiento al desarrollo de tus
+    hijos desde el primer día de vida hasta los  19 años de edad! \n\n Puedes dar seguimiento a uno o más niños a la vez.</string>
+
+    <string name="slide_2_title">Datos OMS</string>
+    <string name="slide_2_desc">Los datos usados en las gráficas son tomados de la página oficial
+        de la Organización Mundial de la Salud</string>
+
+    <string name="slide_3_title">Percentiles</string>
+    <string name="slide_3_desc">Las gráficas de curvas percentiles te permitirán llevar mejor control sobre el desarrollo de tus hijos, además
+    te permitirán detectar tendencias en su crecimiento!</string>
+
+    <string name="slide_4_title">Medidas</string>
+    <string name="slide_4_desc">Compara las medidas con los percentiles de IMC y Altura hasta los 19 años,
+    Peso hasta los 10 años,  Perímetro cefálico y Peso para la altura hasta los 5 años. </string>
+
+    <string name="play_again_desc" translatable="false">To see the welcome slider again, goto Settings -> apps -> welcome slider -> clear data</string>
+    <string name="play_again" translatable="false">Play Again</string>
+
+    <string name="drawer_open" translatable="false">Open navigation drawer</string>
+    <string name="drawer_close" translatable="false">Close navigation drawer</string>
+
+    <string name="main.emty.title">No hay datos que mostrar.</string>
+    <string name="main.empty.suggest">Registra a uno o mas niños y comienza a dar seguimiento a su crecimiento.</string>
+
+    <string name="hello_blank_fragment" translatable="false">Hello blank fragment</string>
+    <string name="title_activity_new_history_record">Registrar medidas</string>
+    <string name="title_activity_percentiles">Percentiles</string>
+    <string name="title_activity_main2">Percentiles</string>
+    <string name="section_format" translatable="false">Hello World from section: %1$d</string>
+
+    <string name="record_child">Registrar infante</string>
+
+    <string name="kilogram">Kilogramos</string>
+    <string name="kg" translatable="false">%1$s kg</string>
+    <string name="centimeter">Centímetros</string>
+    <string name="cm" translatable="false">%1$s cm</string>
+    <string name="cm_av" translatable="false">Cm</string>
+    <string name="kg_av" translatable="false">Kg</string>
+    <string name="in_av">Pulg</string>
+    <string name="lb_av" translatable="false">Lb</string>
+
+
+
+    <string name="pounds">Libras</string>
+    <string name="pnd" translatable="false">%1$s lb</string>
+    <string name="inches">Pulgadas</string>
+    <string name="in" translatable="false">%1$s in</string>
+
+    <string name="days">\u0020 días \u0020</string>
+    <string name="day" translatable="false">d</string>
+    <string name="weeks">\u0020 semanas \u0020</string>
+    <string name="week">s</string>
+    <string name="months">\u0020 meses \u0020</string>
+    <string name="month" translatable="false">m</string>
+    <string name="years">\u0020 años \u0020</string>
+    <string name="year">a</string>
+
+    <string name="weight">Peso \u0020</string>
+    <string name="height">Altura\u0020</string>
+    <string name="perimeter">Perímetro\u0020</string>
+    <string name="most_recent">Medida más reciente</string>
+    <string name="record_measure"> Registrar medidas</string>
+    <string name="show_perc"> Ver percentiles</string>
+    <string name="edit">Editar infante</string>
+    <string name="delete">Eliminar</string>
+    <string name="len_Height">Longitud/Altura</string>
+    <string name="len_Height_cm">Longitud/Altura (cm)</string>
+
+    <string name="cefalic_perimeter"> Perímetro cefálico</string>
+    <string name="cefalic_perimeter_cm"> Perímetro cefálico (cm)</string>
+
+    <string name="measure_date">Fecha de la medida</string>
+    <string name="dif_date">Puedes seleccionar una fecha diferente.</string>
+    <string name="outOfRange">Valor fuera de rango</string>
+    <string name="weightHeight">Peso/Altura</string>
+    <string name="weightForage">Peso para la edad</string>
+    <string name="weightForlen">Peso para la Longitud/Estatura</string>
+    <string name="len_for_age">Longitud/Altura para la edad</string>
+    <string name="imc_for_age">IMC para la edad</string>
+    <string name="cefalic_perimeter_for_age">Perímetro cefálico para la edad</string>
+    <string name="name">Nombre</string>
+    <string name="boy">Niño</string>
+    <string name="age">Edad:\u0020</string>
+
+    <string name="girl">Niña</string>
+    <string name="birthday">Fecha de nacimiento</string>
+    <string name="chk_msg">Ingresar medidas luego de guardar</string>
+    <string name="save">Guardar datos</string>
+    <string name="date_format">dd-mmm-aa</string>
+
+
+    <string name="percentil_desc">
+     En las curvas de Patrones de Crecimiento de la OMS se muestran cinco curvas
+        (rojo, naranja y verde)  que corresponden a los percentiles
+        P3, P15, P50, P85 y P97  en orden de abajo hacia arriba. \n\n
+
+        La curva central o percentil 50 es la media o promedio.
+        Un niño con crecimiento normal típicamente tendrá una curva de crecimiento aproximadamente paralela a la media.
+        Un solo punto no es suficiente para evaluar con precisión el crecimiento de un niño.
+        Se necesitan una serie de puntos para poder entender los patrones y tendencias de crecimiento de un niño en el tiempo.
+    </string>
+
+    <string name="weight_desc">
+            Los niños se podrian considerar bajos de peso si su peso para la edad queda por debajo del percentil 15.
+        Un punto que caiga debajo del percentil 3 podria indicar peso severamente inferior al normal, indicando que el niño necesita cuidados especiales.
+        El peso severamente bajo puede ser el resultado de crecimiento retrasado, desnutrición o ambos.
+        \n\n
+        En todo caso si las medidas caen en uno de los percentiles limites sea inferior o superior es recomendable consulte a su medico sobre la salud
+        de su niño.
+    </string>
+
+    <string name="height_desc">
+          El crecimiento de un niño se considera retrasado si su longitud para la edad queda por
+        debajo del percentil 15. Los infantes y niños pequeños con crecimiento retrasado pueden recuperar parte
+        del potencial de crecimiento si se mejora su nutrición antes de los 2 años de edad.
+        En cambio, para los niños mayores de 2 años que están en situaciones de privación nutricional,
+        el retraso en su crecimiento podria ser virtualmente irreversible.
+        \n\n
+        En todo caso si las medidas caen en uno de los percentiles limites sea inferior o superior es recomendable consulte a su medico sobre la salud
+        de su niño.
+    </string>
+
+    <string name="weight_for_height_desc">
+            Los niños se podrian considerar en desnutricion si su peso para la altura/longitud queda por debajo del percentil 15.
+       La desnutrición es una causa importante de mortalidad para los niños menores a 5 años
+        por lo que un niño que se evalúe como [[ desnutrido ]] requiere inmediata atención médica.
+        Los niños que tengan peso para la longitud por arriba del percentil 85 se consideran con sobrepeso y pueden estar en riesgo de sufrir obesidad infantil.
+        \n\n
+        En todo caso si las medidas caen en uno de los percentiles limites sea inferior o superior es recomendable consulte a su medico sobre la salud
+        de su niño.
+    </string>
+
+<string name="cefalic_desc">
+        Los niños cuyo perímetro cefálico esté por debajo del percentil 15 se podrian considerar microcefálicos.
+        Por el contrario, la macrocefalia es una condición que se indica cuando el perímetro cefálico es superior el percentil 85.
+        Es importante que un médico evalúe a los niños que resulten micro o macrocefálicos.
+    Podría haber serias implicaciones médicas,
+        ya que se asume que el perímetro cefálico sirve como un indicador básico del crecimiento cerebral.
+         \n\n
+        En todo caso si las medidas caen en uno de los percentiles limites sea inferior o superior es recomendable consulte a su medico sobre la salud
+        de su niño.
+    </string>
+
+    <string name="imc_desc">
+       El índice de Masa Corporal (IMC) es una medida que se asocia el peso y la talla para determinar
+        el estado nutricional de un individuo.\n\n
+
+        Si el IMC de su hijo está por debajo del percentil 15 se considera de bajo peso. \n
+        Si el IMC de su hijo está entre los percentiles 15-85 se considera un peso saludable. \n
+        Si el IMC de su hijo está entre los percentiles 85-97 se considera tiene sobrepeso. \n
+        Si está sobre el percentil 97 se considera obeso.  \n \n
+        En todo caso si las medidas caen en uno de los percentiles limites sea inferior o superior es recomendable consulte a su medico sobre la salud
+        de su niño.
+    </string>
+    <string name="initialize">Inicializando&#8230;</string>
+    <string name="gallery">Galería</string>
+    <string name="camera">Cámara</string>
+    <string name="select_from">Seleccionar de</string>
+    <string name="imc">IMC\u0020</string>
+    <string name="perc_chart">Grafico percentil</string>
+    <string name="seguimiento">Seguimiento</string>
+    <string name="help">Ayuda</string>
+    <string name="share">Compartir</string>
+    <string name="rate">Valorar app</string>
+    <string name="app_version" translatable="false">Version %1$s</string>
+    <string name="aggre">Continuar</string>
+    <string name="cancel">Cancelar</string>
+
+    <string name="delete_dialog_title">¿Eliminar?</string>
+    <string name="delete_dialog_content">Esta accion borrara al infante seleccionado y todo registro asociado al mismo</string>
+    <string name="duplicate_register">Ya existe registro para la fecha seleccionada</string>
+    <string name="title_activity_settings">Configuracion</string>
+
+    <!-- Strings related to Settings -->
+
+    <!-- Example General settings -->
+    <string name="pref_header_general" translatable="false">General</string>
+
+    <string name="pref_title_social_recommendations" translatable="false">Enable social recommendations</string>
+    <string name="pref_description_social_recommendations" translatable="false">Recommendations for people to contact
+        based on your message history
+    </string>
+
+    <string name="pref_title_display_name" translatable="false">Display name</string>
+    <string name="pref_default_display_name" translatable="false">John Smith</string>
+
+    <string name="pref_title_add_friends_to_messages" translatable="false">Add friends to messages</string>
+    <string-array translatable="false" name="pref_example_list_titles">
+        <item>Always</item>
+        <item>When possible</item>
+        <item>Never</item>
+    </string-array>
+    <string-array translatable="false" name="pref_example_list_values">
+        <item>1</item>
+        <item>0</item>
+        <item>-1</item>
+    </string-array>
+
+    <!-- Example settings for Data & Sync -->
+    <string name="pref_header_data_sync" translatable="false">Data &amp; sync</string>
+
+    <string name="pref_title_sync_frequency" translatable="false">Sync frequency</string>
+    <string-array translatable="false" name="pref_sync_frequency_titles">
+        <item>15 minutes</item>
+        <item>30 minutes</item>
+        <item>1 hour</item>
+        <item>3 hours</item>
+        <item>6 hours</item>
+        <item>Never</item>
+    </string-array>
+    <string-array translatable="false" name="pref_sync_frequency_values">
+        <item>15</item>
+        <item>30</item>
+        <item>60</item>
+        <item>180</item>
+        <item>360</item>
+        <item>-1</item>
+    </string-array>
+
+    <string-array translatable="false" name="list_preference_entries">
+        <item>Entry 1</item>
+        <item>Entry 2</item>
+        <item>Entry 3</item>
+    </string-array>
+
+    <string-array  translatable="false" name="list_preference_entry_values">
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+    </string-array>
+
+    <string-array name="multi_select_list_preference_default_value" />
+
+    <string name="pref_title_system_sync_settings" translatable="false">System sync settings</string>
+
+    <!-- Example settings for Notifications -->
+    <string name="pref_header_notifications" translatable="false">Notifications</string>
+
+    <string name="pref_title_new_message_notifications" translatable="false">New message notifications</string>
+
+    <string name="pref_title_ringtone" translatable="false">Ringtone</string>
+    <string name="pref_ringtone_silent" translatable="false">Silent</string>
+
+    <string name="pref_title_vibrate" translatable="false">Vibrate</string>
+    <string name="pref_weight_unit_title">Unidad de peso</string>
+    <string name="pref_height_unit_title">Unidad de longitud</string>
+    <string name="action_settings">Configuracion</string>
+    <string name="pref_summary">Selecciona la unidad de media para mostrar</string>
+
+    <string name="hellp">El crecimiento no es solo resultado de la nutrición sino de factores heredados.\n
+        La etnicidad puede influenciar los patrones de crecimiento de un niño, por lo que algunos\n
+        países tienen sus propias Curvas de Patrones de Crecimiento. Sin embargo, las Curvas de\n
+        Patrones de Crecimiento de la Organización Mundial de la Salud (OMS) son las que se usan\n
+        más frecuentemente y se consideran el estándar a nivel mundial. \n\n
+
+        <b>\n¿Como tomar las medidas? \n\n
+            Perímetro Cefálico \n\n      </b>\n\n        La medida debe tomarse con una cinta métrica que no se estire.\n
+        Típicamente se hace con una cinta métrica flexible de metal. Para medir, envuelva la cinta\n
+        firmemente alrededor del punto donde el perímetro cefálico sea mayor. Normalmente esto ocurre\n
+        en la frente, de uno a dos dedos por encima de las cejas, y por detrás, en la zona más prominente\n
+        de la parte trasera de la cabeza.\n\n
+        Durante los primeros años de vida de un niño, el perímetro cefálico es una medida importante\n
+        porque refleja indirectamente el tamaño y crecimiento del cerebro.\n
+    </string>
+    <string name="help2">
+\n\n
+
+        <b>Longitud/Estatura</b>
+\n\n
+La longitud es la medida lineal de los infantes hasta los 24 meses. Las medidas de longitud (en lugar de estatura) se pueden tomar también para los niños entre 24 y 36 meses de edad que no puedan sostenerse en pie sin ayuda.
+La longitud se mide con el niño acostado. La forma más precisa de medir la longitud es utilizar una tabla de longitud calibrada. Las tablas de medición de longitud deben tener una pieza fija en la cabeza y una móvil para los pies, perpendicular a la superficie de la tabla.
+Para medir al niño colóquelo en la tabla con la cabeza tocando la pieza fija. Asegúrese de que no tenga zapatos ni nada en el cabello. Un asistente puede ayudarle a sostener al niño para tenerlo quieto y centrado en la tabla. Enderece sus piernas y ajuste la pieza móvil de manera que las plantas de los pies queden fijas contra ésta.
+        La longitud es un determinante importante del estado nutricional de un niño. Es posible que la longitud de un niño aumente muy lentamente si ha estado desnutrido por mucho tiempo.
+
+\n\n\n
+      <b>  Peso</b>
+\n\n
+El peso es una medida que se toma durante toda la vida para ayudar a determinar tendencias y estado nutricional actual.
+El peso de un infante se puede medir con precisión utilizando varios equipos. Una balanza pediátrica de plato permite pesar al niño acostado. Estas balanzas pediátricas pueden ser electrónicas o de pesos fijos deslizantes, y tienen precisión de hasta 10 gramos. Otra opción es una balanza colgante, la cual se fija a una estructura firme (p.ej. una viga o un marco de una puerta) y el niño se cuelga de la balanza con pantalones de pesar.
+Para tomar la medida, asegúrese de que el niño lleva la menor cantidad de ropa posible y de que nadie lo está tocando.
+\n\n
+        Si no está disponible una balanza pediátrica, se puede emplear una balanza para adultos. Pese primero a un adulto y luego pese al mismo adulto con el niño en brazos. Calcule la diferencia entre ambos pesos para encontrar el peso del infante.
+\n\n
+        La relación peso-edad es un indicador importante del estado nutricional de un niño a largo plazo y puede indicar tendencias como por ejemplo un peso por debajo de lo esperado.
+\n\n
+        La relación peso-longitud, por otro lado, ayuda a determinar el estado nutricional actual. Éste es el indicador clave para determinar la malnutrición en los niños.
+
+
+\n\n\n
+      <b>Índice de masa corporal (IMC)</b>
+\n\n
+       El índice de masa corporal es un
+número que se calcula usando como base el peso y la estatura de
+un niño o niña. El IMC se usa como una herramienta de detección
+para identificar posibles problemas de peso de los niños que pueden
+llevar a problemas de salud.
+
+    </string>
+    <string name="graph_empty">No hay datos que mostrar, posiblemente no has inicializado la app</string>
+    <string name="show_marker">Mostrar marcador</string>
+    <string name="show_marker_desc">Habilita el marcador que muestra los valores del punto seleccionado en los graficos</string>
+    <string name="rate2">Valorar</string>
+    <string name="later">Luego</string>
+    <string name="no_thank">No gracias</string>
+    <string name="rate_dlg_title">¿Que te ha parecido?</string>
+    <string name="rate_dlg_desc">Gracias por usar esta aplicacion, si te ha gustado o piensas que es de utilidad, por favor comenta que te parece o si tienes alguna sugerencia.</string>
+
+    <string name="share_app_msg">\nDa seguimiento al crecimiento de tus niños de manera fácil con esta app. \n\n</string>
+    <string name="share_using">Compartir usando:</string>
+    <string name="activity.chil.name.error">Ingresa un mínimo de 2 caracteres</string>
+    <string name="measure">Media</string>
+    <string name="p50">Percentil 50</string>
+    <string name="p97">Percentil 97</string>
+    <string name="p3">Percentil 3</string>
+    <string name="p85">Percentil 85</string>
+    <string name="p15">Percentil 15</string>
+    <string name="year_av">a</string>
+    <string name="week_av">s</string>
+
+
+</resources>
