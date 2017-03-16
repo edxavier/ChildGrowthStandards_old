@@ -17,7 +17,7 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="185dp">
+        android:layout_height="165dp">
 
         <ImageView
             android:id="@+id/childImage"
@@ -44,7 +44,7 @@
             android:layout_centerHorizontal="true" />
 
         <com.edxavier.childgrowthstandards.helpers.MyTextView
-            app:font="@string/FontRobotoLight"
+            app:font="@string/FontRobotoRegular"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="1 mes, 18 dias"
@@ -79,7 +79,7 @@
     <com.edxavier.childgrowthstandards.helpers.MyTextView
         android:id="@+id/lastMeasure"
         android:layout_margin="@dimen/dimen_8_dp"
-        app:font="@string/FontMadrasExtraLight"
+        app:font="@string/FontRobotoRegular"
         android:textAppearance="@style/TextAppearance.AppCompat.Caption"
         android:text="00-00-0000"
         android:textColor="@color/md_white_1000"

@@ -1,4 +1,4 @@
-package com.edxavier.childgrowthstandards.libs;
+package com.edxavier.childgrowthstandards.libs.formatter;
 
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.formatter.IValueFormatter;

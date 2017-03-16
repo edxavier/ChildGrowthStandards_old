@@ -31,12 +31,15 @@ import com.edxavier.childgrowthstandards.helpers.MyTextView;
 import com.edxavier.childgrowthstandards.helpers.RxBus;
 import com.edxavier.childgrowthstandards.helpers.ThemeSnackbar;
 import com.edxavier.childgrowthstandards.helpers.constans.Gender;
+import com.getkeepsafe.taptargetview.TapTarget;
+import com.getkeepsafe.taptargetview.TapTargetSequence;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdSize;
 import com.google.android.gms.ads.NativeExpressAdView;
 import com.google.firebase.analytics.FirebaseAnalytics;
 import com.jakewharton.rxbinding.view.RxView;
 import com.jakewharton.rxbinding.widget.RxTextView;
+import com.pixplicity.easyprefs.library.Prefs;
 import com.rohitarya.glide.facedetection.transformation.FaceCenterCrop;
 import com.rohitarya.glide.facedetection.transformation.core.GlideFaceDetector;
 import com.trello.rxlifecycle.components.support.RxAppCompatActivity;
@@ -94,16 +97,18 @@ public class NewChild extends RxAppCompatActivity implements DatePickerDialog.On
     private Subscription mSubscription;
     private Subscription pictureSubs;
     FirebaseAnalytics mFirebaseAnalytics;
-
+    boolean gotNewPic = false;
     Bundle args;
     Realm realm;
     Child existentChild;
+    private RxBus eventBus;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_child);
         ButterKnife.bind(this);
+        eventBus = RxBus.getInstance();
         args = getIntent().getExtras();
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -123,6 +128,7 @@ public class NewChild extends RxAppCompatActivity implements DatePickerDialog.On
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             btnSave.setAlpha(0.5f);
         }
+        startSecuence();
         setupWidgets();
         setupInputObservers();
         combineLatestEvents();
@@ -197,6 +203,7 @@ public class NewChild extends RxAppCompatActivity implements DatePickerDialog.On
                     })
                     .into(childPicture);
             newChild.setPhoto_uri(PicUri.uri.toString());
+            gotNewPic = true;
         } catch (Exception e) {
             ThemeSnackbar.alert(coordinator, "No fue posible cargar la imagen, intenta neuvamente por favor", Snackbar.LENGTH_SHORT).show();
         }
@@ -241,6 +248,10 @@ public class NewChild extends RxAppCompatActivity implements DatePickerDialog.On
                 realm.copyToRealm(newChild);
             }
             realm.commitTransaction();
+            if(gotNewPic) {
+                eventBus.post(new Child());
+                mFirebaseAnalytics.logEvent("picture_choose", null);
+            }
             if (chkRecordAfterSave.isChecked()) {
                 Intent intent = new Intent(this, NewHistoryRecord.class);
                 Bundle args2 = new Bundle();
@@ -297,10 +308,6 @@ public class NewChild extends RxAppCompatActivity implements DatePickerDialog.On
                         newChild.setChild_name(name.toString());
                     }
                 });
-        /*dateObservable.debounce(50, TimeUnit.MILLISECONDS)
-                .compose(bindToLifecycle())
-                .observeOn(AndroidSchedulers.mainThread()).subscribe(charSequence -> {
-        });*/
     }
 
 
@@ -353,4 +360,25 @@ public class NewChild extends RxAppCompatActivity implements DatePickerDialog.On
             pictureSubs.unsubscribe();
         super.onDestroy();
     }
+
+    private void startSecuence() {
+        if(!Prefs.getBoolean("secuence_new_child", false)) {
+            final int[] sec = {0};
+            new TapTargetSequence(this)
+                    .targets(
+                            TapTarget.forView(findViewById(R.id.ic_camera),
+                                     getResources().getString(R.string.sec_new_childs_title), getResources().getString(R.string.sec_new_childs_content))
+                                    .dimColor(R.color.md_black_1000)
+                                    .outerCircleColor(R.color.md_pink_500_25)
+                                    .cancelable(false),
+                            TapTarget.forView(this.findViewById(R.id.calendar),
+                                    getResources().getString(R.string.sec_new_childs_title2))
+                                    .dimColor(R.color.md_black_1000)
+                                    .outerCircleColor(R.color.md_blue_500_25)
+                                    .cancelable(false)
+                    ).start();
+            Prefs.putBoolean("secuence_new_child", true);
+        }
+    }
+
 }

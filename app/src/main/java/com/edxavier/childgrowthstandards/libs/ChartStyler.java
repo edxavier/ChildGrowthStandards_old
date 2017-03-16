@@ -38,6 +38,7 @@ public class ChartStyler {
         if (chart instanceof LineChart) {
 
             LineChart mChart = (LineChart) chart;
+            mChart.setPinchZoom(true);
             mChart.getAxisLeft().setTextColor(context.getResources().getColor(R.color.primary_text));
             mChart.setDrawBorders(false);
             //mChart.setBorderColor(context.getResources().getColor(R.color.md_green_500_25));

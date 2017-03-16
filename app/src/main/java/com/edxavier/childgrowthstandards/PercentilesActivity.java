@@ -69,7 +69,14 @@ public class PercentilesActivity extends AppCompatActivity implements TabLayout.
         imcFragment.setArguments(bundl);
         cefalicFragment.setArguments(bundl);
 
-        manager.beginTransaction().replace(R.id.frg_container, weightFragment).commit();
+        //manager.beginTransaction().replace(R.id.frg_container, weightFragment).commit();
+        manager.beginTransaction()
+                .add(R.id.frg_container, weightFragment, "weight")
+                //.add(R.id.frg_container, heightFragment, "height").hide(heightFragment)
+                //.add(R.id.frg_container, imcFragment, "imc").hide(imcFragment)
+                //.add(R.id.frg_container, weightForHeightFragment, "WxH").hide(weightForHeightFragment)
+                //.add(R.id.frg_container, cefalicFragment, "perimeter").hide(cefalicFragment)
+                .commit();
 
         fragments = new Fragment[]{weightFragment, heightFragment, imcFragment, cefalicFragment, weightForHeightFragment};
         String[] titles = new String[]{ getString(R.string.weight),
@@ -88,19 +95,66 @@ public class PercentilesActivity extends AppCompatActivity implements TabLayout.
     public void onTabSelected(TabLayout.Tab tab) {
         switch (tab.getPosition()){
             case 0:
-                manager.beginTransaction().replace(R.id.frg_container, weightFragment).commit();
+                //manager.beginTransaction().replace(R.id.frg_container, weightFragment).commit();
+                hideFragment("height");
+                hideFragment("imc");
+                hideFragment("WxH");
+                hideFragment("perimeter");
+                manager.beginTransaction()
+                            .show(weightFragment)
+                            .commit();
                 break;
             case 1:
-                manager.beginTransaction().replace(R.id.frg_container, heightFragment).commit();
+                //manager.beginTransaction().replace(R.id.frg_container, heightFragment).commit();
+                hideFragment("weight");
+                hideFragment("imc");
+                hideFragment("WxH");
+                hideFragment("perimeter");
+                if(manager.findFragmentByTag("height")==null) {
+                    manager.beginTransaction()
+                            .add(R.id.frg_container, heightFragment, "height")
+                            .commit();
+                }else
+                    manager.beginTransaction().show(heightFragment).commit();
                 break;
             case 2:
-                manager.beginTransaction().replace(R.id.frg_container, imcFragment).commit();
+                //manager.beginTransaction().replace(R.id.frg_container, imcFragment).commit();
+                hideFragment("weight");
+                hideFragment("height");
+                hideFragment("WxH");
+                hideFragment("perimeter");
+                if(manager.findFragmentByTag("imc")==null) {
+                    manager.beginTransaction()
+                            .add(R.id.frg_container, imcFragment, "imc")
+                            .commit();
+                }else
+                    manager.beginTransaction().show(imcFragment).commit();
                 break;
             case 3:
-                manager.beginTransaction().replace(R.id.frg_container, weightForHeightFragment).commit();
+                //manager.beginTransaction().replace(R.id.frg_container, weightForHeightFragment).commit();
+                hideFragment("weight");
+                hideFragment("imc");
+                hideFragment("height");
+                hideFragment("perimeter");
+                if(manager.findFragmentByTag("WxH")==null) {
+                    manager.beginTransaction()
+                            .add(R.id.frg_container, weightForHeightFragment, "WxH")
+                            .commit();
+                }else
+                    manager.beginTransaction().show(weightForHeightFragment).commit();
                 break;
             case 4:
-                manager.beginTransaction().replace(R.id.frg_container, cefalicFragment).commit();
+                //manager.beginTransaction().replace(R.id.frg_container, cefalicFragment).commit();
+                hideFragment("weight");
+                hideFragment("imc");
+                hideFragment("WxH");
+                hideFragment("height");
+                if(manager.findFragmentByTag("perimeter")==null) {
+                    manager.beginTransaction()
+                            .add(R.id.frg_container, cefalicFragment, "perimeter")
+                            .commit();
+                }else
+                    manager.beginTransaction().show(cefalicFragment).commit();
                 break;
         }
     }
@@ -125,4 +179,14 @@ public class PercentilesActivity extends AppCompatActivity implements TabLayout.
         }
         return super.onOptionsItemSelected(item);
     }
+
+    void hideFragment(String tag){
+        Fragment fragment = manager.findFragmentByTag(tag);
+        if(fragment!=null) {
+            manager.beginTransaction()
+                    .hide(fragment)
+                    .commit();
+        }
+    }
+
 }

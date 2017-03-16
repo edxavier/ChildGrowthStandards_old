@@ -257,7 +257,7 @@ public class PercentilesFragment extends com.trello.rxlifecycle.components.suppo
             if (kg_has_focus) {
                 if (value.text().length() > 0) {
                     float kgs = Float.valueOf(value.text().toString());
-                    float pnds = kgs * (float) Units.KG_HAS_POUNDS;
+                    float pnds = kgs * Units.KG_HAS_POUNDS;
                     txtPounds.setText(String.format("%.2f", pnds).replace(',', '.'));
                 }
             }
@@ -285,7 +285,7 @@ public class PercentilesFragment extends com.trello.rxlifecycle.components.suppo
                 if (value.text().length() > 0) {
                     try {
                         float inches = Float.valueOf(value.text().toString());
-                        float cms = inches * (float) Units.INCHES_HAS_CM;
+                        float cms = inches * Units.INCHES_HAS_CM;
                         txtEstaturaCms.setText(String.format("%.2f", cms).replace(',', '.'));
                     }catch (Exception ignored){
 
@@ -315,7 +315,7 @@ public class PercentilesFragment extends com.trello.rxlifecycle.components.suppo
             if (inches2_has_focus) {
                 if (value.text().length() > 0) {
                     float inches = Float.valueOf(value.text().toString());
-                    float cms = inches * (float) Units.INCHES_HAS_CM;
+                    float cms = inches * Units.INCHES_HAS_CM;
                     txtCefalCm.setText(String.format("%.2f", cms).replace(',', '.'));
                     drawLines();
                 }
@@ -389,24 +389,24 @@ public class PercentilesFragment extends com.trello.rxlifecycle.components.suppo
 
         }
 
-        mediansDataSet.setColors(new int[]{mediaColor});
+        mediansDataSet.setColors(mediaColor);
         mediansDataSet.setLabel("P50");
         mediansDataSet.setDrawCircles(false);
 
-        ninetySevenDataSet.setColors(new int[]{edgesColor});
+        ninetySevenDataSet.setColors(edgesColor);
         ninetySevenDataSet.setDrawCircles(false);
         ninetySevenDataSet.setLabel("P97");
 
-        thirdLineDataSet.setColors(new int[]{edgesColor});
+        thirdLineDataSet.setColors(edgesColor);
         thirdLineDataSet.setDrawCircles(false);
         thirdLineDataSet.setLabel("P3");
 
-        eightyFiveDataSet.setColors(new int[]{innnerEdgeColor});
+        eightyFiveDataSet.setColors(innnerEdgeColor);
         eightyFiveDataSet.setDrawCircles(false);
         eightyFiveDataSet.setLabel("P85");
 
 
-        fifteenDataSet.setColors(new int[]{innnerEdgeColor});
+        fifteenDataSet.setColors(innnerEdgeColor);
         fifteenDataSet.setDrawCircles(false);
         fifteenDataSet.setLabel("P15");
 
@@ -415,8 +415,8 @@ public class PercentilesFragment extends com.trello.rxlifecycle.components.suppo
         List<Entry> valsComp1 = new ArrayList<Entry>();
         Entry c1e2 = new Entry((float) p.getDays(), weight); // 1 == quarter 2 ...
         valsComp1.add(c1e2);
-        LineDataSet setComp1 = new LineDataSet(valsComp1, "Medida");
-        setComp1.setColors(new int[]{measuereColro});
+        LineDataSet setComp1 = new LineDataSet(valsComp1, getResources().getString(R.string.p50));
+        setComp1.setColors(measuereColro);
         setComp1.setCircleColor(measuereColro);
         setComp1.setCircleColorHole(measuereColro);
 
@@ -424,33 +424,6 @@ public class PercentilesFragment extends com.trello.rxlifecycle.components.suppo
         setComp1.setHighLightColor(measuereColro);
         setComp1.setHighlightEnabled(true);
         lineData.addDataSet(setComp1);
-       /* AxisValueFormatter formatter = new AxisValueFormatter() {
-            @Override
-            public String getFormattedValue(float value, AxisBase axis) {
-                value = value * Units.KG_HAS_POUNDS;
-                return String.format(Locale.getDefault(), "%.0f lb", value);
-            }
-
-            @Override
-            public int getDecimalDigits() {
-                return 0;
-            }
-        };
-
-        AxisValueFormatter formatter_right = new AxisValueFormatter() {
-            @Override
-            public String getFormattedValue(float value, AxisBase axis) {
-                return String.format(Locale.getDefault(), "%.1f kg", value);
-            }
-
-            @Override
-            public int getDecimalDigits() {
-                return 0;
-            }
-        };
-        chart.getAxisLeft().setValueFormatter(formatter);
-        chart.getAxisRight().setValueFormatter(formatter_right);
-*/
         if(Prefs.getBoolean("show_marker", true)) {
             PercentilesFragment.WeightMarkerView mv = new PercentilesFragment.WeightMarkerView(getActivity(), R.layout.tv_content);
             chart.setMarkerView(mv);
@@ -485,24 +458,24 @@ public class PercentilesFragment extends com.trello.rxlifecycle.components.suppo
 
         }
 
-        mediansDataSet.setColors(new int[]{mediaColor});
+        mediansDataSet.setColors(mediaColor);
         mediansDataSet.setLabel("P50");
         mediansDataSet.setDrawCircles(false);
 
-        ninetySevenDataSet.setColors(new int[]{edgesColor});
+        ninetySevenDataSet.setColors(edgesColor);
         ninetySevenDataSet.setDrawCircles(false);
         ninetySevenDataSet.setLabel("P97");
 
-        thirdLineDataSet.setColors(new int[]{edgesColor});
+        thirdLineDataSet.setColors(edgesColor);
         thirdLineDataSet.setDrawCircles(false);
         thirdLineDataSet.setLabel("P3");
 
-        eightyFiveDataSet.setColors(new int[]{innnerEdgeColor});
+        eightyFiveDataSet.setColors(innnerEdgeColor);
         eightyFiveDataSet.setDrawCircles(false);
         eightyFiveDataSet.setLabel("P85");
 
 
-        fifteenDataSet.setColors(new int[]{innnerEdgeColor});
+        fifteenDataSet.setColors(innnerEdgeColor);
         fifteenDataSet.setDrawCircles(false);
         fifteenDataSet.setLabel("P15");
 
@@ -515,7 +488,7 @@ public class PercentilesFragment extends com.trello.rxlifecycle.components.suppo
         setComp1.setHighlightLineWidth(1.5f);
         setComp1.setHighLightColor(measuereColro);
         setComp1.setHighlightEnabled(true);
-        setComp1.setColors(new int[]{measuereColro});
+        setComp1.setColors(measuereColro);
         setComp1.setCircleColor(measuereColro);
         setComp1.setCircleColorHole(measuereColro);
         setComp1.setHighlightLineWidth(1.5f);
@@ -583,24 +556,24 @@ public class PercentilesFragment extends com.trello.rxlifecycle.components.suppo
 
         }
 
-        mediansDataSet.setColors(new int[]{mediaColor});
+        mediansDataSet.setColors(mediaColor);
         mediansDataSet.setLabel("P50");
         mediansDataSet.setDrawCircles(false);
 
-        ninetySevenDataSet.setColors(new int[]{edgesColor});
+        ninetySevenDataSet.setColors(edgesColor);
         ninetySevenDataSet.setDrawCircles(false);
         ninetySevenDataSet.setLabel("P97");
 
-        thirdLineDataSet.setColors(new int[]{edgesColor});
+        thirdLineDataSet.setColors(edgesColor);
         thirdLineDataSet.setDrawCircles(false);
         thirdLineDataSet.setLabel("P3");
 
-        eightyFiveDataSet.setColors(new int[]{innnerEdgeColor});
+        eightyFiveDataSet.setColors(innnerEdgeColor);
         eightyFiveDataSet.setDrawCircles(false);
         eightyFiveDataSet.setLabel("P85");
 
 
-        fifteenDataSet.setColors(new int[]{innnerEdgeColor});
+        fifteenDataSet.setColors(innnerEdgeColor);
         fifteenDataSet.setDrawCircles(false);
         fifteenDataSet.setLabel("P15");
 
@@ -610,7 +583,7 @@ public class PercentilesFragment extends com.trello.rxlifecycle.components.suppo
         Entry c1e2 = new Entry((float) p.getDays(), cefalic); // 1 == quarter 2 ...
         valsComp1.add(c1e2);
         LineDataSet setComp1 = new LineDataSet(valsComp1, "Medida");
-        setComp1.setColors(new int[]{measuereColro});
+        setComp1.setColors(measuereColro);
         setComp1.setCircleColor(measuereColro);
         setComp1.setCircleColorHole(measuereColro);
         setComp1.setHighlightLineWidth(1.5f);
@@ -652,36 +625,36 @@ public class PercentilesFragment extends com.trello.rxlifecycle.components.suppo
 
         }
 
-        mediansDataSet.setColors(new int[]{mediaColor});
+        mediansDataSet.setColors(mediaColor);
         mediansDataSet.setLabel("P50");
         mediansDataSet.setDrawCircles(false);
 
-        ninetySevenDataSet.setColors(new int[]{edgesColor});
+        ninetySevenDataSet.setColors(edgesColor);
         ninetySevenDataSet.setDrawCircles(false);
         ninetySevenDataSet.setLabel("P97");
 
-        thirdLineDataSet.setColors(new int[]{edgesColor});
+        thirdLineDataSet.setColors(edgesColor);
         thirdLineDataSet.setDrawCircles(false);
         thirdLineDataSet.setLabel("P3");
 
-        eightyFiveDataSet.setColors(new int[]{innnerEdgeColor});
+        eightyFiveDataSet.setColors(innnerEdgeColor);
         eightyFiveDataSet.setDrawCircles(false);
         eightyFiveDataSet.setLabel("P85");
 
 
-        fifteenDataSet.setColors(new int[]{innnerEdgeColor});
+        fifteenDataSet.setColors(innnerEdgeColor);
         fifteenDataSet.setDrawCircles(false);
         fifteenDataSet.setLabel("P15");
 
         lineData = new LineData(mediansDataSet);
 
         List<Entry> valsComp1 = new ArrayList<Entry>();
-        float meter = (float) (height / 100f);
-        float bmi = (float) (weight / (meter * meter));
+        float meter = height / 100f;
+        float bmi = weight / (meter * meter);
         Entry c1e2 = new Entry((float) p.getDays(), bmi); // 1 == quarter 2 ...
         valsComp1.add(c1e2);
         LineDataSet setComp1 = new LineDataSet(valsComp1, "Medida");
-        setComp1.setColors(new int[]{measuereColro});
+        setComp1.setColors(measuereColro);
         setComp1.setCircleColor(measuereColro);
         setComp1.setCircleColorHole(measuereColro);
         setComp1.setHighlightLineWidth(1.5f);
@@ -724,24 +697,24 @@ public class PercentilesFragment extends com.trello.rxlifecycle.components.suppo
 
         }
 
-        mediansDataSet.setColors(new int[]{mediaColor});
+        mediansDataSet.setColors(mediaColor);
         mediansDataSet.setLabel("P50");
         mediansDataSet.setDrawCircles(false);
 
-        ninetySevenDataSet.setColors(new int[]{edgesColor});
+        ninetySevenDataSet.setColors(edgesColor);
         ninetySevenDataSet.setDrawCircles(false);
         ninetySevenDataSet.setLabel("P97");
 
-        thirdLineDataSet.setColors(new int[]{edgesColor});
+        thirdLineDataSet.setColors(edgesColor);
         thirdLineDataSet.setDrawCircles(false);
         thirdLineDataSet.setLabel("P3");
 
-        eightyFiveDataSet.setColors(new int[]{innnerEdgeColor});
+        eightyFiveDataSet.setColors(innnerEdgeColor);
         eightyFiveDataSet.setDrawCircles(false);
         eightyFiveDataSet.setLabel("P85");
 
 
-        fifteenDataSet.setColors(new int[]{innnerEdgeColor});
+        fifteenDataSet.setColors(innnerEdgeColor);
         fifteenDataSet.setDrawCircles(false);
         fifteenDataSet.setLabel("P15");
 
@@ -752,7 +725,7 @@ public class PercentilesFragment extends com.trello.rxlifecycle.components.suppo
         Entry c1e2 = new Entry(h, weight); // 1 == quarter 2 ...
         valsComp1.add(c1e2);
         LineDataSet setComp1 = new LineDataSet(valsComp1, "Medida");
-        setComp1.setColors(new int[]{measuereColro});
+        setComp1.setColors(measuereColro);
         setComp1.setHighlightLineWidth(1.5f);
         setComp1.setHighLightColor(measuereColro);
         setComp1.setHighlightEnabled(true);
@@ -775,8 +748,6 @@ public class PercentilesFragment extends com.trello.rxlifecycle.components.suppo
         chart.setData(lineData);
         chart.invalidate();
     }
-
-
 
 
     public class WeightForHeigthMarkerView extends MarkerView {

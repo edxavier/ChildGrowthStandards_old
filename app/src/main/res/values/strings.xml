@@ -31,7 +31,7 @@
         <item>Libras</item>
     </string-array>
 
-    <string-array translatable="false" name="weight_units_values">
+    <string-array name="weight_units_values" translatable="false">
         <item>0</item>
         <item>1</item>
     </string-array>
@@ -41,7 +41,7 @@
         <item>Pulgadas</item>
     </string-array>
 
-    <string-array translatable="false" name="height_units_values">
+    <string-array name="height_units_values" translatable="false">
         <item>2</item>
         <item>3</item>
     </string-array>
@@ -93,20 +93,19 @@
     <string name="lb_av" translatable="false">Lb</string>
 
 
-
     <string name="pounds">Libras</string>
     <string name="pnd" translatable="false">%1$s lb</string>
     <string name="inches">Pulgadas</string>
     <string name="in" translatable="false">%1$s in</string>
 
     <string name="days">\u0020 días \u0020</string>
-    <string name="day" translatable="false">d</string>
+    <string name="day">\u0020día</string>
     <string name="weeks">\u0020 semanas \u0020</string>
-    <string name="week">s</string>
-    <string name="months">\u0020 meses \u0020</string>
-    <string name="month" translatable="false">m</string>
+    <string name="week">\u0020semana\u0020</string>
+    <string name="months">\u0020meses\u0020</string>
+    <string name="month">\u0020mes\u0020</string>
     <string name="years">\u0020 años \u0020</string>
-    <string name="year">a</string>
+    <string name="year">\u0020 año\u0020</string>
 
     <string name="weight">Peso \u0020</string>
     <string name="height">Altura\u0020</string>
@@ -138,7 +137,7 @@
     <string name="girl">Niña</string>
     <string name="birthday">Fecha de nacimiento</string>
     <string name="chk_msg">Ingresar medidas luego de guardar</string>
-    <string name="save">Guardar datos</string>
+    <string name="save">Guardar</string>
     <string name="date_format">dd-mmm-aa</string>
 
 
@@ -183,7 +182,7 @@
         de su niño.
     </string>
 
-<string name="cefalic_desc">
+    <string name="cefalic_desc">
         Los niños cuyo perímetro cefálico esté por debajo del percentil 15 se podrian considerar microcefálicos.
         Por el contrario, la macrocefalia es una condición que se indica cuando el perímetro cefálico es superior el percentil 85.
         Es importante que un médico evalúe a los niños que resulten micro o macrocefálicos.
@@ -238,12 +237,12 @@
     <string name="pref_default_display_name" translatable="false">John Smith</string>
 
     <string name="pref_title_add_friends_to_messages" translatable="false">Add friends to messages</string>
-    <string-array translatable="false" name="pref_example_list_titles">
+    <string-array name="pref_example_list_titles" translatable="false">
         <item>Always</item>
         <item>When possible</item>
         <item>Never</item>
     </string-array>
-    <string-array translatable="false" name="pref_example_list_values">
+    <string-array name="pref_example_list_values" translatable="false">
         <item>1</item>
         <item>0</item>
         <item>-1</item>
@@ -253,7 +252,7 @@
     <string name="pref_header_data_sync" translatable="false">Data &amp; sync</string>
 
     <string name="pref_title_sync_frequency" translatable="false">Sync frequency</string>
-    <string-array translatable="false" name="pref_sync_frequency_titles">
+    <string-array name="pref_sync_frequency_titles" translatable="false">
         <item>15 minutes</item>
         <item>30 minutes</item>
         <item>1 hour</item>
@@ -261,7 +260,7 @@
         <item>6 hours</item>
         <item>Never</item>
     </string-array>
-    <string-array translatable="false" name="pref_sync_frequency_values">
+    <string-array name="pref_sync_frequency_values" translatable="false">
         <item>15</item>
         <item>30</item>
         <item>60</item>
@@ -270,13 +269,13 @@
         <item>-1</item>
     </string-array>
 
-    <string-array translatable="false" name="list_preference_entries">
+    <string-array name="list_preference_entries" translatable="false">
         <item>Entry 1</item>
         <item>Entry 2</item>
         <item>Entry 3</item>
     </string-array>
 
-    <string-array  translatable="false" name="list_preference_entry_values">
+    <string-array name="list_preference_entry_values" translatable="false">
         <item>1</item>
         <item>2</item>
         <item>3</item>
@@ -307,7 +306,7 @@
         más frecuentemente y se consideran el estándar a nivel mundial. \n\n
 
         <b>\n¿Como tomar las medidas? \n\n
-            Perímetro Cefálico \n\n      </b>\n\n        La medida debe tomarse con una cinta métrica que no se estire.\n
+            Perímetro Cefálico \n\n </b>\n\n La medida debe tomarse con una cinta métrica que no se estire.\n
         Típicamente se hace con una cinta métrica flexible de metal. Para medir, envuelva la cinta\n
         firmemente alrededor del punto donde el perímetro cefálico sea mayor. Normalmente esto ocurre\n
         en la frente, de uno a dos dedos por encima de las cejas, y por detrás, en la zona más prominente\n
@@ -361,7 +360,7 @@ llevar a problemas de salud.
     <string name="share_app_msg">\nDa seguimiento al crecimiento de tus niños de manera fácil con esta app. \n\n</string>
     <string name="share_using">Compartir usando:</string>
     <string name="activity.chil.name.error">Ingresa un mínimo de 2 caracteres</string>
-    <string name="measure">Media</string>
+    <string name="measure">Medida</string>
     <string name="p50">Percentil 50</string>
     <string name="p97">Percentil 97</string>
     <string name="p3">Percentil 3</string>
@@ -369,6 +368,27 @@ llevar a problemas de salud.
     <string name="p15">Percentil 15</string>
     <string name="year_av">a</string>
     <string name="week_av">s</string>
+    <string name="show_measure_list">Ver medidas</string>
+    <string name="measures">Medidas</string>
+    <string name="date">Fecha</string>
+    <string name="ok" translatable="false">OK</string>
+    <string name="delete_measure_dialog_content">¿Eliminar entrada de medidas para esta fecha?</string>
+    <string name="sec_childs_title">Registrar infante</string>
+    <string name="sec_childs_title2">Navegación</string>
+    <string name="sec_new_childs_title">Establece una imagen</string>
+    <string name="sec_new_childs_content">Selecciona una foto de la galería o toma una desde la camara</string>
+    <string name="sec_new_childs_title2">Selecciona la fecha de nacimiento</string>
+    <string name="sec_new_history_title">Ingrese la medida</string>
+    <string name="sec_new_history_title2">Selecciona la unidad de medida</string>
+    <string name="sec_new_history_title3">Selecciona la fecha de la medida</string>
+    <string name="sec_new_history_title4">Guardar registro</string>
+    <string name="sec_new_history_content">Se sugieren datos basado en la edad del infante</string>
+    <string name="sec_quick_percentil_title">Selecciona el tipo de gráfico</string>
+    <string name="sec_quick_percentil_title2">Verifica las medidas en los diferentes gráficos</string>
+    <string name="info">Información</string>
 
-
+    <string-array name="measure_options">
+        <item>Editar</item>
+        <item>Eliminar</item>
+    </string-array>
 </resources>

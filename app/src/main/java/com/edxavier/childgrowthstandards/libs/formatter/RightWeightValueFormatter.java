@@ -1,4 +1,4 @@
-package com.edxavier.childgrowthstandards.libs;
+package com.edxavier.childgrowthstandards.libs.formatter;
 
 import com.edxavier.childgrowthstandards.helpers.constans.Units;
 import com.github.mikephil.charting.components.AxisBase;
@@ -14,6 +14,6 @@ public class RightWeightValueFormatter implements IAxisValueFormatter {
 
     @Override
     public String getFormattedValue(float value, AxisBase axis) {
-        return String.format(Locale.getDefault(), "%.1f kg", value);
+        return String.format(Locale.getDefault(), "%.1fkg", value);
     }
 }

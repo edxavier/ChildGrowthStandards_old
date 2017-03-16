@@ -46,8 +46,8 @@ public class InitWeigthForHeight {
                 realm.executeTransaction(new Realm.Transaction() {
                     @Override
                     public void execute(Realm realm) {
-                        WeightForHeight weightForHeight = realm.createObject(WeightForHeight.class);
-                        weightForHeight.setId(WeightForHeight.getUniqueId());
+                        WeightForHeight weightForHeight = realm.createObject(WeightForHeight.class, WeightForHeight.getUniqueId());
+                        //weightForHeight.setId(WeightForHeight.getUniqueId());
                         weightForHeight.setHeight(height);
 
                         weightForHeight.setThird_girls(girl3);

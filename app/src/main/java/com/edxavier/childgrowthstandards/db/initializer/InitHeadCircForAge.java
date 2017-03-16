@@ -45,8 +45,8 @@ public class InitHeadCircForAge {
                 realm.executeTransaction(new Realm.Transaction() {
                     @Override
                     public void execute(Realm realm) {
-                        HeadCircForAge headCircForAge = realm.createObject(HeadCircForAge.class);
-                        headCircForAge.setId(HeadCircForAge.getUniqueId());
+                        HeadCircForAge headCircForAge = realm.createObject(HeadCircForAge.class,HeadCircForAge.getUniqueId());
+                        //headCircForAge.setId(HeadCircForAge.getUniqueId());
                         headCircForAge.setDay(day);
 
                         headCircForAge.setThird_girls(girl3);

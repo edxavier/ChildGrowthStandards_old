@@ -5,10 +5,12 @@
             android:icon="@drawable/calendar_2"
             android:id="@+id/menu_seguimiento"
             android:title="@string/seguimiento"/>
+        <!--
         <item
             android:icon="@drawable/line_chart"
             android:id="@+id/menu_percentiles"
             android:title="@string/title_activity_main2"/>
+            -->
     </group>
 
     <item

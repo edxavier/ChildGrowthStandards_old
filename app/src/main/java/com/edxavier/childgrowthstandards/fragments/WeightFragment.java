@@ -1,50 +1,48 @@
 package com.edxavier.childgrowthstandards.fragments;
 
 
-import android.content.Context;
+import android.content.ActivityNotFoundException;
+import android.content.Intent;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
-import android.widget.TextView;
+import android.widget.Toast;
 
+import com.afollestad.materialdialogs.DialogAction;
+import com.afollestad.materialdialogs.MaterialDialog;
 import com.balysv.materialripple.MaterialRippleLayout;
 import com.edxavier.childgrowthstandards.R;
 import com.edxavier.childgrowthstandards.db.ChildHistory;
 import com.edxavier.childgrowthstandards.db.percentiles.WeightForAge;
 import com.edxavier.childgrowthstandards.helpers.MyTextView;
 import com.edxavier.childgrowthstandards.helpers.constans.Gender;
-import com.edxavier.childgrowthstandards.helpers.constans.Units;
 import com.edxavier.childgrowthstandards.libs.ChartStyler;
-import com.edxavier.childgrowthstandards.libs.MyMarkerView;
-import com.edxavier.childgrowthstandards.libs.RightWeightValueFormatter;
-import com.edxavier.childgrowthstandards.libs.XDaysValuesFormatter;
-import com.edxavier.childgrowthstandards.libs.LeftWeightValueFormatter;
+import com.edxavier.childgrowthstandards.libs.marker.MyMarkerView;
+import com.edxavier.childgrowthstandards.libs.formatter.RightWeightValueFormatter;
+import com.edxavier.childgrowthstandards.libs.formatter.XDaysValuesFormatter;
+import com.edxavier.childgrowthstandards.libs.formatter.LeftWeightValueFormatter;
 import com.github.mikephil.charting.charts.LineChart;
-import com.github.mikephil.charting.components.MarkerView;
-import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.realm.implementation.RealmLineDataSet;
-import com.github.mikephil.charting.highlight.Highlight;
 import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdSize;
 import com.google.android.gms.ads.NativeExpressAdView;
 import com.pixplicity.easyprefs.library.Prefs;
 
-import org.joda.time.Interval;
-import org.joda.time.Period;
-
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
-import java.util.Locale;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -96,33 +94,20 @@ public class WeightFragment extends Fragment {
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         percDesc.setText(getContext().getResources().getString(R.string.weight_desc));
+        setHasOptionsMenu(true);
 
-        AdRequest adRequest = new AdRequest.Builder()
-                //.addTestDevice("45D8AEB3B66116F8F24E001927292BD5")
-                //.addTestDevice(AdRequest.DEVICE_ID_EMULATOR)
-                .build();
-        //AdRequest adRequest = new AdRequest.Builder().build();
-
-        NativeExpressAdView ads = new NativeExpressAdView(getActivity());
-        ads.setAdSize(new AdSize(300, 132));
-        ads.setAdUnitId(getContext().getResources().getString(R.string.admob_m001));
-        ads.loadAd(adRequest);
-        ads.setAdListener(new AdListener() {
-            @Override
-            public void onAdLoaded() {
-                super.onAdLoaded();
-                admobContainer.setVisibility(View.VISIBLE);
-            }
-        });
+        showAds();
         zoomOut.setOnClickListener(view2 -> {
             chart.zoomOut();
+            if (!hist.isEmpty()) {
+                float x = hist.last().getLiving_days();
+                float y = hist.last().getWeight_pnds();
+                chart.centerViewTo(x, y, chart.getAxisLeft().getAxisDependency());
+            }
         });
-        zoomIn.setOnClickListener(view3 -> {
-            zoomIn();
-        });
+        zoomIn.setOnClickListener(view3 -> {zoomIn();});
 
         graphTitle.setText(getString(R.string.weightForage));
-        admobContainer.addView(ads);
 
         int edgesColor = getResources().getColor(R.color.md_red_500);
         int innnerEdgeColor = getResources().getColor(R.color.md_orange_500);
@@ -131,6 +116,8 @@ public class WeightFragment extends Fragment {
         realm = Realm.getDefaultInstance();
         Bundle args = getArguments();
         hist = realm.where(ChildHistory.class)
+                .greaterThan("weight_pnds", 0f)
+                .lessThan("weight_pnds", 70f)
                 .equalTo("child.id", args.getString("id"))
                 .findAll().sort("living_days", Sort.ASCENDING);
 
@@ -149,9 +136,7 @@ public class WeightFragment extends Fragment {
         mods7 = mods.toArray(mods7);
         results =  results.where().in("day", mods7).findAll();
 
-
-
-        RealmLineDataSet<WeightForAge> mediansDataSet = new RealmLineDataSet<WeightForAge>(results, "day", "median_girls");;
+        RealmLineDataSet<WeightForAge> mediansDataSet = new RealmLineDataSet<WeightForAge>(results, "day", "median_girls");
         RealmLineDataSet<WeightForAge> ninetySevenDataSet = new RealmLineDataSet<WeightForAge>(results, "day", "ninetySeven_girls");
         RealmLineDataSet<WeightForAge> thirdLineDataSet = new RealmLineDataSet<WeightForAge>(results, "day", "third_girls");
         RealmLineDataSet<WeightForAge> eightyFiveDataSet = new RealmLineDataSet<WeightForAge>(results, "day", "eightyFive_girls");
@@ -186,19 +171,12 @@ public class WeightFragment extends Fragment {
             zoomIn.setVisibility(View.GONE);
             zoomOut.setVisibility(View.GONE);
         }
-
-        mediansDataSet.setColors(mediaColor);
-        mediansDataSet.setDrawCircles(false);
-        mediansDataSet.setLabel(getResources().getString(R.string.p50));
-        mediansDataSet.setHighlightEnabled(false);
-        mediansDataSet.setDrawHighlightIndicators(false);
-
         // set this to false to disable the drawing of highlight indicator (lines)
-        mediansDataSet.setLineWidth(1);
+        //mediansDataSet.setLineWidth(1);
         if (lineData != null)
-            lineData.addDataSet(mediansDataSet);
+            lineData.addDataSet(ChartStyler.setupCommonLineDataset(mediansDataSet, mediaColor, getResources().getString(R.string.p50)));
         else
-            lineData = new LineData(mediansDataSet);
+            lineData = new LineData(ChartStyler.setupCommonLineDataset(mediansDataSet, mediaColor, getResources().getString(R.string.p50)));
 
         lineData.addDataSet(ChartStyler.setupCommonLineDataset(ninetySevenDataSet, edgesColor, getResources().getString(R.string.p97)));
         lineData.addDataSet(ChartStyler.setupCommonLineDataset(eightyFiveDataSet, innnerEdgeColor, getResources().getString(R.string.p85)));
@@ -210,35 +188,74 @@ public class WeightFragment extends Fragment {
         chart.getXAxis().setValueFormatter(new XDaysValuesFormatter(chart, getActivity()));
         chart.getAxisLeft().setValueFormatter(new LeftWeightValueFormatter());
         chart.getAxisRight().setValueFormatter(new RightWeightValueFormatter());
-        chart.setMarker(new MyMarkerView(getActivity(), R.layout.tv_content));
-//chart.setVisibleXRangeMaximum(1800);
-        chart.invalidate();
+        if(Prefs.getBoolean("show_marker", true))
+            chart.setMarker(new MyMarkerView(getActivity(), R.layout.tv_content));
 
+        chart.invalidate();
         if (!hist.isEmpty())
             centerGraph();
 
     }
 
-
     public void centerGraph() {
         float x = hist.last().getLiving_days();
         float y = hist.last().getWeight_pnds();
-        chart.zoom(3f, 2f, x, y);
+        chart.zoom(1.5f, 1.5f, x, y);
+        chart.centerViewTo(x, y,chart.getAxisLeft().getAxisDependency()) ;
     }
 
     public void zoomIn() {
         if (!hist.isEmpty()) {
             float x = hist.last().getLiving_days();
             float y = hist.last().getWeight_pnds();
-            chart.zoom(2f, 1f, x, y);
+            chart.zoom(1.2f, 1.2f, x, y);
+            chart.centerViewTo(x, y,chart.getAxisLeft().getAxisDependency() );
         }else
             chart.zoomIn();
     }
-
 
     @Override
     public void onDestroy() {
         realm.close();
         super.onDestroy();
+    }
+
+    void showAds(){
+        AdRequest adRequest = new AdRequest.Builder()
+                //.addTestDevice("45D8AEB3B66116F8F24E001927292BD5")
+                //.addTestDevice(AdRequest.DEVICE_ID_EMULATOR)
+                .build();
+        //AdRequest adRequest = new AdRequest.Builder().build();
+
+        NativeExpressAdView ads = new NativeExpressAdView(getActivity());
+        ads.setAdSize(new AdSize(300, 132));
+        ads.setAdUnitId(getContext().getResources().getString(R.string.admob_m001));
+        ads.loadAd(adRequest);
+        ads.setAdListener(new AdListener() {
+            @Override
+            public void onAdLoaded() {
+                super.onAdLoaded();
+                admobContainer.setVisibility(View.VISIBLE);
+            }
+        });
+        admobContainer.addView(ads);
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.menu_, menu);
+    }
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.ac_info:
+                new MaterialDialog.Builder(getActivity())
+                        .title(getContext().getResources().getString(R.string.info))
+                        .content(getContext().getResources().getString(R.string.weight_desc))
+                        .positiveText(R.string.ok)
+                        .show();
+                break;
+        }
+        return super.onOptionsItemSelected(item);
     }
 }

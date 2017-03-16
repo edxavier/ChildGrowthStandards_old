@@ -25,8 +25,6 @@ public class ChildsPresenterImpl implements Contracts.ChildsPresenter {
     @Override
     public void getChilds() {
         RealmResults<Child> results = interactor.getChilds();
-        Log.e("EDER", "getChilds "+ results.size());
-
         if(results.isEmpty())
             view.showEmptyMessage();
         else

@@ -29,21 +29,20 @@
             android:name=".PercentilesActivity"
             android:label="@string/title_activity_percentiles"
             android:theme="@style/AppTheme" />
+        <activity android:name=".MyPreferencesActivity" />
+        <activity android:name=".HelpActivity" />
         <activity
-            android:name=".QuickPercentiles"
-            android:icon="@mipmap/ic_launcher_2"
-            android:label="@string/title_activity_main2"
-            android:taskAffinity=":QuickPercentiles"
-            android:theme="@style/AppTheme.Traslucent">
+            android:name=".LaunchPercentil"
+            android:label="@string/title_activity_percentiles"
+            android:theme="@style/AppTheme.Fullscreen">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".MyPreferencesActivity" />
+        <activity android:name=".MeasuresList" />
 
-        <activity android:name=".HelpActivity"></activity>
     </application>
 
 </manifest>

@@ -19,12 +19,11 @@ import rx.schedulers.Schedulers;
  * Created by Eder Xavier Rojas on 17/09/2016.
  */
 public class ChildsInteractorImpl implements Contracts.ChildsInteractor {
-    private RxBus eventBus;
     Realm realm;
     private Subscription apiSubscription;
 
     public ChildsInteractorImpl() {
-        this.eventBus = RxBus.getInstance();
+        RxBus eventBus = RxBus.getInstance();
         this.realm = Realm.getDefaultInstance();
     }
 

@@ -1,4 +1,4 @@
-package com.edxavier.childgrowthstandards.libs;
+package com.edxavier.childgrowthstandards.libs.formatter;
 
 import android.content.Context;
 
@@ -35,7 +35,7 @@ public class XDaysValuesFormatter implements IAxisValueFormatter {
         float aMonth = 30.4375f;
         float oneYear =  365.25f;
 
-        String label = String.format( Locale.getDefault(), "%.0f d",value);
+        String label = String.format( Locale.getDefault(), "%.0fd",value);
         if(value>0) {
             if(chart.getVisibleXRange() < aMonth * 6){
                 label = getWeeks(value);

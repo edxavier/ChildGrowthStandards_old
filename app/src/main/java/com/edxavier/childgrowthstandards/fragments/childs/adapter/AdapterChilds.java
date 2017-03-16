@@ -15,9 +15,14 @@ import com.bumptech.glide.Glide;
 import com.edxavier.childgrowthstandards.R;
 import com.edxavier.childgrowthstandards.db.Child;
 import com.edxavier.childgrowthstandards.db.ChildHistory;
+import com.edxavier.childgrowthstandards.db.percentiles.BmiForAge;
+import com.edxavier.childgrowthstandards.db.percentiles.HeadCircForAge;
+import com.edxavier.childgrowthstandards.db.percentiles.HeightForAge;
+import com.edxavier.childgrowthstandards.db.percentiles.WeightForAge;
 import com.edxavier.childgrowthstandards.fragments.childs.CardOptionsSheet;
 import com.edxavier.childgrowthstandards.fragments.childs.Contracts;
 import com.edxavier.childgrowthstandards.helpers.MyTextView;
+import com.edxavier.childgrowthstandards.helpers.Res;
 import com.edxavier.childgrowthstandards.helpers.constans.Gender;
 import com.edxavier.childgrowthstandards.helpers.constans.Units;
 import com.edxavier.childgrowthstandards.main.MainActivity;
@@ -31,12 +36,7 @@ import com.pixplicity.easyprefs.library.Prefs;
 import com.rohitarya.glide.facedetection.transformation.FaceCenterCrop;
 import com.rohitarya.glide.facedetection.transformation.core.GlideFaceDetector;
 
-import org.joda.time.LocalDate;
-import org.joda.time.Period;
-import org.joda.time.PeriodType;
-
 import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.Locale;
 
 import butterknife.BindView;
@@ -55,12 +55,14 @@ public class AdapterChilds extends RecyclerView.Adapter<AdapterChilds.ViewHolder
     private MainActivity context;
     private Contracts.ChildsView view;
     RealmResults<Child> list;
-
-    public AdapterChilds(MainActivity context, RealmResults<Child> list, Contracts.ChildsView view) {
+    Realm realm;
+    ChildHistory h;
+    public AdapterChilds(MainActivity context, RealmResults<Child> list, Contracts.ChildsView view, Realm realm) {
         this.context = context;
         this.view = view;
         this.list = list;
         list.addChangeListener(this);
+        this.realm = realm;
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
@@ -113,13 +115,13 @@ public class AdapterChilds extends RecyclerView.Adapter<AdapterChilds.ViewHolder
     public void onBindViewHolder(final ViewHolder holder, final int position) {
         GlideFaceDetector.initialize(context);
         Child child = list.get(position);
-        holder.txtChildAge.setText(getAgeString(child.getBirthday()));
+        holder.txtChildAge.setText(Res.getAgeString(child.getBirthday(), context));
         holder.textView.setText(child.getChild_name());
 
-        Realm realm = Realm.getDefaultInstance();
         RealmResults<ChildHistory> results = realm.where(ChildHistory.class)
                 .equalTo("child.id", child.getId())
                 .findAll().sort("created", Sort.DESCENDING);
+
         SimpleDateFormat time_format = new SimpleDateFormat("dd-MMM-yyy", Locale.getDefault());
         loadImage(holder.childImage, child.getPhoto_uri());
 
@@ -127,29 +129,39 @@ public class AdapterChilds extends RecyclerView.Adapter<AdapterChilds.ViewHolder
             int len_unit = Integer.valueOf(Prefs.getString("height_unit", "2"));
             int wei_unit = Integer.valueOf(Prefs.getString("weight_unit", "0"));
 
-            ChildHistory h = results.first();
             if (results.size() > 0) {
+                h = results.first();
+                WeightForAge wfa = realm.where(WeightForAge.class)
+                        .equalTo("day", h.getLiving_days()).findFirst();
+                HeightForAge hfa = realm.where(HeightForAge.class)
+                        .equalTo("day", h.getLiving_days()).findFirst();
+                BmiForAge bmifa = realm.where(BmiForAge.class)
+                        .equalTo("day", h.getLiving_days()).findFirst();
+                HeadCircForAge hcfa = realm.where(HeadCircForAge.class)
+                        .equalTo("day", h.getLiving_days()).findFirst();
+
+
                 if(wei_unit == Units.KILOGRAM) {
                     holder.weight.setText(context.getString(R.string.kg,
                             String.format(Locale.getDefault(), "%.2f", h.getWeight_pnds()).replace(",", ".")));
                 }else {
                     float w = Units.kg_to_pnds(h.getWeight_pnds());
                     holder.weight.setText(context.getString(R.string.pnd,
-                            String.format(Locale.getDefault(), "%.0f", w).replace(",", ".")));
+                            String.format(Locale.getDefault(), "%.1f", w).replace(",", ".")));
                 }
                 if(len_unit == Units.CENTIMETER) {
                     holder.height.setText(context.getString(R.string.cm,
-                            String.format(Locale.getDefault(), "%.0f", h.getHeight_cms()).replace(",", ".")));
+                            String.format(Locale.getDefault(), "%.1f", h.getHeight_cms()).replace(",", ".")));
                     holder.perimeter.setText(context.getString(R.string.cm,
-                            String.format(Locale.getDefault(),"%.0f", h.getHead_circ()).replace(",", ".")));
+                            String.format(Locale.getDefault(),"%.1f", h.getHead_circ()).replace(",", ".")));
 
                 }else {
                     float in_height = Units.cm_to_inches(h.getHeight_cms());
                     float in_hcirc = Units.cm_to_inches(h.getHead_circ());
                     holder.height.setText(context.getString(R.string.in,
-                            String.format(Locale.getDefault(), "%.0f", in_height).replace(",", ".")));
+                            String.format(Locale.getDefault(), "%.1f", in_height).replace(",", ".")));
                     holder.perimeter.setText(context.getString(R.string.in,
-                            String.format(Locale.getDefault(),"%.0f", in_hcirc).replace(",", ".")));
+                            String.format(Locale.getDefault(),"%.1f", in_hcirc).replace(",", ".")));
                 }
                 holder.bmi.setText(String.format(Locale.getDefault(), "%.2f", results.get(0).getBmi()));
                 holder.txtLastMeasure.setText(time_format.format(results.get(0).getCreated()));
@@ -198,27 +210,7 @@ public class AdapterChilds extends RecyclerView.Adapter<AdapterChilds.ViewHolder
 
     }
 
-    private String getAgeString(Date age) {
-        String ageString = "";
-        LocalDate birthdate = new LocalDate(age.getYear(), age.getMonth() + 1, age.getDate());
-        birthdate = new LocalDate(age);
 
-        Period p = new Period(birthdate, new LocalDate(), PeriodType.yearMonthDay());
-        if (p.getYears() == 1)
-            ageString +=  p.getYears() + " " +context.getString(R.string.years);
-        else if (p.getYears() > 1)
-            ageString +=  p.getYears() + " " +context.getString(R.string.years);
-        if (p.getMonths() == 1)
-            ageString +=  " " +p.getMonths() + " " +context.getString(R.string.months);
-        else if (p.getMonths() > 1)
-            ageString +=  " " +p.getMonths() + " " +context.getString(R.string.months);
-
-        if (p.getDays() == 1)
-            ageString +=  " " +p.getDays() + " " +context.getString(R.string.day);
-        else if (p.getDays() >= 1)
-            ageString +=  " " +p.getDays() + " " +context.getString(R.string.days);
-        return ageString;
-    }
 
     private void loadImage(ImageView imgContainer, String uriStr){
         Uri uri = Uri.parse(uriStr);
@@ -233,8 +225,6 @@ public class AdapterChilds extends RecyclerView.Adapter<AdapterChilds.ViewHolder
         if( (position + 1) % 2 !=0) {
 
             AdRequest adRequest = new AdRequest.Builder()
-                    //.addTestDevice("45D8AEB3B66116F8F24E001927292BD5")
-                    //.addTestDevice(AdRequest.DEVICE_ID_EMULATOR)
                     .build();
 
             NativeExpressAdView ads = new NativeExpressAdView(context);

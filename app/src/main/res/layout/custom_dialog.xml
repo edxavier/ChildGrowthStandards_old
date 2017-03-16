@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:text="@string/weight"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+    <EditText
+        android:id="@+id/txtPeso"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/weight"
+        android:inputType="numberDecimal|numberSigned"
+        android:textSize="16sp" />
+
+    <TextView
+        android:layout_marginTop="@dimen/dimen_8_dp"
+        android:text="@string/height"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+    <EditText
+        android:id="@+id/txtAltura"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/height"
+        android:inputType="numberDecimal|numberSigned"
+        android:textSize="16sp" />
+
+    <TextView
+        android:layout_marginTop="@dimen/dimen_8_dp"
+        android:text="@string/perimeter"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+    <EditText
+        android:id="@+id/txtPerimetro"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/perimeter"
+        android:inputType="numberDecimal|numberSigned"
+        android:textSize="16sp" />
+</LinearLayout>

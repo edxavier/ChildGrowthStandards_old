@@ -58,8 +58,8 @@ public class InitHeightForAge {
                 realm.executeTransaction(new Realm.Transaction() {
                     @Override
                     public void execute(Realm realm) {
-                        HeightForAge heightForAge = realm.createObject(HeightForAge.class);
-                        heightForAge.setId(HeightForAge.getUniqueId());
+                        HeightForAge heightForAge = realm.createObject(HeightForAge.class, HeightForAge.getUniqueId());
+                       // heightForAge.setId(HeightForAge.getUniqueId());
                         heightForAge.setDay(day);
 
                         heightForAge.setThird_girls(girl3);

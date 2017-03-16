@@ -57,8 +57,8 @@ public class InitBmiForAge {
                 realm.executeTransaction(new Realm.Transaction() {
                     @Override
                     public void execute(Realm realm) {
-                        BmiForAge bmiForAge = realm.createObject(BmiForAge.class);
-                        bmiForAge.setId(BmiForAge.getUniqueId());
+                        BmiForAge bmiForAge = realm.createObject(BmiForAge.class, BmiForAge.getUniqueId());
+                        //bmiForAge.setId(BmiForAge.getUniqueId());
                         bmiForAge.setDay(day);
 
                         bmiForAge.setThird_girls(girl3);

@@ -15,3 +15,6 @@
 #-keepclassmembers class fqcn.of.javascript.interface.for.webview {
 #   public *;
 #}
+-dontwarn rx.internal.util.**
+-dontwarn org.joda.time.**
+-dontwarn com.edxavier.childgrowthstandards.**

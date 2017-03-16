@@ -7,6 +7,7 @@ import android.database.Observable;
 import android.graphics.PixelFormat;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.Window;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
@@ -46,6 +47,7 @@ public class SplashScreen extends AppCompatActivity {
     RelativeLayout container;
     @BindView(R.id.init_text)
     MyTextView initText;
+    Realm realm;
 
     public void onAttachedToWindow() {
         super.onAttachedToWindow();
@@ -60,7 +62,7 @@ public class SplashScreen extends AppCompatActivity {
                 return rx.Observable.just(InitWeigthForAge.initializeTable(SplashScreen.this));
             }
         }).subscribeOn(Schedulers.newThread()).observeOn(AndroidSchedulers.mainThread())
-                .subscribe(integer -> {}, throwable -> {});
+                .subscribe(integer -> {}, throwable -> Log.e("INIT_ERROR1", throwable.getMessage()));
 
         rx.Observable.defer(new Func0<rx.Observable<Integer>>() {
             @Override
@@ -68,14 +70,15 @@ public class SplashScreen extends AppCompatActivity {
                 return rx.Observable.just(InitHeightForAge.initializeTable(SplashScreen.this));
             }
         }).subscribeOn(Schedulers.newThread()).observeOn(AndroidSchedulers.mainThread())
-                .subscribe(integer -> {}, throwable -> {});
+                .subscribe(integer -> {}, throwable -> Log.e("INIT_ERROR2", throwable.getMessage()));
+
         rx.Observable.defer(new Func0<rx.Observable<Integer>>() {
             @Override
             public rx.Observable<Integer> call() {
                 return rx.Observable.just(InitBmiForAge.initializeTable(SplashScreen.this));
             }
         }).subscribeOn(Schedulers.newThread()).observeOn(AndroidSchedulers.mainThread())
-                .subscribe(integer -> {}, throwable -> {});
+                .subscribe(integer -> {}, throwable -> Log.e("INIT_ERROR3", throwable.getMessage()));
 
         rx.Observable.defer(new Func0<rx.Observable<Integer>>() {
             @Override
@@ -83,7 +86,7 @@ public class SplashScreen extends AppCompatActivity {
                 return rx.Observable.just(InitWeigthForHeight.initializeTable(SplashScreen.this));
             }
         }).subscribeOn(Schedulers.newThread()).observeOn(AndroidSchedulers.mainThread())
-                .subscribe(integer -> {}, throwable -> {});
+                .subscribe(integer -> {}, throwable -> Log.e("INIT_ERROR4", throwable.getMessage()));
 
         rx.Observable.defer(new Func0<rx.Observable<Integer>>() {
             @Override
@@ -91,7 +94,7 @@ public class SplashScreen extends AppCompatActivity {
                 return rx.Observable.just(InitHeadCircForAge.initializeTable(SplashScreen.this));
             }
         }).subscribeOn(Schedulers.newThread()).observeOn(AndroidSchedulers.mainThread())
-                .subscribe(integer -> {}, throwable -> {});
+                .subscribe(integer -> {Log.e("INIT_HC_i", String.valueOf(integer));}, throwable -> Log.e("INIT_ERROR5", throwable.getMessage()));
 
         //InitHeightForAge.initializeTable(this);
         //InitBmiForAge.initializeTable(this);
@@ -132,12 +135,13 @@ public class SplashScreen extends AppCompatActivity {
         iv.clearAnimation();
         iv.startAnimation(anim);
 
-        initializeTables();
-        Realm realm = Realm.getDefaultInstance();
+        realm = Realm.getDefaultInstance();
         int takeMillis = 10;
         boolean isEmpty = realm.where(HeadCircForAge.class).findAll().isEmpty();
         if(isEmpty)
-            takeMillis = 3000;
+            takeMillis = 3500;
+        initializeTables();
+        //InitWeigthForAge.initializeTable(SplashScreen.this);
         //Wait 2 seconds before launch LoginActivity
         rx.Observable.interval(1, TimeUnit.MILLISECONDS).take(takeMillis)
                 .subscribe(aLong -> {
@@ -178,4 +182,9 @@ public class SplashScreen extends AppCompatActivity {
         */
     }
 
+    @Override
+    protected void onDestroy() {
+        realm.close();
+        super.onDestroy();
+    }
 }

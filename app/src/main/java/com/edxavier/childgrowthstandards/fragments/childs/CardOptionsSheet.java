@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.balysv.materialripple.MaterialRippleLayout;
+import com.edxavier.childgrowthstandards.MeasuresList;
 import com.edxavier.childgrowthstandards.NewChild;
 import com.edxavier.childgrowthstandards.NewHistoryRecord;
 import com.edxavier.childgrowthstandards.PercentilesActivity;
@@ -40,6 +41,8 @@ public class CardOptionsSheet extends BottomSheetDialogFragment {
     MyTextView childName;
 
     Bundle args;
+    @BindView(R.id.show_measures_list)
+    MaterialRippleLayout showMeasuresList;
 
     public static CardOptionsSheet newInstance() {
         return new CardOptionsSheet();
@@ -58,6 +61,12 @@ public class CardOptionsSheet extends BottomSheetDialogFragment {
         });
         editChild.setOnClickListener(view1 -> {
             Intent intent = new Intent(getActivity(), NewChild.class);
+            intent.putExtras(args);
+            startActivity(intent);
+            CardOptionsSheet.this.dismiss();
+        });
+        showMeasuresList.setOnClickListener(view1 -> {
+            Intent intent = new Intent(getActivity(), MeasuresList.class);
             intent.putExtras(args);
             startActivity(intent);
             CardOptionsSheet.this.dismiss();
@@ -90,7 +99,7 @@ public class CardOptionsSheet extends BottomSheetDialogFragment {
             startActivity(intent);
             CardOptionsSheet.this.dismiss();
         });
-        args  = getArguments();
+        args = getArguments();
         childName.setText(args.getString("name"));
         return view;
     }

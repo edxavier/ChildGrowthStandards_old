@@ -1,6 +1,7 @@
 package com.edxavier.childgrowthstandards.db.initializer;
 
 import android.content.Context;
+import android.util.Log;
 
 import com.edxavier.childgrowthstandards.R;
 import com.edxavier.childgrowthstandards.db.percentiles.WeightForAge;
@@ -23,6 +24,7 @@ public class InitWeigthForAge {
             ArrayList<float[]> boys = InitWeigthForAge.getBoysPercentiles(context);
             ArrayList<float[]> girls = InitWeigthForAge.getGirlsPercentiles(context);
             boolean castMonthsToDays = false;
+
 
             for (int i = 0; i < boys.size(); i++) {
 
@@ -54,8 +56,9 @@ public class InitWeigthForAge {
                 realm.executeTransaction(new Realm.Transaction() {
                     @Override
                     public void execute(Realm realm) {
-                        WeightForAge weightForAge = realm.createObject(WeightForAge.class);
-                        weightForAge.setId(WeightForAge.getUniqueId());
+                        WeightForAge weightForAge = realm.createObject(WeightForAge.class, WeightForAge.getUniqueId());
+                        //WeightForAge weightForAge = new WeightForAge();
+                        //weightForAge.setId(WeightForAge.getUniqueId());
                         weightForAge.setDay(day);
 
                         weightForAge.setThird_girls(girl3);
@@ -69,6 +72,7 @@ public class InitWeigthForAge {
                         weightForAge.setMedian_boys(boy50);
                         weightForAge.setEightyFive_boys(boy85);
                         weightForAge.setNinetySeven_boys(boy97);
+                        //realm.copyToRealmOrUpdate(weightForAge);
                     }
                 });
             }

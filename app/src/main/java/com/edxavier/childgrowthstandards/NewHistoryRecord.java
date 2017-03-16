@@ -5,6 +5,7 @@ import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.design.widget.TextInputLayout;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -28,6 +29,8 @@ import com.edxavier.childgrowthstandards.helpers.MyTextView;
 import com.edxavier.childgrowthstandards.helpers.ThemeSnackbar;
 import com.edxavier.childgrowthstandards.helpers.constans.Gender;
 import com.edxavier.childgrowthstandards.helpers.constans.Units;
+import com.getkeepsafe.taptargetview.TapTarget;
+import com.getkeepsafe.taptargetview.TapTargetSequence;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdSize;
 import com.google.android.gms.ads.NativeExpressAdView;
@@ -136,7 +139,7 @@ public class NewHistoryRecord extends AppCompatActivity implements DatePickerDia
         ButterKnife.bind(this);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
+        startSecuence();
         FirebaseAnalytics mFirebaseAnalytics;
         mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
         Bundle bundle = new Bundle();
@@ -183,6 +186,9 @@ public class NewHistoryRecord extends AppCompatActivity implements DatePickerDia
         WeightForAge weightForAge = realm.where(WeightForAge.class)
                 .equalTo("day", Float.valueOf(p.getDays()))
                 .findFirst();
+
+        RealmResults<WeightForAge> res = realm.where(WeightForAge.class).findAll();
+
 
         HeightForAge heightForAge = realm.where(HeightForAge.class)
                 .equalTo("day", Float.valueOf(p.getDays()))
@@ -271,7 +277,9 @@ public class NewHistoryRecord extends AppCompatActivity implements DatePickerDia
             @Override
             public void onClick(View view) {
 
-                if(isTextInputEmpty(txtPerimetro) && isTextInputEmpty(txtAltura) && isTextInputEmpty(txtPounds)){
+                if(isTextInputEmpty(txtPerimetro) || zeroInput(txtPerimetro) &&
+                        isTextInputEmpty(txtAltura) || zeroInput(txtAltura) &&
+                        isTextInputEmpty(txtPounds)|| zeroInput(txtPounds)){
                     Toast.makeText(NewHistoryRecord.this,
                             "Ingrese al menos uno de los 3 datos requeridos", Toast.LENGTH_LONG).show();
                     return;
@@ -285,7 +293,7 @@ public class NewHistoryRecord extends AppCompatActivity implements DatePickerDia
                 }else
                     history.setWeight_pnds(0);
 
-                Log.e("EDER_W", String.valueOf(history.getWeight_pnds()));
+                //Log.e("EDER_W", String.valueOf(history.getWeight_pnds()));
                 if(!isTextInputEmpty(txtAltura)) {
                     if (chkAlturaPulg.isChecked()) {
                         history.setHeight_cms(Units.inches_to_cm(Float.valueOf(txtAltura.getText().toString())));
@@ -295,7 +303,7 @@ public class NewHistoryRecord extends AppCompatActivity implements DatePickerDia
                 }else
                     history.setHeight_cms(0);
 
-                Log.e("EDER_H", String.valueOf(history.getHeight_cms()));
+                //Log.e("EDER_H", String.valueOf(history.getHeight_cms()));
                 if(!isTextInputEmpty(txtPerimetro)) {
                     if (chkPerimPulg.isChecked())
                         history.setHead_circ(Units.inches_to_cm(Float.valueOf(txtPerimetro.getText().toString())));
@@ -304,11 +312,11 @@ public class NewHistoryRecord extends AppCompatActivity implements DatePickerDia
                 }else
                     history.setHead_circ(0);
 
-                Log.e("EDER_P", String.valueOf(history.getHead_circ()));
+                //Log.e("EDER_P", String.valueOf(history.getHead_circ()));
 
                 if(!isTextInputEmpty(txtPounds) && !isTextInputEmpty(txtAltura)) {
-                    float meter = (float) (history.getHeight_cms() / 100f);
-                    float bmi = (float) (history.getWeight_pnds() / (meter * meter));
+                    float meter = history.getHeight_cms() / 100f;
+                    float bmi = history.getWeight_pnds() / (meter * meter);
                     history.setBmi(bmi);
                 }else
                     history.setBmi(0);
@@ -339,75 +347,13 @@ public class NewHistoryRecord extends AppCompatActivity implements DatePickerDia
             }
         });
 
-        RxTextView.textChangeEvents(txtPounds).subscribe(value -> {
-            if (value.text().length() > 0) {
-                try {
-                    float pnds = Float.valueOf(value.text().toString());
-                    if (pnds < 2 || pnds > 180) {
-                        fabSave.setEnabled(false);
-                        fabSave.setAlpha(0.5f);
-                        poundsContainer.setErrorEnabled(true);
-                        poundsContainer.setError(getString(R.string.outOfRange));
-                    } else {
-                        fabSave.setAlpha(1f);
-                        fabSave.setEnabled(true);
-                        poundsContainer.setErrorEnabled(false);
-                        poundsContainer.setError("");
-                    }
-                } catch (Exception ignored) {
-                    poundsContainer.setErrorEnabled(true);
-                    poundsContainer.setError(ignored.getMessage());
-                }
-            }
-        });
-        RxTextView.textChangeEvents(txtAltura).subscribe(value -> {
-            if (value.text().length() > 0) {
-                try {
-                    float pnds = Float.valueOf(value.text().toString());
-                    if (pnds < 20 || pnds > 190) {
-                        fabSave.setEnabled(false);
-                        fabSave.setAlpha(0.5f);
-                        alturaContainer.setErrorEnabled(true);
-                        alturaContainer.setError(getString(R.string.outOfRange));
-                    } else {
-                        fabSave.setAlpha(1f);
-                        fabSave.setEnabled(true);
-                        alturaContainer.setErrorEnabled(false);
-                        alturaContainer.setError("");
-                    }
-                } catch (Exception ignored) {
-                    alturaContainer.setErrorEnabled(true);
-                    alturaContainer.setError(ignored.getMessage());
-                }
-            }
-        });
-        RxTextView.textChangeEvents(txtPerimetro).subscribe(value -> {
-            if (value.text().length() > 0) {
-                try {
-                    float pnds = Float.valueOf(value.text().toString());
-                    if (pnds < 20 || pnds > 80) {
-                        fabSave.setEnabled(false);
-                        fabSave.setAlpha(0.5f);
-                        periemterContainer.setErrorEnabled(true);
-                        periemterContainer.setError(getString(R.string.outOfRange));
-                    } else {
-                        fabSave.setAlpha(1f);
-                        fabSave.setEnabled(true);
-                        periemterContainer.setErrorEnabled(false);
-                        periemterContainer.setError("");
-                    }
-                } catch (Exception ignored) {
-                    periemterContainer.setErrorEnabled(true);
-                    periemterContainer.setError(ignored.getMessage());
-                }
-            }
-        });
-
-
     }
 
     boolean isTextInputEmpty(TextView input){
         return input.getText().toString().isEmpty();
+    }
+    boolean zeroInput(TextView input){
+        return input.getText().toString().equals("0");
     }
 
     @Override
@@ -430,5 +376,35 @@ public class NewHistoryRecord extends AppCompatActivity implements DatePickerDia
         p = new Period(birthdate, recDate, PeriodType.days());
         history.setLiving_days(p.getDays());
         history.setCreated(recDate.toDate());
+        presetValues();
     }
+    private void startSecuence() {
+        if(!Prefs.getBoolean("secuence_new_history", false)) {
+            new TapTargetSequence(this)
+                    .targets(
+                            TapTarget.forView(findViewById(R.id.txtPounds),
+                                    getResources().getString(R.string.sec_new_history_title), getString(R.string.sec_new_history_content))
+                                    .dimColor(R.color.md_black_1000)
+                                    .outerCircleColor(R.color.md_light_blue_500)
+                                    .cancelable(false),
+                            TapTarget.forView(this.findViewById(R.id.rdGroup_peso),
+                                    getResources().getString(R.string.sec_new_history_title2))
+                                    .dimColor(R.color.md_black_1000)
+                                    .outerCircleColor(R.color.md_purple_500)
+                                    .cancelable(false),
+                            TapTarget.forView(this.findViewById(R.id.calendar),
+                                    getResources().getString(R.string.sec_new_history_title3))
+                                    .dimColor(R.color.md_black_1000)
+                                    .outerCircleColor(R.color.md_blue_grey_500_25)
+                                    .cancelable(false),
+                            TapTarget.forView(this.findViewById(R.id.fabSave),
+                                    getResources().getString(R.string.sec_new_history_title4))
+                                    .dimColor(R.color.md_black_1000)
+                                    .outerCircleColor(R.color.md_cyan_500_25)
+                                    .cancelable(false)
+                    ).start();
+            Prefs.putBoolean("secuence_new_history", true);
+        }
+    }
+
 }

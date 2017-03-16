@@ -46,16 +46,8 @@ import io.realm.Realm;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, MainView {
 
-    //@BindView(R.id.backdrop)
-    //ImageView backdrop;
-    //@BindView(R.id.love_music)
-    //MyTextView loveMusic;
-    //@BindView(R.id.subTitle)
-    //MyTextView subTitle;
     @BindView(R.id.toolbar)
-    Toolbar toolbar;
-    //@BindView(R.id.collapsing_toolbar)
-    //CollapsingToolbarLayout collapsingToolbar;
+    public Toolbar toolbar;
     @BindView(R.id.appbar)
     AppBarLayout appbar;
     @BindView(R.id.main_content)
@@ -119,7 +111,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         String dlg_desc = getString(R.string.rate_dlg_desc);
 
 
-        if(!Prefs.getBoolean("rated", false) &&  Prefs.getInt("num_excecutions", 0) == Prefs.getInt("show_after", 10)){
+        if(!Prefs.getBoolean("rated", false) &&  Prefs.getInt("num_excecutions", 0) == Prefs.getInt("show_after", 5)){
             new LovelyStandardDialog(this)
                     .setTopColorRes(R.color.md_teal_600)
                     .setIcon(R.drawable.ic_star)
@@ -149,7 +141,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     .setNeutralButton(later, view -> {
                         Prefs.putInt("num_excecutions", 0);
                         Random r = new Random();
-                        int Low = 8;int High = 12;
+                        int Low = 6;int High = 9;
                         int rnd = r.nextInt(High-Low) + Low;
                         Prefs.putInt("show_after", rnd);
 
@@ -225,14 +217,14 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                         .commit();
                 fabBtn.setVisibility(View.VISIBLE);
                 break;
-            case R.id.menu_percentiles:
+            /*case R.id.menu_percentiles:
                 item.setChecked(true);
                 fragmentManager = getSupportFragmentManager();
                 fragmentManager.beginTransaction()
                         .replace(R.id.fragmentContainer, new PercentilesFragment(), "perc")
                         .commit();
                 fabBtn.setVisibility(View.GONE);
-                break;
+                break;*/
             case R.id.menu_opcion_1:
                 Intent i = new Intent(this, MyPreferencesActivity.class);
                 startActivityForResult(i, 0);
@@ -275,5 +267,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     .replace(R.id.fragmentContainer, new Childs(), "childs")
                     .commit();
         }
+    }
+
+    public void openDrawer(){
+        drawerLayout.openDrawer(GravityCompat.START);
     }
 }

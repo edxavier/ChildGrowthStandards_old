@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <LinearLayout
+        android:id="@+id/reading_row_container"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+            <TextView
+                fontPath="fonts/Roboto-Bold.ttf"
+                tools:ignore="MissingPrefix"
+                android:layout_margin="8dp"
+                android:text="20-02-17"
+                android:layout_width="0dp"
+                android:layout_weight="2"
+                android:layout_height="wrap_content"
+                android:id="@+id/txtFecha" />
+
+        <TextView
+            fontPath="fonts/Roboto-Regular.ttf"
+            tools:ignore="MissingPrefix"
+            android:textAlignment="center"
+            android:layout_margin="8dp"
+            android:text="3 kg"
+            android:layout_width="0dp"
+            android:layout_weight="2"
+            android:layout_height="wrap_content"
+            android:id="@+id/txtPeso" />
+
+        <TextView
+            fontPath="fonts/Roboto-Regular.ttf"
+            tools:ignore="MissingPrefix"
+            android:id="@+id/txtAltura"
+            android:layout_margin="8dp"
+            android:textAlignment="center"
+            android:text="44 cm"
+            android:layout_width="0dp"
+            android:layout_weight="2"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            fontPath="fonts/Roboto-Regular.ttf"
+            tools:ignore="MissingPrefix"
+            android:id="@+id/txtPerimetro"
+            android:textAlignment="center"
+            android:layout_margin="8dp"
+            android:text="44 cm"
+            android:visibility="gone"
+            android:layout_width="0dp"
+            android:layout_weight="2"
+            android:layout_height="wrap_content" />
+        <TextView
+            fontPath="fonts/Roboto-Regular.ttf"
+            tools:ignore="MissingPrefix"
+            android:id="@+id/txtImc"
+            android:layout_margin="8dp"
+            android:textAlignment="center"
+            android:text="13"
+            android:layout_width="0dp"
+            android:layout_weight="2"
+            android:layout_height="wrap_content" />
+
+    </LinearLayout>
+
+
+    <View
+        android:background="@color/md_divider_black"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"/>
+</RelativeLayout>
