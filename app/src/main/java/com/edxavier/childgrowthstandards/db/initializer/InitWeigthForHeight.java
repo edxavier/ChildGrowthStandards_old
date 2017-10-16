@@ -1,6 +1,7 @@
 package com.edxavier.childgrowthstandards.db.initializer;
 
 import android.content.Context;
+import android.util.Log;
 
 import com.edxavier.childgrowthstandards.R;
 import com.edxavier.childgrowthstandards.db.percentiles.HeightForAge;
@@ -12,6 +13,7 @@ import java.io.InputStream;
 import java.util.ArrayList;
 
 import io.realm.Realm;
+import io.realm.RealmResults;
 
 /**
  * Created by Eder Xavier Rojas on 16/08/2016.
@@ -20,10 +22,14 @@ public class InitWeigthForHeight {
 
     public static Integer initializeTable(Context context){
         Realm realm = Realm.getDefaultInstance();
-        boolean isEmpty = realm.where(WeightForHeight.class).findAll().isEmpty();
-        if(isEmpty){
+        RealmResults<WeightForHeight> isEmpty = realm.where(WeightForHeight.class).findAll();
+        if(isEmpty.size()<2024){
             ArrayList<float[]> boys = InitWeigthForHeight.getBoysPercentiles(context);
             ArrayList<float[]> girls = InitWeigthForHeight.getGirlsPercentiles(context);
+            ArrayList<WeightForHeight> records = new ArrayList<>();
+            realm.executeTransaction(realm1 -> {
+                realm.delete(WeightForHeight.class);
+            });
 
             for (int i = 0; i < boys.size(); i++) {
 
@@ -43,40 +49,40 @@ public class InitWeigthForHeight {
                 boy85 = boys.get(i)[4];
                 boy97 = boys.get(i)[5];
 
-                realm.executeTransaction(new Realm.Transaction() {
-                    @Override
-                    public void execute(Realm realm) {
-                        WeightForHeight weightForHeight = realm.createObject(WeightForHeight.class, WeightForHeight.getUniqueId());
-                        //weightForHeight.setId(WeightForHeight.getUniqueId());
-                        weightForHeight.setHeight(height);
+                WeightForHeight weightForHeight = new WeightForHeight();
+                weightForHeight.setId(WeightForHeight.getUniqueId());
+                weightForHeight.setHeight(height);
 
-                        weightForHeight.setThird_girls(girl3);
-                        weightForHeight.setFifteen_girlsv(girl15);
-                        weightForHeight.setMedian_girls(girl50);
-                        weightForHeight.setEightyFive_girls(girl85);
-                        weightForHeight.setNinetySeven_girls(girl97);
+                weightForHeight.setThird_girls(girl3);
+                weightForHeight.setFifteen_girlsv(girl15);
+                weightForHeight.setMedian_girls(girl50);
+                weightForHeight.setEightyFive_girls(girl85);
+                weightForHeight.setNinetySeven_girls(girl97);
 
-                        weightForHeight.setThird_boys(boy3);
-                        weightForHeight.setFifteen_boys(boy15);
-                        weightForHeight.setMedian_boys(boy50);
-                        weightForHeight.setEightyFive_boys(boy85);
-                        weightForHeight.setNinetySeven_boys(boy97);
-                    }
-                });
+                weightForHeight.setThird_boys(boy3);
+                weightForHeight.setFifteen_boys(boy15);
+                weightForHeight.setMedian_boys(boy50);
+                weightForHeight.setEightyFive_boys(boy85);
+                weightForHeight.setNinetySeven_boys(boy97);
+                records.add(weightForHeight);
             }
+
+            realm.executeTransaction(realm1 ->  {
+                realm.copyToRealm(records);
+            });
         }
         realm.close();
         return 0;
     }
 
-    public static ArrayList<float[]> getGirlsPercentiles(Context context){
+    private static ArrayList<float[]> getGirlsPercentiles(Context context){
         //height, 3rd, 15th, 50th, 85th, 97th
         InputStream inputStream = context.getResources().openRawResource(R.raw.weight_for_height_girls);
         CSVreader csvReader = new CSVreader(inputStream);
         return csvReader.read();
     }
 
-    public static ArrayList<float[]> getBoysPercentiles(Context context){
+    private static ArrayList<float[]> getBoysPercentiles(Context context){
         //height, 3rd, 15th, 50th, 85th, 97th
         InputStream inputStream = context.getResources().openRawResource(R.raw.weight_for_height_boys);
         CSVreader csvReader = new CSVreader(inputStream);

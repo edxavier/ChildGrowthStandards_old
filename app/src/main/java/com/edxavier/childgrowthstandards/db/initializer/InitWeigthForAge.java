@@ -9,8 +9,10 @@ import com.edxavier.childgrowthstandards.helpers.CSVreader;
 
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.List;
 
 import io.realm.Realm;
+import io.realm.RealmResults;
 
 /**
  * Created by Eder Xavier Rojas on 16/08/2016.
@@ -19,12 +21,16 @@ public class InitWeigthForAge {
 
     public static Integer initializeTable(Context context){
         Realm realm = Realm.getDefaultInstance();
-        boolean isEmpty = realm.where(WeightForAge.class).findAll().isEmpty();
-        if(isEmpty){
+        RealmResults<WeightForAge> isEmpty = realm.where(WeightForAge.class).findAll();
+        final int[] saved = {0};
+        if(isEmpty.size() < 1916){
+            realm.executeTransaction(realm1 -> {
+                realm.delete(WeightForAge.class);
+            });
             ArrayList<float[]> boys = InitWeigthForAge.getBoysPercentiles(context);
             ArrayList<float[]> girls = InitWeigthForAge.getGirlsPercentiles(context);
+            ArrayList<WeightForAge> records = new ArrayList<>();
             boolean castMonthsToDays = false;
-
 
             for (int i = 0; i < boys.size(); i++) {
 
@@ -53,42 +59,41 @@ public class InitWeigthForAge {
                 boy85 = boys.get(i)[4];
                 boy97 = boys.get(i)[5];
 
-                realm.executeTransaction(new Realm.Transaction() {
-                    @Override
-                    public void execute(Realm realm) {
-                        WeightForAge weightForAge = realm.createObject(WeightForAge.class, WeightForAge.getUniqueId());
-                        //WeightForAge weightForAge = new WeightForAge();
-                        //weightForAge.setId(WeightForAge.getUniqueId());
-                        weightForAge.setDay(day);
+                WeightForAge weightForAge = new WeightForAge();
+                weightForAge.setId(WeightForAge.getUniqueId());
+                weightForAge.setDay(day);
+                weightForAge.setThird_girls(girl3);
+                weightForAge.setFifteen_girls(girl15);
+                weightForAge.setMedian_girls(girl50);
+                weightForAge.setEightyFive_girls(girl85);
+                weightForAge.setNinetySeven_girls(girl97);
 
-                        weightForAge.setThird_girls(girl3);
-                        weightForAge.setFifteen_girls(girl15);
-                        weightForAge.setMedian_girls(girl50);
-                        weightForAge.setEightyFive_girls(girl85);
-                        weightForAge.setNinetySeven_girls(girl97);
+                weightForAge.setThird_boys(boy3);
+                weightForAge.setFifteen_boys(boy15);
+                weightForAge.setMedian_boys(boy50);
+                weightForAge.setEightyFive_boys(boy85);
+                weightForAge.setNinetySeven_boys(boy97);
+                records.add(weightForAge);
 
-                        weightForAge.setThird_boys(boy3);
-                        weightForAge.setFifteen_boys(boy15);
-                        weightForAge.setMedian_boys(boy50);
-                        weightForAge.setEightyFive_boys(boy85);
-                        weightForAge.setNinetySeven_boys(boy97);
-                        //realm.copyToRealmOrUpdate(weightForAge);
-                    }
-                });
             }
+            realm.executeTransaction(realm1 -> {
+                List<WeightForAge> res = realm.copyToRealm(records);
+                if(res!=null)
+                    saved[0] = res.size();
+            });
         }
         realm.close();
-        return 0;
+        return saved[0];
     }
 
-    public static ArrayList<float[]> getGirlsPercentiles(Context context){
+    private static ArrayList<float[]> getGirlsPercentiles(Context context){
         //day, 3rd, 15th, 50th, 85th, 97th
         InputStream inputStream = context.getResources().openRawResource(R.raw.weight_for_age_girls);
         CSVreader csvReader = new CSVreader(inputStream);
         return csvReader.read();
     }
 
-    public static ArrayList<float[]> getBoysPercentiles(Context context){
+    private static ArrayList<float[]> getBoysPercentiles(Context context){
         //day, 3rd, 15th, 50th, 85th, 97th
         InputStream inputStream = context.getResources().openRawResource(R.raw.weight_for_age_boys);
         CSVreader csvReader = new CSVreader(inputStream);

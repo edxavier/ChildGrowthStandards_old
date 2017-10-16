@@ -12,6 +12,7 @@ import java.io.InputStream;
 import java.util.ArrayList;
 
 import io.realm.Realm;
+import io.realm.RealmResults;
 
 /**
  * Created by Eder Xavier Rojas on 06/09/2016.
@@ -20,10 +21,16 @@ public class InitBmiForAge {
 
     public static Integer initializeTable(Context context){
         Realm realm = Realm.getDefaultInstance();
-        boolean isEmpty = realm.where(BmiForAge.class).findAll().isEmpty();
-        if(isEmpty){
+        RealmResults<BmiForAge> isEmpty = realm.where(BmiForAge.class).findAll();
+        Log.e("EDER-records", String.valueOf(isEmpty.size()));
+        if(isEmpty.size()<2024){
+            realm.executeTransaction(realm1 -> {
+                realm.delete(BmiForAge.class);
+            });
             ArrayList<float[]> boys = InitBmiForAge.getBoysPercentiles(context);
             ArrayList<float[]> girls = InitBmiForAge.getGirlsPercentiles(context);
+            ArrayList<BmiForAge> records = new ArrayList<>();
+
             boolean castMonthsToDays = false;
 
             for (int i = 0; i < boys.size(); i++) {
@@ -54,40 +61,39 @@ public class InitBmiForAge {
                 boy85 = boys.get(i)[4];
                 boy97 = boys.get(i)[5];
 
-                realm.executeTransaction(new Realm.Transaction() {
-                    @Override
-                    public void execute(Realm realm) {
-                        BmiForAge bmiForAge = realm.createObject(BmiForAge.class, BmiForAge.getUniqueId());
-                        //bmiForAge.setId(BmiForAge.getUniqueId());
-                        bmiForAge.setDay(day);
+                BmiForAge bmiForAge = new BmiForAge();
+                bmiForAge.setId(BmiForAge.getUniqueId());
+                bmiForAge.setDay(day);
 
-                        bmiForAge.setThird_girls(girl3);
-                        bmiForAge.setFifteen_girls(girl15);
-                        bmiForAge.setMedian_girls(girl50);
-                        bmiForAge.setEightyFive_girls(girl85);
-                        bmiForAge.setNinetySeven_girls(girl97);
+                bmiForAge.setThird_girls(girl3);
+                bmiForAge.setFifteen_girls(girl15);
+                bmiForAge.setMedian_girls(girl50);
+                bmiForAge.setEightyFive_girls(girl85);
+                bmiForAge.setNinetySeven_girls(girl97);
 
-                        bmiForAge.setThird_boys(boy3);
-                        bmiForAge.setFifteen_boys(boy15);
-                        bmiForAge.setMedian_boys(boy50);
-                        bmiForAge.setEightyFive_boys(boy85);
-                        bmiForAge.setNinetySeven_boys(boy97);
-                    }
-                });
+                bmiForAge.setThird_boys(boy3);
+                bmiForAge.setFifteen_boys(boy15);
+                bmiForAge.setMedian_boys(boy50);
+                bmiForAge.setEightyFive_boys(boy85);
+                bmiForAge.setNinetySeven_boys(boy97);
+                records.add(bmiForAge);
             }
+            realm.executeTransaction(realm1 -> {
+                realm.copyToRealm(records);
+            });
         }
         realm.close();
         return 0;
     }
 
-    public static  ArrayList<float[]> getGirlsPercentiles(Context context){
+    private static  ArrayList<float[]> getGirlsPercentiles(Context context){
         //day, 3rd, 15th, 50th, 85th, 97th
         InputStream inputStream = context.getResources().openRawResource(R.raw.bmi_for_age_girls);
         CSVreader csvReader = new CSVreader(inputStream);
         return csvReader.read();
     }
 
-    public static ArrayList<float[]> getBoysPercentiles(Context context){
+    private static ArrayList<float[]> getBoysPercentiles(Context context){
         //day, 3rd, 15th, 50th, 85th, 97th
         InputStream inputStream = context.getResources().openRawResource(R.raw.bmi_for_age_boys);
         CSVreader csvReader = new CSVreader(inputStream);
