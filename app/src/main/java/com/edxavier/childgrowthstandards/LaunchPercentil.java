@@ -4,81 +4,67 @@ import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TextInputLayout;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.CompoundButton;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
-import android.widget.RadioButton;
-import android.widget.RadioGroup;
+import android.widget.TextView;
 
+import com.afollestad.materialdialogs.MaterialDialog;
+import com.edxavier.childgrowthstandards.db.initializer.InitBmiForAge;
+import com.edxavier.childgrowthstandards.db.initializer.InitHeadCircForAge;
+import com.edxavier.childgrowthstandards.db.initializer.InitHeightForAge;
+import com.edxavier.childgrowthstandards.db.initializer.InitWeigthForAge;
+import com.edxavier.childgrowthstandards.db.initializer.InitWeigthForHeight;
 import com.edxavier.childgrowthstandards.db.percentiles.BmiForAge;
 import com.edxavier.childgrowthstandards.db.percentiles.HeadCircForAge;
 import com.edxavier.childgrowthstandards.db.percentiles.HeightForAge;
 import com.edxavier.childgrowthstandards.db.percentiles.WeightForAge;
-import com.edxavier.childgrowthstandards.db.percentiles.WeightForHeight;
-import com.edxavier.childgrowthstandards.helpers.MyTextView;
 import com.edxavier.childgrowthstandards.helpers.constans.Gender;
 import com.edxavier.childgrowthstandards.helpers.constans.Units;
-import com.edxavier.childgrowthstandards.libs.ChartStyler;
-import com.edxavier.childgrowthstandards.libs.QuickChart;
-import com.edxavier.childgrowthstandards.libs.formatter.BmiValueFormatter;
-import com.edxavier.childgrowthstandards.libs.formatter.LeftHeightValueFormatter;
-import com.edxavier.childgrowthstandards.libs.formatter.LeftWeightValueFormatter;
-import com.edxavier.childgrowthstandards.libs.formatter.RightHeightValueFormatter;
-import com.edxavier.childgrowthstandards.libs.formatter.RightWeightValueFormatter;
-import com.edxavier.childgrowthstandards.libs.formatter.TopHeightValueFormatter;
-import com.edxavier.childgrowthstandards.libs.formatter.XDaysValuesFormatter;
-import com.edxavier.childgrowthstandards.libs.marker.BmiMarkerView;
-import com.edxavier.childgrowthstandards.libs.marker.HeightMarkerView;
-import com.edxavier.childgrowthstandards.libs.marker.MyMarkerView;
-import com.edxavier.childgrowthstandards.libs.marker.PerimeterMarkerView;
-import com.edxavier.childgrowthstandards.libs.marker.WxHMarkerView;
-import com.getkeepsafe.taptargetview.TapTarget;
-import com.getkeepsafe.taptargetview.TapTargetSequence;
-import com.github.mikephil.charting.charts.LineChart;
-import com.github.mikephil.charting.data.Entry;
-import com.github.mikephil.charting.data.LineData;
-import com.github.mikephil.charting.data.LineDataSet;
 import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdRequest;
-import com.google.android.gms.ads.AdSize;
-import com.google.android.gms.ads.NativeExpressAdView;
+import com.google.android.gms.ads.AdView;
+import com.google.android.gms.ads.InterstitialAd;
 import com.google.firebase.analytics.FirebaseAnalytics;
-import com.jakewharton.rxbinding.view.RxView;
-import com.jakewharton.rxbinding.widget.RxTextView;
-import com.jaredrummler.materialspinner.MaterialSpinner;
+import com.jakewharton.rxbinding2.view.RxView;
+import com.jakewharton.rxbinding2.widget.RxTextView;
 import com.pixplicity.easyprefs.library.Prefs;
-import com.trello.rxlifecycle.components.support.RxAppCompatActivity;
-import com.wdullaer.materialdatetimepicker.date.DatePickerDialog;
+import com.tsongkha.spinnerdatepicker.DatePicker;
+import com.tsongkha.spinnerdatepicker.DatePickerDialog;
+import com.tsongkha.spinnerdatepicker.SpinnerDatePickerDialogBuilder;
 
 import org.joda.time.LocalDate;
 import org.joda.time.Period;
 import org.joda.time.PeriodType;
 
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.List;
 import java.util.Locale;
 import java.util.concurrent.TimeUnit;
 
+import belka.us.androidtoggleswitch.widgets.ToggleSwitch;
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import co.ceryle.radiorealbutton.library.RadioRealButtonGroup;
+import co.ceryle.radiorealbutton.RadioRealButtonGroup;
+import io.reactivex.Observable;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.schedulers.Schedulers;
 import io.realm.Realm;
-import io.realm.RealmResults;
-import rx.android.schedulers.AndroidSchedulers;
 
-public class LaunchPercentil extends RxAppCompatActivity implements DatePickerDialog.OnDateSetListener, CompoundButton.OnCheckedChangeListener {
+import static android.text.TextUtils.isEmpty;
 
-    @BindView(R.id.toolbar_title)
-    MyTextView toolbarTitle;
+public class LaunchPercentil extends AppCompatActivity implements DatePickerDialog.OnDateSetListener {
+
     @BindView(R.id.toolbar)
     Toolbar toolbar;
     @BindView(R.id.calendar)
@@ -87,62 +73,61 @@ public class LaunchPercentil extends RxAppCompatActivity implements DatePickerDi
     EditText txtChildBirthday;
     @BindView(R.id.childGender)
     RadioRealButtonGroup childGender;
-    @BindView(R.id.txtPeso)
-    EditText txtPeso;
-    @BindView(R.id.pesoContainer)
-    TextInputLayout pesoContainer;
-    @BindView(R.id.chk_lb_peso)
-    RadioButton chkLbPeso;
-    @BindView(R.id.chk_kg_peso)
-    RadioButton chkKgPeso;
-    @BindView(R.id.rdGroup_peso)
-    RadioGroup rdGroupPeso;
-    @BindView(R.id.txtAltura)
-    EditText txtAltura;
-    @BindView(R.id.alturaContainer)
-    TextInputLayout alturaContainer;
-    @BindView(R.id.chk_cm_altura)
-    RadioButton chkCmAltura;
-    @BindView(R.id.chk_in_altura)
-    RadioButton chkInAltura;
-    @BindView(R.id.rdGroup_altura)
-    RadioGroup rdGroupAltura;
-    @BindView(R.id.txtPerimetro)
-    EditText txtPerimetro;
-    @BindView(R.id.perimetroContainer)
-    TextInputLayout perimetroContainer;
-    @BindView(R.id.chk_cm_perimetro)
-    RadioButton chkCmPerimetro;
-    @BindView(R.id.chk_in_perimetro)
-    RadioButton chkInPerimetro;
-    @BindView(R.id.rdGroup_perimetro)
-    RadioGroup rdGroupPerimetro;
-    @BindView(R.id.admob_container)
-    LinearLayout admobContainer;
-    @BindView(R.id.spinner)
-    MaterialSpinner spinner;
-    @BindView(R.id.chart)
-    LineChart chart;
+
     FirebaseAnalytics analytics;
 
     int gender = Gender.MALE;
-    int edgesColor;
-    int innnerEdgeColor;
-    int mediaColor;
-    int measuereColro;
-    int totalCalls = 0;
     Realm realm = Realm.getDefaultInstance();
-    LineData lineData = null;
     Period p;
     LocalDate birthdate;
     float x = 0;
     float y = 0;
     int len_unit = Integer.valueOf(Prefs.getString("height_unit", "2"));
     int wei_unit = Integer.valueOf(Prefs.getString("weight_unit", "0"));
-    @BindView(R.id.zoom_in)
-    FloatingActionButton zoomIn;
-    @BindView(R.id.zoom_out)
-    FloatingActionButton zoomOut;
+    @BindView(R.id.appbarLayout)
+    AppBarLayout appbarLayout;
+    @BindView(R.id.adView)
+    AdView adView;
+    @BindView(R.id.dateContainer)
+    LinearLayout dateContainer;
+    @BindView(R.id.txtPounds)
+    EditText txtPounds;
+    @BindView(R.id.poundsContainer)
+    TextInputLayout poundsContainer;
+    @BindView(R.id.unidadPeso)
+    ToggleSwitch unidadPeso;
+    @BindView(R.id.txtPesoIdeal)
+    TextView txtPesoIdeal;
+    @BindView(R.id.txtAltura)
+    EditText txtAltura;
+    @BindView(R.id.alturaContainer)
+    TextInputLayout alturaContainer;
+    @BindView(R.id.unidadAltura)
+    ToggleSwitch unidadAltura;
+    @BindView(R.id.txtAlturaIdeal)
+    TextView txtAlturaIdeal;
+    @BindView(R.id.txtPerimetro)
+    EditText txtPerimetro;
+    @BindView(R.id.periemterContainer)
+    TextInputLayout periemterContainer;
+    @BindView(R.id.unidadPC)
+    ToggleSwitch unidadPC;
+    @BindView(R.id.txtPCIdeal)
+    TextView txtPCIdeal;
+    @BindView(R.id.txtImc)
+    EditText txtImc;
+    @BindView(R.id.imcContainer)
+    TextInputLayout imcContainer;
+    @BindView(R.id.txtIMCIdeal)
+    TextView txtIMCIdeal;
+    @BindView(R.id.btnShowPercentile)
+    Button btnShowPercentile;
+    private float val_peso = 0f;
+    private float val_altura = 0f;
+    private float val_pc = 0f;
+    private float val_imc = 0f;
+    private float living_days = 0f;
+    private InterstitialAd mInterstitialAd;
 
 
     @Override
@@ -154,359 +139,350 @@ public class LaunchPercentil extends RxAppCompatActivity implements DatePickerDi
         analytics = FirebaseAnalytics.getInstance(this);
         analytics.logEvent("quick_percentil_activity", null);
         setSupportActionBar(toolbar);
-        getSupportActionBar().setTitle("");
-
+        //getSupportActionBar().setTitle("");
+        initializeTables();
         p = new Period(new LocalDate(), new LocalDate(), PeriodType.days());
-        setupWidgets();
         setAds();
-        setUnits();
-        SimpleDateFormat time_format = new SimpleDateFormat("dd-MMM-yyyy", Locale.getDefault());
+        SimpleDateFormat time_format = new SimpleDateFormat("dd MMMM yyyy", Locale.getDefault());
         txtChildBirthday.setText(time_format.format(new Date()));
-        edgesColor = getResources().getColor(R.color.md_red_500);
-        innnerEdgeColor = getResources().getColor(R.color.md_orange_500);
-        mediaColor = getResources().getColor(R.color.md_green_500);
-        measuereColro = getResources().getColor(R.color.md_blue_grey_500);
-        chart = (LineChart) ChartStyler.setup(chart, this);
-        chart.getXAxis().setValueFormatter(new XDaysValuesFormatter(chart, this));
-        chart.getAxisLeft().setValueFormatter(new LeftWeightValueFormatter());
-        chart.getAxisRight().setValueFormatter(new RightWeightValueFormatter());
-        if (Prefs.getBoolean("show_marker", true))
-            chart.setMarker(new MyMarkerView(this, R.layout.tv_content));
-        drawLines();
-        startSecuence();
+        birthdate = new LocalDate(new Date());
+
+        combineLatestEvents();
+        setupWidgets();
+        presetValues();
+        int ne =  Prefs.getInt("num_excecutions", 0);
+        Prefs.putInt("num_excecutions", ne + 1);
+        if(Units.isTimeToAds()){
+            requestInterstical();
+            showInterstical();
+        } else {
+            Log.e("EDER", "REQUEST RATE2");
+            Units.requesRate(this);
+        }
+
     }
 
-    private void setUnits() {
-        if (wei_unit == Units.KILOGRAM)
-            chkKgPeso.setChecked(true);
-        else
-            chkLbPeso.setChecked(true);
-        if (len_unit == Units.CENTIMETER) {
-            chkCmAltura.setChecked(true);
-            chkCmPerimetro.setChecked(true);
-        } else {
-            chkInAltura.setChecked(true);
-            chkInPerimetro.setChecked(true);
-        }
+
+    private void initializeTables() {
+
+        //Inicializa las tablas de peso para la edad
+        Observable.fromCallable(() -> InitWeigthForAge.initializeTable(this))
+                .subscribeOn(Schedulers.newThread())
+                .observeOn(AndroidSchedulers.mainThread(),false,100)
+                .subscribe(t -> {}, throwable -> {});
+
+        //Inicializa las tablas de altura para la edad
+        Observable.fromCallable(() -> InitHeightForAge.initializeTable(this))
+                .subscribeOn(Schedulers.newThread())
+                .observeOn(AndroidSchedulers.mainThread(),false,100)
+                .subscribe(t -> {}, throwable -> {});
+
+        //Inicializa las tablas de BMI para la edad
+        Observable.fromCallable(() -> InitBmiForAge.initializeTable(this))
+                .subscribeOn(Schedulers.newThread())
+                .observeOn(AndroidSchedulers.mainThread(),false,100)
+                .subscribe(t -> {}, throwable -> {});
+
+        //Inicializa las tablas de Peso para la altura para la edad
+        Observable.fromCallable(() -> InitWeigthForHeight.initializeTable(this))
+                .subscribeOn(Schedulers.newThread())
+                .observeOn(AndroidSchedulers.mainThread(),false,100)
+                .subscribe(t -> {}, throwable -> {});
+        //Inicializa las tablas de Peso para Circunferencia cabesa para la edad
+        Observable.fromCallable(() -> InitHeadCircForAge.initializeTable(this))
+                .subscribeOn(Schedulers.newThread())
+                .observeOn(AndroidSchedulers.mainThread(),false,100)
+                .subscribe(t -> {}, throwable -> {});
     }
 
     private void setAds() {
         AdRequest adRequest = new AdRequest.Builder()
+                //.addTestDevice(AdRequest.DEVICE_ID_EMULATOR)
                 .build();
-        NativeExpressAdView ads = new NativeExpressAdView(this);
-        ads.setAdSize(new AdSize(280, 80));
-        ads.setAdUnitId(getResources().getString(R.string.admob_s001));
-        ads.loadAd(adRequest);
-        ads.setAdListener(new AdListener() {
+        adView.setAdListener(new AdListener() {
             @Override
             public void onAdLoaded() {
                 super.onAdLoaded();
-                admobContainer.setVisibility(View.VISIBLE);
+                adView.setVisibility(View.VISIBLE);
             }
         });
-        admobContainer.addView(ads);
+        adView.loadAd(adRequest);
     }
+
 
     private void setupWidgets() {
+        //Establecer las unidades de medida en los widgets
+        if (wei_unit == Units.KILOGRAM)
+            unidadPeso.setCheckedTogglePosition(0);
+        else
+            unidadPeso.setCheckedTogglePosition(1);
 
-        spinner.setItems(getString(R.string.weightForage), getString(R.string.len_for_age),
-                getString(R.string.weightForlen), getString(R.string.imc_for_age),
-                getString(R.string.cefalic_perimeter_for_age));
+        if (len_unit == Units.INCH) {
+            unidadAltura.setCheckedTogglePosition(0);
+            unidadPC.setCheckedTogglePosition(0);
+        } else {
+            unidadAltura.setCheckedTogglePosition(1);
+            unidadPC.setCheckedTogglePosition(1);
+        }
         RxView.clicks(calendar).subscribe(aVoid -> {
             Calendar now = Calendar.getInstance();
-            Calendar ago = Calendar.getInstance();
-            DatePickerDialog dpd = DatePickerDialog.newInstance(
-                    this,
-                    now.get(Calendar.YEAR),
-                    now.get(Calendar.MONTH),
-                    now.get(Calendar.DAY_OF_MONTH)
-            );
-            dpd.setMaxDate(now);
-            ago.set(Calendar.YEAR, now.get(Calendar.YEAR) - 19);
-            dpd.setMinDate(ago);
-            dpd.show(getFragmentManager(), "Datepickerdialog");
+            new SpinnerDatePickerDialogBuilder()
+                    .context(this)
+                    .callback(this)
+                    .year(now.get(Calendar.YEAR))
+                    .monthOfYear(now.get(Calendar.MONTH))
+                    .dayOfMonth(now.get(Calendar.DAY_OF_MONTH))
+                    .build()
+                    .show();
         });
-
-        childGender.setOnClickedButtonPosition(position -> {
-            if (position == 0)
+        childGender.setOnPositionChangedListener((button, currentPosition, lastPosition) -> {
+            if (currentPosition == 0)
                 gender = Gender.MALE;
-            else
+            else if (currentPosition == 1)
                 gender = Gender.FEMALE;
-            drawLines();
-        });
-        spinner.setOnItemSelectedListener((view1, position, id, item) -> {
-            drawLines();
-        });
-        zoomOut.setOnClickListener(view2 -> {
-            chart.zoomOut();
-            chart.centerViewTo(x, y, chart.getAxisLeft().getAxisDependency());
-        });
-        zoomIn.setOnClickListener(view3 -> {
-            zoomIn();
+            presetValues();
         });
 
-        RxTextView.textChangeEvents(txtPeso)
-                .debounce(2000, TimeUnit.MILLISECONDS)
-                .observeOn(AndroidSchedulers.mainThread())
-                .compose(bindToLifecycle())
-                .subscribe(charSequence ->{
-                    if(totalCalls>2)
-                        drawLines();
-                    totalCalls++;
-                }, throwable -> {});
-        RxTextView.textChangeEvents(txtAltura)
-                .debounce(2000, TimeUnit.MILLISECONDS)
-                .observeOn(AndroidSchedulers.mainThread())
-                .compose(bindToLifecycle())
-                .subscribe(charSequence ->{
-                    if(totalCalls>2)
-                        drawLines();
-                    totalCalls++;
-                }, throwable -> {});
-        RxTextView.textChangeEvents(txtPerimetro)
-                .debounce(2000, TimeUnit.MILLISECONDS)
-                .observeOn(AndroidSchedulers.mainThread())
-                .compose(bindToLifecycle())
-                .subscribe(charSequence -> {
-                    if(totalCalls>2)
-                        drawLines();
-                    totalCalls++;
-                }, throwable -> {});
+        unidadPeso.setOnToggleSwitchChangeListener((position, isChecked) -> {
+            String temp = txtPounds.getText().toString();
+            if (!temp.isEmpty()) {
+                txtPounds.setText("0");
+                txtPounds.setText(temp);
+            }
+            presetValues();
+        });
+        unidadAltura.setOnToggleSwitchChangeListener((position, isChecked) -> {
+            String temp = txtAltura.getText().toString();
+            if (!temp.isEmpty()) {
+                txtAltura.setText("0");
+                txtAltura.setText(temp);
+            }
+            presetValues();
+        });
 
-        chkKgPeso.setOnCheckedChangeListener(this);
-        chkLbPeso.setOnCheckedChangeListener(this);
-        chkCmPerimetro.setOnCheckedChangeListener(this);
-        chkInPerimetro.setOnCheckedChangeListener(this);
-        chkCmAltura.setOnCheckedChangeListener(this);
-        chkInAltura.setOnCheckedChangeListener(this);
+        unidadPC.setOnToggleSwitchChangeListener((position, isChecked) -> {
+            String temp = txtPerimetro.getText().toString();
+            if (!temp.isEmpty()) {
+                txtPerimetro.setText("0");
+                txtPerimetro.setText(temp);
+            }
+            presetValues();
+        });
+
+        RxView.clicks(btnShowPercentile).subscribe(o -> {
+            Bundle extras = new Bundle();
+            extras.putFloat("peso", val_peso);
+            extras.putFloat("altura", val_altura);
+            extras.putFloat("imc", val_imc);
+            extras.putFloat("pc", val_pc);
+            extras.putFloat("dias", living_days);
+            extras.putInt("genero", gender);
+
+            Intent intent = new Intent(this, PercentilesActivity.class);
+            intent.putExtras(extras);
+            Bundle bundle = new Bundle();
+            if(gender == Gender.MALE)
+                bundle.putString("Genero", "MALE");
+            else
+                bundle.putString("Genero", "FEMALE");
+            SimpleDateFormat time_year = new SimpleDateFormat("yyyy", Locale.getDefault());
+            SimpleDateFormat time_month = new SimpleDateFormat("MMM", Locale.getDefault());
+            bundle.putString("child_birth_year", time_year.format(birthdate.toDate()));
+            bundle.putString("child_birth_month", time_month.format(birthdate.toDate()));
+            analytics.logEvent("quick_percentil_review", bundle);
+            startActivity(intent);
+        });
+
     }
 
-    private void drawLines() {
-        switch (spinner.getSelectedIndex()) {
-            case 0:
-                setXY();
-                RealmResults<WeightForAge> results = realm.where(WeightForAge.class).findAll();
-                chart.setData(QuickChart.getWeigtPercentiles(results, gender, this));
-                chart.getAxisRight().setAxisMinimum(1f);
-                chart.getAxisLeft().setAxisMinimum(1f);
-                chart.getXAxis().setValueFormatter(new XDaysValuesFormatter(chart, this));
-                chart.getAxisLeft().setValueFormatter(new LeftWeightValueFormatter());
-                chart.getAxisRight().setValueFormatter(new RightWeightValueFormatter());
-                chart.getData().addDataSet(addPoint());
-                if(Prefs.getBoolean("show_marker", true))
-                    chart.setMarker(new MyMarkerView(this, R.layout.tv_content));
-                break;
-            case 1:
-                setXY();
-                RealmResults<HeightForAge> results2 = realm.where(HeightForAge.class).findAll();
-                chart.setData(QuickChart.getHeigtPercentiles(results2, gender, this));
-                chart.getAxisRight().setAxisMinimum(35f);
-                chart.getAxisLeft().setAxisMinimum(35f);
-                chart.getXAxis().setValueFormatter(new XDaysValuesFormatter(chart, this));
-                chart.getAxisLeft().setValueFormatter(new LeftHeightValueFormatter());
-                chart.getAxisRight().setValueFormatter(new RightHeightValueFormatter());
-                chart.getData().addDataSet(addPoint());
-                if(Prefs.getBoolean("show_marker", true))
-                    chart.setMarker(new HeightMarkerView(this, R.layout.tv_content));
-                chart.invalidate();
-                break;
-            case 2:
-                setXY();
-                RealmResults<WeightForHeight> results4 = realm.where(WeightForHeight.class).findAll();
-                chart.setData(QuickChart.getWeigt_x_HeightPercentiles(results4, gender, this));
-                chart.getAxisRight().setAxisMinimum(2f);
-                chart.getAxisLeft().setAxisMinimum(2f);
-                chart.getXAxis().setValueFormatter(new TopHeightValueFormatter());
-                chart.getAxisLeft().setValueFormatter(new LeftWeightValueFormatter());
-                chart.getAxisRight().setValueFormatter(new RightWeightValueFormatter());
-                chart.getData().addDataSet(addPoint());
-                if(Prefs.getBoolean("show_marker", true))
-                    chart.setMarker(new WxHMarkerView(this, R.layout.tv_content));chart.invalidate();
-                break;
-            case 3:
-                setXY();
-                RealmResults<BmiForAge> results3 = realm.where(BmiForAge.class).findAll();
-                chart.setData(QuickChart.getIMCPercentiles(results3, gender, this));
-                chart.getAxisRight().setAxisMinimum(9f);
-                chart.getAxisLeft().setAxisMinimum(9f);
-                chart.getXAxis().setValueFormatter(new XDaysValuesFormatter(chart, this));
-                chart.getAxisLeft().setValueFormatter(new BmiValueFormatter(this));
-                chart.getAxisRight().setValueFormatter(new BmiValueFormatter(this));
-                chart.getData().addDataSet(addPoint());
-                if(Prefs.getBoolean("show_marker", true))
-                    chart.setMarker(new BmiMarkerView(this));chart.invalidate();
-                break;
-            case 4:
-                setXY();
-                RealmResults<HeadCircForAge> results5 = realm.where(HeadCircForAge.class).findAll();
-                chart.setData(QuickChart.getPerimeterPercentiles(results5, gender, this));
-                chart.getAxisRight().setAxisMinimum(30f);
-                chart.getAxisLeft().setAxisMinimum(30f);
-                chart.getXAxis().setValueFormatter(new XDaysValuesFormatter(chart, this));
-                chart.getAxisLeft().setValueFormatter(new BmiValueFormatter(this));
-                chart.getAxisRight().setValueFormatter(new BmiValueFormatter(this));
-                chart.getData().addDataSet(addPoint());
-                if(Prefs.getBoolean("show_marker", true))
-                    chart.setMarker(new PerimeterMarkerView(this, R.layout.tv_content));
-                chart.invalidate();
-                break;
+    private void combineLatestEvents() {
+        Observable<CharSequence> pesoObservable = RxTextView.textChanges(txtPounds);
+        Observable<CharSequence> alturaObservable = RxTextView.textChanges(txtAltura);
+        Observable<CharSequence> pcObservable = RxTextView.textChanges(txtPerimetro);
+
+        pesoObservable
+                .observeOn(AndroidSchedulers.mainThread(), false, 100)
+                .subscribe(peso -> {
+                    if (!isEmpty(peso)) {
+                        if (unidadPeso.getCheckedTogglePosition() == 0) {
+                            val_peso = Float.valueOf(txtPounds.getText().toString());
+                        } else {
+                            val_peso = (Units.lb_to_kg(Float.valueOf(txtPounds.getText().toString())));
+                        }
+                    } else
+                        val_peso = (0f);
+                }, Throwable::printStackTrace);
+
+        alturaObservable
+                .observeOn(AndroidSchedulers.mainThread(), false, 100)
+                .subscribe(altura -> {
+                    if (!isEmpty(altura)) {
+                        //si es cm
+                        if (unidadAltura.getCheckedTogglePosition() == 1) {
+                            val_altura = (Float.valueOf(txtAltura.getText().toString()));
+                        } else {
+                            val_altura = (Units.inches_to_cm(Float.valueOf(txtAltura.getText().toString())));
+                        }
+                    } else
+                        val_altura = (0f);
+                }, Throwable::printStackTrace);
+
+        pcObservable
+                .observeOn(AndroidSchedulers.mainThread(), false, 100)
+                .subscribe(pc -> {
+                    if (!isEmpty(pc)) {
+                        //si es cm
+                        if (unidadPC.getCheckedTogglePosition() == 1) {
+                            val_pc = (Float.valueOf(txtPerimetro.getText().toString()));
+                        } else {
+                            val_pc = (Units.inches_to_cm(Float.valueOf(txtPerimetro.getText().toString())));
+                        }
+                    } else
+                        val_pc = (0f);
+                }, Throwable::printStackTrace);
+
+        //mSubscription =
+        Observable.combineLatest(pesoObservable, alturaObservable, (peso, altura) -> !isEmpty(peso) && !isEmpty(altura))
+                .subscribe(valid -> {
+                    if (valid) {
+                        float altura = 0;
+                        float peso = 0;
+                        if (unidadPeso.getCheckedTogglePosition() == 0) {
+                            peso = Float.valueOf(txtPounds.getText().toString());
+                        } else {
+                            peso = Units.lb_to_kg(Float.valueOf(txtPounds.getText().toString()));
+                        }
+                        if (unidadAltura.getCheckedTogglePosition() == 1) {
+                            altura = Float.valueOf(txtAltura.getText().toString());
+                        } else {
+                            altura = Units.inches_to_cm(Float.valueOf(txtAltura.getText().toString()));
+                        }
+                        float meter = altura / 100f;
+                        float bmi = peso / (meter * meter);
+                        if (!Float.isNaN(bmi) && !Float.isInfinite(bmi)) {
+                            val_imc = (bmi);
+                            txtImc.setText(String.format(Locale.getDefault(), "%.1f", bmi).replace(",", "."));
+                        } else {
+                            val_imc = (0f);
+                            txtImc.setText("0");
+                        }
+                    } else {
+                        val_imc = (0f);
+                        txtImc.setText("0");
+                    }
+                });
+    }
+
+
+    //Inicializa los check de unidades de medidas y sugerencia de valores ideales
+    void presetValues() {
+        p = new Period(birthdate, new LocalDate(new Date()), PeriodType.days());
+        Period m = new Period(birthdate, new LocalDate(new Date()), PeriodType.months());
+
+        living_days = 0;
+        if (m.getMonths() >= 62)
+            living_days = m.getMonths() * 30.43f;
+        else
+            living_days = (float) p.getDays();
+
+        WeightForAge weightForAge = realm.where(WeightForAge.class)
+                .equalTo("day", living_days)
+                .findFirst();
+        float pesoIdealBoyKG = weightForAge != null ? weightForAge.getMedian_boys() : 0;
+        float pesoIdealGirlKG = weightForAge != null ? weightForAge.getMedian_boys() : 0;
+
+        HeightForAge heightForAge = realm.where(HeightForAge.class)
+                .equalTo("day", living_days)
+                .findFirst();
+        float alturaIdealBoyCM = heightForAge != null ? heightForAge.getMedian_boys() : 0;
+        float alturaIdealGirlCM = heightForAge != null ? heightForAge.getMedian_boys() : 0;
+
+        HeadCircForAge headCircForAge = realm.where(HeadCircForAge.class)
+                .equalTo("day", Float.valueOf(p.getDays()))
+                .findFirst();
+        float pcIdealBoyCM = headCircForAge != null ? headCircForAge.getMedian_boys() : 0;
+        float pcIdealGirlCM = headCircForAge != null ? headCircForAge.getMedian_boys() : 0;
+
+        BmiForAge imcForAge = realm.where(BmiForAge.class)
+                .equalTo("day", living_days)
+                .findFirst();
+
+        float imcIdealBoy = imcForAge != null ? imcForAge.getMedian_boys() : 0;
+        float imcIdealGirl = imcForAge != null ? imcForAge.getMedian_boys() : 0;
+
+        try {
+
+            if (gender == Gender.FEMALE) {
+                //si esta en KG el check
+                if (unidadPeso.getCheckedTogglePosition() == 0) {
+                    String pi = String.format(Locale.getDefault(), "%.1f", pesoIdealGirlKG).replace(",", ".");
+                    txtPesoIdeal.setText(getString(R.string.peso_ideal_kg, pi));
+                } else {
+                    float pesoIdealLB = Units.kg_to_pnds(pesoIdealGirlKG);
+                    txtPesoIdeal.setText(getString(R.string.peso_ideal_lb, String.format(Locale.getDefault(), "%.1f", pesoIdealLB).replace(",", ".")));
+                }
+                if (unidadAltura.getCheckedTogglePosition() == 1) {
+                    txtAlturaIdeal.setText(getString(R.string.altura_ideal_cm, String.format(Locale.getDefault(), "%.1f", alturaIdealGirlCM).replace(",", ".")));
+                } else {
+                    float alturaIdealIN = Units.cm_to_inches(alturaIdealGirlCM);
+                    txtAlturaIdeal.setText(getString(R.string.altura_ideal_in, String.format(Locale.getDefault(), "%.1f", alturaIdealIN).replace(",", ".")));
+                }
+                if (unidadPC.getCheckedTogglePosition() == 1) {
+                    txtPCIdeal.setText(getString(R.string.pc_ideal_cm, String.format(Locale.getDefault(), "%.1f", pcIdealGirlCM).replace(",", ".")));
+                } else {
+                    float pcIdealIN = Units.cm_to_inches(pcIdealGirlCM);
+                    txtPCIdeal.setText(getString(R.string.pc_ideal_in, String.format(Locale.getDefault(), "%.1f", pcIdealIN).replace(",", ".")));
+                }
+
+                txtIMCIdeal.setText(getString(R.string.imc_ideal, String.format(Locale.getDefault(), "%.1f", imcIdealGirl).replace(",", ".")));
+                if (imcIdealGirl == 0)
+                    txtIMCIdeal.setText("");
+                if (pesoIdealGirlKG == 0)
+                    txtPesoIdeal.setText("");
+                if (alturaIdealGirlCM == 0)
+                    txtAlturaIdeal.setText("");
+                if (pcIdealGirlCM == 0)
+                    txtPCIdeal.setText("");
+            } else {
+                if (unidadPeso.getCheckedTogglePosition() == Units.KILOGRAM) {
+                    String pi = String.format(Locale.getDefault(), "%.1f", pesoIdealBoyKG).replace(",", ".");
+                    txtPesoIdeal.setText(getString(R.string.peso_ideal_kg, pi));
+                } else {
+                    float pesoIdealLB = Units.kg_to_pnds(pesoIdealBoyKG);
+                    txtPesoIdeal.setText(getString(R.string.peso_ideal_lb, String.format(Locale.getDefault(), "%.1f", pesoIdealLB).replace(",", ".")));
+                }
+                if (unidadAltura.getCheckedTogglePosition() == 1) {
+                    txtAlturaIdeal.setText(getString(R.string.altura_ideal_cm, String.format(Locale.getDefault(), "%.1f", alturaIdealBoyCM).replace(",", ".")));
+                } else {
+                    float alturaIdealIN = Units.cm_to_inches(alturaIdealBoyCM);
+                    txtAlturaIdeal.setText(getString(R.string.altura_ideal_in, String.format(Locale.getDefault(), "%.1f", alturaIdealIN).replace(",", ".")));
+                }
+                if (unidadPC.getCheckedTogglePosition() == 1) {
+                    txtPCIdeal.setText(getString(R.string.pc_ideal_cm, String.format(Locale.getDefault(), "%.1f", pcIdealBoyCM).replace(",", ".")));
+                } else {
+                    float pcIdealIN = Units.cm_to_inches(pcIdealBoyCM);
+                    txtPCIdeal.setText(getString(R.string.pc_ideal_in, String.format(Locale.getDefault(), "%.1f", pcIdealIN).replace(",", ".")));
+                }
+                txtIMCIdeal.setText(getString(R.string.imc_ideal, String.format(Locale.getDefault(), "%.1f", imcIdealBoy).replace(",", ".")));
+                if (imcIdealBoy == 0)
+                    txtIMCIdeal.setText("");
+                if (pesoIdealBoyKG == 0)
+                    txtPesoIdeal.setText("");
+                if (alturaIdealBoyCM == 0)
+                    txtAlturaIdeal.setText("");
+                if (pcIdealBoyCM == 0)
+                    txtPCIdeal.setText("");
+            }
+        } catch (Exception ignored) {
+            Log.e("EDER_EXC", ignored.getMessage());
         }
     }
 
-    @Override
-    public void onDateSet(DatePickerDialog view, int year, int monthOfYear, int dayOfMonth) {
-        Calendar ca = Calendar.getInstance();
-        ca.set(year, monthOfYear, dayOfMonth);
-        SimpleDateFormat time_format = new SimpleDateFormat("dd-MMM-yyyy", Locale.getDefault());
-        txtChildBirthday.setText(time_format.format(ca.getTime()));
-        birthdate = new LocalDate(ca.getTime());
-        p = new Period(birthdate, new LocalDate(), PeriodType.days());
-        x = p.getDays();
-        drawLines();
-    }
-
-    public void zoomIn() {
-        chart.zoom(1.2f, 1.2f, x, y);
-        chart.centerViewTo(x, y, chart.getAxisLeft().getAxisDependency());
-    }
 
     @Override
     protected void onDestroy() {
         realm.close();
         super.onDestroy();
-    }
-
-    LineDataSet addPoint() {
-        List<Entry> valsComp1 = new ArrayList<Entry>();
-        Entry c1e2 = new Entry(x, y); // 1 == quarter 2 ...
-        valsComp1.add(c1e2);
-        LineDataSet setComp1 = new LineDataSet(valsComp1, getResources().getString(R.string.measure));
-        setComp1.setColors(measuereColro);
-        setComp1.setCircleColor(measuereColro);
-        setComp1.setCircleColorHole(measuereColro);
-
-        setComp1.setHighlightLineWidth(1.5f);
-        setComp1.setHighLightColor(measuereColro);
-        setComp1.setHighlightEnabled(true);
-        return setComp1;
-    }
-
-    void setXY() {
-        switch (spinner.getSelectedIndex()) {
-            case 0:
-                x = p.getDays();
-                if (!txtPeso.getText().toString().isEmpty()) {
-                    if (chkLbPeso.isChecked()) {
-                        y = Float.parseFloat(txtPeso.getText().toString());
-                        y = Units.lb_to_kg(y);
-                    } else
-                        y = Float.parseFloat(txtPeso.getText().toString());
-                } else
-                    y = 0;
-                break;
-            case 1:
-                x = p.getDays();
-                if (!txtAltura.getText().toString().isEmpty()) {
-                    if (chkInAltura.isChecked()) {
-                        y = Float.parseFloat(txtAltura.getText().toString());
-                        y = Units.inches_to_cm(y);
-                    } else
-                        y = Float.parseFloat(txtAltura.getText().toString());
-                } else
-                    y = 0;
-                break;
-            case 2:
-                if (!txtPeso.getText().toString().isEmpty()) {
-                    if (chkLbPeso.isChecked()) {
-                        y = Float.parseFloat(txtPeso.getText().toString());
-                        y = Units.lb_to_kg(y);
-                    } else {
-                        y = Float.parseFloat(txtPeso.getText().toString());
-                    }
-                } else {
-                    y = 0;
-                }
-                if (!txtAltura.getText().toString().isEmpty()) {
-                    if (chkInAltura.isChecked()) {
-                        x = Float.parseFloat(txtAltura.getText().toString());
-                        x = Units.inches_to_cm(x);
-                    } else {
-                        x = Float.parseFloat(txtAltura.getText().toString());
-                    }
-                } else {
-                    x = 0;
-                }
-                break;
-            case 3:
-                if (!txtPeso.getText().toString().isEmpty()) {
-                    if (chkLbPeso.isChecked()) {
-                        y = Float.parseFloat(txtPeso.getText().toString());
-                        y = Units.lb_to_kg(y);
-                    } else
-                        y = Float.parseFloat(txtPeso.getText().toString());
-                } else
-                    y = 0;
-                if (!txtAltura.getText().toString().isEmpty()) {
-                    if (chkInAltura.isChecked()) {
-                        x = Float.parseFloat(txtAltura.getText().toString());
-                        x = Units.inches_to_cm(x);
-                    } else
-                        x = Float.parseFloat(txtAltura.getText().toString());
-                } else
-                    x = 0;
-                if (x > 0 && y > 0) {
-                    float meter = x / 100f;
-                    y = (y / (meter * meter));
-                    x = p.getDays();
-                }
-                break;
-            case 4:
-                x = p.getDays();
-                if (!txtPerimetro.getText().toString().isEmpty()) {
-                    if (chkInPerimetro.isChecked()) {
-                        y = Float.parseFloat(txtPerimetro.getText().toString());
-                        y = Units.inches_to_cm(y);
-                    } else
-                        y = Float.parseFloat(txtPerimetro.getText().toString());
-                } else
-                    y = 0;
-                break;
-        }
-
-    }
-
-    @Override
-    public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-        drawLines();
-    }
-
-    private void startSecuence() {
-        if(!Prefs.getBoolean("secuence_quick_percentil", false)) {
-            new TapTargetSequence(this)
-                    .targets(
-                            TapTarget.forView(this.findViewById(R.id.calendar),
-                                    getResources().getString(R.string.sec_new_childs_title2))
-                                    .dimColor(R.color.md_black_1000)
-                                    .outerCircleColor(R.color.md_red_500_25).cancelable(false),
-                            TapTarget.forView(findViewById(R.id.txtPeso),
-                                    getResources().getString(R.string.sec_new_history_title))
-                                    .dimColor(R.color.md_black_1000)
-                                    .outerCircleColor(R.color.md_light_blue_500),
-                            TapTarget.forView(this.findViewById(R.id.rdGroup_peso),
-                                    getResources().getString(R.string.sec_new_history_title2))
-                                    .dimColor(R.color.md_black_1000)
-                                    .outerCircleColor(R.color.md_purple_500),
-                            TapTarget.forView(this.findViewById(R.id.spinner),
-                                    getResources().getString(R.string.sec_quick_percentil_title))
-                                    .dimColor(R.color.md_black_1000)
-                                    .outerCircleColor(R.color.md_teal_500_25),
-                            TapTarget.forView(this.findViewById(R.id.chart),
-                                    getResources().getString(R.string.sec_quick_percentil_title2))
-                                    .dimColor(R.color.md_black_1000)
-                                    .outerCircleColor(R.color.md_cyan_500)
-                    ).start();
-            Prefs.putBoolean("secuence_quick_percentil", true);
-        }
     }
 
 
@@ -515,21 +491,22 @@ public class LaunchPercentil extends RxAppCompatActivity implements DatePickerDi
         getMenuInflater().inflate(R.menu.menu_launch, menu);
         return super.onCreateOptionsMenu(menu);
     }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.ac_share:
                 analytics.logEvent("share_launch_activity", null);
-                try
-                { Intent rate_intent = new Intent(Intent.ACTION_SEND);
+                try {
+                    Intent rate_intent = new Intent(Intent.ACTION_SEND);
                     rate_intent.setType("text/plain");
                     rate_intent.putExtra(Intent.EXTRA_SUBJECT, getResources().getString(R.string.app_name));
                     String sAux = getResources().getString(R.string.share_app_msg);
-                    sAux = sAux + "https://play.google.com/store/apps/details?id="+ getPackageName()+" \n\n";
+                    sAux = sAux + "https://play.google.com/store/apps/details?id=" + getPackageName() + " \n\n";
                     rate_intent.putExtra(Intent.EXTRA_TEXT, sAux);
                     startActivity(Intent.createChooser(rate_intent, getResources().getString(R.string.share_using)));
+                } catch (Exception ignored) {
                 }
-                catch(Exception ignored){}
                 break;
             case R.id.ac_rate:
                 analytics.logEvent("rate_launch_activity", null);
@@ -547,7 +524,98 @@ public class LaunchPercentil extends RxAppCompatActivity implements DatePickerDi
                             Uri.parse("http://play.google.com/store/apps/details?id=" + getPackageName())));
                 }
                 break;
+            case R.id.action_settings:
+                startActivity(new Intent(this, MyPreferencesActivity.class));
+                break;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+
+        Calendar ca = Calendar.getInstance();
+        ca.set(year, monthOfYear, dayOfMonth);
+        SimpleDateFormat time_format = new SimpleDateFormat("dd MMMM yyyy", Locale.getDefault());
+        txtChildBirthday.setText(time_format.format(ca.getTime()));
+        p = new Period(birthdate, new LocalDate(), PeriodType.days());
+        x = p.getDays();
+
+        Calendar ca2 = Calendar.getInstance();
+        Calendar minDate = Calendar.getInstance();
+        ca2.add(Calendar.DATE, 1);
+        minDate.add(Calendar.YEAR, -19);
+        ca.set(year, monthOfYear, dayOfMonth);
+
+        LocalDate selectedDate = new LocalDate(ca.getTime());
+        LocalDate now = new LocalDate(ca2.getTime());
+        LocalDate ago = new LocalDate(minDate.getTime());
+
+        if (selectedDate.isBefore(now) && selectedDate.isAfter(ago)) {
+            txtChildBirthday.setText(time_format.format(ca.getTime()));
+            birthdate = new LocalDate(ca.getTime());
+            presetValues();
+        } else {
+            new MaterialDialog.Builder(this)
+                    .title(R.string.error)
+                    .content(R.string.date_error)
+                    .positiveText(R.string.ok)
+                    .show();
+        }
+    }
+
+    public void showInterstical() {
+        Log.e("EDER", "showInterstical");
+            if(mInterstitialAd.isLoaded()) {
+                try {
+                    MaterialDialog dlg = new MaterialDialog.Builder(this)
+                            .title(R.string.ads_notice)
+                            .cancelable(false)
+                            .progress(true, 0)
+                            .progressIndeterminateStyle(true)
+                            .build();
+                    dlg.show();
+                    Observable.interval(1, TimeUnit.MILLISECONDS).take(2500)
+                            .subscribeOn(Schedulers.io())
+                            .observeOn(AndroidSchedulers.mainThread())
+                            .subscribe(aLong -> {},
+                                    throwable -> {}, () -> {
+                                        dlg.dismiss();
+                                        mInterstitialAd.show();
+                                    });
+                }catch (Exception ignored){}
+            }else {
+                Observable.interval(1, TimeUnit.SECONDS).take(4)
+                        .subscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(aLong -> {},
+                                throwable -> {}, this::showInterstical);
+            }
+    }
+
+    public  void requestInterstical(){
+        AdRequest adRequest = new AdRequest.Builder()
+                .addTestDevice(AdRequest.DEVICE_ID_EMULATOR)
+                .build();
+        mInterstitialAd = new InterstitialAd(getApplicationContext());
+        mInterstitialAd.setAdUnitId(getApplicationContext().getResources().getString(R.string.admob_interstical));
+        mInterstitialAd.setAdListener(new AdListener() {
+
+            @Override
+            public void onAdFailedToLoad(int i) {
+                super.onAdFailedToLoad(i);
+                Log.e("EDER", "onAdFailedToLoad");
+                //SystemClock.sleep(5000);
+                Observable.interval(1, TimeUnit.SECONDS).take(4)
+                        .subscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(aLong -> {},
+                                throwable -> {}, () -> {
+                                    requestInterstical();
+                                });
+            }
+        });
+        if(!mInterstitialAd.isLoaded())
+            mInterstitialAd.loadAd(adRequest);
     }
 }

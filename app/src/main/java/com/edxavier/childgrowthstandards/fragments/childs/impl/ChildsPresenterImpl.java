@@ -8,7 +8,6 @@ import com.edxavier.childgrowthstandards.db.ChildHistory;
 import com.edxavier.childgrowthstandards.fragments.childs.Contracts;
 
 import io.realm.RealmResults;
-import rx.Subscription;
 
 /**
  * Created by Eder Xavier Rojas on 17/09/2016.

@@ -1,13 +1,7 @@
 package com.edxavier.childgrowthstandards.fragments;
 
 
-import android.content.ActivityNotFoundException;
-import android.content.Intent;
-import android.content.pm.PackageInfo;
-import android.content.pm.PackageManager;
-import android.net.Uri;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -18,15 +12,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
-import android.widget.Toast;
+import android.widget.TextView;
 
-import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
-import com.balysv.materialripple.MaterialRippleLayout;
 import com.edxavier.childgrowthstandards.R;
 import com.edxavier.childgrowthstandards.db.ChildHistory;
 import com.edxavier.childgrowthstandards.db.percentiles.WeightForAge;
-import com.edxavier.childgrowthstandards.helpers.MyTextView;
 import com.edxavier.childgrowthstandards.helpers.constans.Gender;
 import com.edxavier.childgrowthstandards.libs.ChartStyler;
 import com.edxavier.childgrowthstandards.libs.marker.MyMarkerView;
@@ -62,18 +53,14 @@ public class WeightFragment extends Fragment {
     RealmResults<ChildHistory> hist;
     @BindView(R.id.admob_container)
     LinearLayout admobContainer;
-    @BindView(R.id.zoom_in)
-    MaterialRippleLayout zoomIn;
-    @BindView(R.id.zoom_out)
-    MaterialRippleLayout zoomOut;
-    @BindView(R.id.graph_title)
-    MyTextView graphTitle;
     @BindView(R.id.zoom_in_btn)
-    ImageButton zoomInBtn;
+    ImageButton zoomIn;
     @BindView(R.id.zoom_out_btn)
-    ImageButton zoomOutBtn;
+    ImageButton zoomOut;
+    @BindView(R.id.graph_title)
+    TextView graphTitle;
     @BindView(R.id.perc_desc)
-    MyTextView percDesc;
+    TextView percDesc;
     Realm realm;
 
     public WeightFragment() {

@@ -3,6 +3,7 @@ package com.edxavier.childgrowthstandards.fragments;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -12,13 +13,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.afollestad.materialdialogs.MaterialDialog;
-import com.balysv.materialripple.MaterialRippleLayout;
 import com.edxavier.childgrowthstandards.R;
 import com.edxavier.childgrowthstandards.db.ChildHistory;
 import com.edxavier.childgrowthstandards.db.percentiles.BmiForAge;
-import com.edxavier.childgrowthstandards.helpers.MyTextView;
 import com.edxavier.childgrowthstandards.helpers.constans.Gender;
 import com.edxavier.childgrowthstandards.libs.marker.BmiMarkerView;
 import com.edxavier.childgrowthstandards.libs.formatter.BmiValueFormatter;
@@ -52,18 +52,14 @@ public class ImcFragment extends Fragment {
     RealmResults<ChildHistory> hist;
     @BindView(R.id.admob_container)
     LinearLayout admobContainer;
-    @BindView(R.id.zoom_in)
-    MaterialRippleLayout zoomIn;
-    @BindView(R.id.zoom_out)
-    MaterialRippleLayout zoomOut;
-    @BindView(R.id.graph_title)
-    MyTextView graphTitle;
     @BindView(R.id.zoom_in_btn)
-    ImageButton zoomInBtn;
+    ImageButton zoomIn;
     @BindView(R.id.zoom_out_btn)
-    ImageButton zoomOutBtn;
+    ImageButton zoomOut;
+    @BindView(R.id.graph_title)
+    TextView graphTitle;
     @BindView(R.id.perc_desc)
-    MyTextView percDesc;
+    TextView percDesc;
     Realm realm;
 
     public ImcFragment() {}

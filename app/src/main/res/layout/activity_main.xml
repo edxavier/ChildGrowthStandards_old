@@ -91,11 +91,10 @@
             app:layout_collapseMode="pin"
             app:popupTheme="@style/ThemeOverlay.AppCompat.Light" >
 
-            <com.edxavier.childgrowthstandards.helpers.MyTextView
+            <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textSize="16sp"
-                app:font="@string/FontPierRegular"
                 android:id="@+id/toolbar_title" />
 
         </android.support.v7.widget.Toolbar>
@@ -112,7 +111,7 @@
     <!--app:layout_behavior="com.edxavier.childgrowthstandards.helpers.ScrollAwareFABBehavior"-->
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/fabBtn"
-        app:srcCompat="@drawable/add"
+        app:srcCompat="@drawable/ic_person_add"
         android:layout_gravity="bottom|end"
         android:layout_margin="@dimen/fab_margin"
         android:layout_width="wrap_content"

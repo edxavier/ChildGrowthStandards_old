@@ -4,14 +4,11 @@ import android.content.Context;
 import android.widget.TextView;
 
 import com.edxavier.childgrowthstandards.R;
-import com.edxavier.childgrowthstandards.helpers.MyTextView;
 import com.edxavier.childgrowthstandards.helpers.Res;
-import com.edxavier.childgrowthstandards.helpers.constans.Units;
 import com.github.mikephil.charting.components.MarkerView;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.highlight.Highlight;
 import com.github.mikephil.charting.utils.MPPointF;
-import com.pixplicity.easyprefs.library.Prefs;
 
 import java.util.Locale;
 
@@ -22,14 +19,14 @@ import java.util.Locale;
 public class BmiMarkerView extends MarkerView {
 
     private TextView tvContent;
-    private MyTextView age;
+    private TextView age;
     Context context;
 
     public BmiMarkerView(Context context) {
         super(context, R.layout.tv_content);
         this.context = context;
         tvContent = (TextView) findViewById(R.id.weight);
-        age = (MyTextView) findViewById(R.id.age);
+        age = (TextView) findViewById(R.id.age);
     }
 
     // callbacks everytime the MarkerView is redrawn, can be used to update the

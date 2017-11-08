@@ -6,3 +6,7 @@
 .DS_Store
 /build
 /captures
+fabric.properties
+release/
+src/main/assets/
+/app/release/

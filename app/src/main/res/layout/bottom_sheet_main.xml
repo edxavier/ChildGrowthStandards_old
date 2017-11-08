@@ -2,44 +2,35 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
-    android:padding="@dimen/dimen_16_dp"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <com.edxavier.childgrowthstandards.helpers.MyTextView
+    <TextView
         android:id="@+id/childName"
-        app:font="@string/FontRobotoMedium"
-        android:layout_marginLeft="@dimen/dimen_16_dp"
         android:layout_marginStart="@dimen/dimen_16_dp"
         style="@style/Base.TextAppearance.AppCompat.Medium"
         android:layout_width="match_parent"
-        android:layout_marginBottom="@dimen/dimen_16_dp"
-        android:layout_height="wrap_content" />
-
-    <com.balysv.materialripple.MaterialRippleLayout
-        android:id="@+id/add_measures"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:mrl_rippleColor="@color/pink_300">
+        android:gravity="center_vertical"
+        android:layout_height="48dp" />
 
         <LinearLayout
-        android:layout_marginTop="@dimen/dimen_8_dp"
+            android:id="@+id/add_measures"
+            android:layout_marginTop="@dimen/dimen_8_dp"
         android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="48dp">
 
-        <ImageView
-            android:layout_marginLeft="@dimen/dimen_16_dp"
+        <android.support.v7.widget.AppCompatImageView
+            app:tint="@color/md_black_1000_50"
             android:layout_marginStart="@dimen/dimen_16_dp"
             android:layout_gravity="center"
-            app:srcCompat="@drawable/measures_edit"
+            app:srcCompat="@drawable/ic_school_rule"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
 
-        <com.edxavier.childgrowthstandards.helpers.MyTextView
+        <TextView
             android:textSize="16sp"
             android:layout_gravity="center"
-            android:layout_marginLeft="@dimen/dimen_32_dp"
             android:layout_marginStart="@dimen/dimen_32_dp"
             android:gravity="center"
             android:layout_width="wrap_content"
@@ -47,95 +38,49 @@
             android:layout_height="wrap_content" />
 
     </LinearLayout>
-    </com.balysv.materialripple.MaterialRippleLayout>
 
-    <com.balysv.materialripple.MaterialRippleLayout
-        android:id="@+id/show_measures"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:mrl_rippleColor="@color/pink_300">
-
-        <LinearLayout
-        android:orientation="horizontal"
-        android:layout_width="match_parent"
-        android:layout_height="48dp">
-
-        <ImageView
-            android:layout_marginLeft="@dimen/dimen_16_dp"
-            android:layout_marginStart="@dimen/dimen_16_dp" android:layout_gravity="center"
-            app:srcCompat="@drawable/line_chart"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-
-        <com.edxavier.childgrowthstandards.helpers.MyTextView
-            android:textSize="16sp"
-            android:layout_gravity="center"
-            android:layout_marginLeft="@dimen/dimen_32_dp"
-            android:layout_marginStart="@dimen/dimen_32_dp"
-            android:gravity="center"
-            android:layout_width="wrap_content"
-            android:text="@string/show_perc"
-            android:layout_height="wrap_content" />
-
-    </LinearLayout>
-    </com.balysv.materialripple.MaterialRippleLayout>
-
-    <com.balysv.materialripple.MaterialRippleLayout
-        android:id="@+id/show_measures_list"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:mrl_rippleColor="@color/pink_300">
-
-        <LinearLayout
-            android:layout_marginTop="@dimen/dimen_8_dp"
+    <LinearLayout
+            android:id="@+id/show_child_details"
             android:orientation="horizontal"
             android:layout_width="match_parent"
             android:layout_height="48dp">
 
-            <ImageView
-                android:layout_marginLeft="@dimen/dimen_16_dp"
+            <android.support.v7.widget.AppCompatImageView
+                app:tint="@color/md_black_1000_50"
                 android:layout_marginStart="@dimen/dimen_16_dp"
                 android:layout_gravity="center"
-                app:srcCompat="@drawable/ic_list_"
+                app:srcCompat="@drawable/ic_child_details"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
 
-            <com.edxavier.childgrowthstandards.helpers.MyTextView
+            <TextView
                 android:textSize="16sp"
                 android:layout_gravity="center"
-                android:layout_marginLeft="@dimen/dimen_32_dp"
                 android:layout_marginStart="@dimen/dimen_32_dp"
                 android:gravity="center"
                 android:layout_width="wrap_content"
-                android:text="@string/show_measure_list"
+                android:text="@string/seguimiento"
                 android:layout_height="wrap_content" />
 
         </LinearLayout>
-    </com.balysv.materialripple.MaterialRippleLayout>
 
-
-    <com.balysv.materialripple.MaterialRippleLayout
-        android:id="@+id/edit_child"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:mrl_rippleColor="@color/pink_300">
 
         <LinearLayout
+            android:id="@+id/edit_child"
         android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="48dp">
 
-        <ImageView
-            android:layout_marginLeft="@dimen/dimen_16_dp"
+        <android.support.v7.widget.AppCompatImageView
+            app:tint="@color/md_black_1000_50"
             android:layout_marginStart="@dimen/dimen_16_dp" android:layout_gravity="center"
-            app:srcCompat="@drawable/file_edit"
+            app:srcCompat="@drawable/ic_edit"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
 
-        <com.edxavier.childgrowthstandards.helpers.MyTextView
+        <TextView
             android:textSize="16sp"
             android:layout_gravity="center"
-            android:layout_marginLeft="@dimen/dimen_32_dp"
             android:layout_marginStart="@dimen/dimen_32_dp"
             android:gravity="center"
             android:layout_width="wrap_content"
@@ -143,30 +88,24 @@
             android:layout_height="wrap_content" />
 
     </LinearLayout>
-    </com.balysv.materialripple.MaterialRippleLayout>
 
-    <com.balysv.materialripple.MaterialRippleLayout
-        android:id="@+id/delete_child"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:mrl_rippleColor="@color/pink_300">
     <LinearLayout
+        android:id="@+id/delete_child"
         android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="48dp">
 
-        <ImageView
-            android:layout_marginLeft="@dimen/dimen_16_dp"
+        <android.support.v7.widget.AppCompatImageView
             android:layout_marginStart="@dimen/dimen_16_dp"
             android:layout_gravity="center"
+            app:tint="@color/md_black_1000_50"
             app:srcCompat="@drawable/delete"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
 
-        <com.edxavier.childgrowthstandards.helpers.MyTextView
+        <TextView
             android:textSize="16sp"
             android:layout_gravity="center"
-            android:layout_marginLeft="@dimen/dimen_32_dp"
             android:layout_marginStart="@dimen/dimen_32_dp"
             android:gravity="center"
             android:layout_width="wrap_content"
@@ -174,6 +113,5 @@
             android:layout_height="wrap_content" />
 
     </LinearLayout>
-    </com.balysv.materialripple.MaterialRippleLayout>
 
 </LinearLayout>

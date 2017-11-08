@@ -4,7 +4,6 @@ import android.content.Context;
 import android.widget.TextView;
 
 import com.edxavier.childgrowthstandards.R;
-import com.edxavier.childgrowthstandards.helpers.MyTextView;
 import com.edxavier.childgrowthstandards.helpers.Res;
 import com.edxavier.childgrowthstandards.helpers.constans.Units;
 import com.github.mikephil.charting.components.MarkerView;
@@ -22,14 +21,14 @@ import java.util.Locale;
 public class PerimeterMarkerView extends MarkerView {
 
     private TextView tvContent;
-    private MyTextView age;
+    private TextView age;
     Context context;
 
     public PerimeterMarkerView(Context context, int layoutResource) {
         super(context, layoutResource);
         this.context = context;
         tvContent = (TextView) findViewById(R.id.weight);
-        age = (MyTextView) findViewById(R.id.age);
+        age = (TextView) findViewById(R.id.age);
     }
 
     // callbacks everytime the MarkerView is redrawn, can be used to update the

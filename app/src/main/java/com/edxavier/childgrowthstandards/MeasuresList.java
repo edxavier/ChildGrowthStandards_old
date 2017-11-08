@@ -6,20 +6,15 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.text.InputType;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.LinearLayout;
-import android.widget.Toast;
+import android.widget.TextView;
 
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.edxavier.childgrowthstandards.db.ChildHistory;
-import com.edxavier.childgrowthstandards.db.percentiles.WeightForAge;
-import com.edxavier.childgrowthstandards.helpers.AdapterReadings;
-import com.edxavier.childgrowthstandards.helpers.MyTextView;
 
 import java.text.SimpleDateFormat;
 import java.util.Locale;
@@ -33,7 +28,7 @@ import io.realm.Sort;
 public class MeasuresList extends AppCompatActivity {
 
     @BindView(R.id.toolbar_title)
-    MyTextView toolbarTitle;
+    TextView toolbarTitle;
     @BindView(R.id.toolbar)
     Toolbar toolbar;
     @BindView(R.id.recycler_readings)
@@ -62,8 +57,8 @@ public class MeasuresList extends AppCompatActivity {
                 .equalTo("child.id", args.getString("id"))
                 .findAll().sort("created", Sort.DESCENDING);
         showEmptyMessage(results.isEmpty());
-        AdapterReadings adapterReadings = new AdapterReadings(this, results);
-        recyclerReadings.setAdapter(adapterReadings);
+        //AdapterReadings adapterReadings = new AdapterReadings(this, results);
+        //recyclerReadings.setAdapter(adapterReadings);
         recyclerReadings.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
     }
     @Override
@@ -94,7 +89,7 @@ public class MeasuresList extends AppCompatActivity {
                 })
                 .positiveText(R.string.ok)
                 .negativeText(R.string.cancel)
-                .negativeColor(getResources().getColor(R.color.blue_grey_500))
+                .negativeColor(getResources().getColor(R.color.md_blue_grey_500))
                 .show();
     }
 

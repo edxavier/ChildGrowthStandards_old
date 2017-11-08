@@ -6,7 +6,6 @@ import android.content.pm.PackageManager;
 import android.graphics.PixelFormat;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.Window;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
@@ -21,28 +20,24 @@ import com.edxavier.childgrowthstandards.db.initializer.InitHeightForAge;
 import com.edxavier.childgrowthstandards.db.initializer.InitWeigthForAge;
 import com.edxavier.childgrowthstandards.db.initializer.InitWeigthForHeight;
 import com.edxavier.childgrowthstandards.db.percentiles.HeadCircForAge;
-import com.wang.avi.AVLoadingIndicatorView;
 
 import java.util.concurrent.TimeUnit;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import io.reactivex.Flowable;
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
 import io.realm.Realm;
 
 public class SplashScreen extends AppCompatActivity {
-    Thread splashTread;
     @BindView(R.id.appName)
     TextView appName;
     @BindView(R.id.appVersion)
     TextView appVersion;
     @BindView(R.id.splash)
     ImageView splash;
-    @BindView(R.id.avi)
-    AVLoadingIndicatorView avi;
+
     @BindView(R.id.container)
     RelativeLayout container;
     @BindView(R.id.init_text)
@@ -55,36 +50,36 @@ public class SplashScreen extends AppCompatActivity {
         window.setFormat(PixelFormat.RGBA_8888);
     }
 
-    private Integer initializeTables() {
+    private void initializeTables() {
+
         //Inicializa las tablas de peso para la edad
-        Flowable.fromCallable(() -> InitWeigthForAge.initializeTable(SplashScreen.this))
+        Observable.fromCallable(() -> InitWeigthForAge.initializeTable(SplashScreen.this))
                 .subscribeOn(Schedulers.newThread())
-                .observeOn(AndroidSchedulers.mainThread())
+                .observeOn(AndroidSchedulers.mainThread(),false,100)
                     .subscribe(t -> {}, throwable -> {});
 
         //Inicializa las tablas de altura para la edad
-        Flowable.fromCallable(() -> InitHeightForAge.initializeTable(SplashScreen.this))
+        Observable.fromCallable(() -> InitHeightForAge.initializeTable(SplashScreen.this))
                 .subscribeOn(Schedulers.newThread())
-                .observeOn(AndroidSchedulers.mainThread())
+                .observeOn(AndroidSchedulers.mainThread(),false,100)
                 .subscribe(t -> {}, throwable -> {});
 
         //Inicializa las tablas de BMI para la edad
-        Flowable.fromCallable(() -> InitBmiForAge.initializeTable(SplashScreen.this))
+        Observable.fromCallable(() -> InitBmiForAge.initializeTable(SplashScreen.this))
                 .subscribeOn(Schedulers.newThread())
-                .observeOn(AndroidSchedulers.mainThread())
+                .observeOn(AndroidSchedulers.mainThread(),false,100)
                 .subscribe(t -> {}, throwable -> {});
 
         //Inicializa las tablas de Peso para la altura para la edad
-        Flowable.fromCallable(() -> InitWeigthForHeight.initializeTable(SplashScreen.this))
+        Observable.fromCallable(() -> InitWeigthForHeight.initializeTable(SplashScreen.this))
                 .subscribeOn(Schedulers.newThread())
-                .observeOn(AndroidSchedulers.mainThread())
+                .observeOn(AndroidSchedulers.mainThread(),false,100)
                 .subscribe(t -> {}, throwable -> {});
         //Inicializa las tablas de Peso para Circunferencia cabesa para la edad
-        Flowable.fromCallable(() -> InitHeadCircForAge.initializeTable(SplashScreen.this))
+        Observable.fromCallable(() -> InitHeadCircForAge.initializeTable(SplashScreen.this))
                 .subscribeOn(Schedulers.newThread())
-                .observeOn(AndroidSchedulers.mainThread())
+                .observeOn(AndroidSchedulers.mainThread(),false,100)
                 .subscribe(t -> {}, throwable -> {});
-        return 0;
     }
 
     @Override

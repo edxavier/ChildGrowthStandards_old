@@ -7,7 +7,7 @@
     <ImageView
         android:layout_width="match_parent"
         android:layout_height="160dp"
-        android:src="@drawable/google2"
+        android:src="@drawable/kid_on_beach"
         android:scaleType="centerCrop" />
 
     <TextView

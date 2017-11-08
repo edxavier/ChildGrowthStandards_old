@@ -7,11 +7,11 @@ buildscript {
         maven { url "http://dl.bintray.com/pixplicity/maven" }
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:2.3.0'
+        classpath 'com.android.tools.build:gradle:3.0.0'
         classpath 'com.neenbedankt.gradle.plugins:android-apt:1.8'
-        classpath "io.realm:realm-gradle-plugin:3.0.0"
+        classpath "io.realm:realm-gradle-plugin:4.1.1"
         classpath 'me.tatarka:gradle-retrolambda:3.2.5'
-        classpath 'com.google.gms:google-services:3.0.0'
+        classpath 'com.google.gms:google-services:3.1.1'
 
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files
@@ -25,6 +25,9 @@ allprojects {
         maven { url "https://jitpack.io" }
         maven {
             url 'http://dl.bintray.com/raphaelbussa/maven'
+        }
+        maven {
+            url 'https://maven.google.com'
         }
     }
 }

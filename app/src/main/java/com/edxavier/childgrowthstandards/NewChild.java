@@ -1,49 +1,45 @@
 package com.edxavier.childgrowthstandards;
 
-import android.content.Intent;
-import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.design.widget.TextInputLayout;
-import android.support.v4.content.ContextCompat;
-import android.support.v7.graphics.Palette;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.Menu;
 import android.view.MenuItem;
-import android.view.Window;
-import android.view.WindowManager;
+import android.view.View;
 import android.widget.Button;
-import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
+import android.widget.Toast;
 
+import com.afollestad.materialdialogs.MaterialDialog;
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.request.RequestListener;
-import com.bumptech.glide.request.target.Target;
+import com.bumptech.glide.request.RequestOptions;
 import com.edxavier.childgrowthstandards.db.Child;
 import com.edxavier.childgrowthstandards.helpers.ChildPicture;
-import com.edxavier.childgrowthstandards.helpers.MyTextView;
 import com.edxavier.childgrowthstandards.helpers.RxBus;
 import com.edxavier.childgrowthstandards.helpers.ThemeSnackbar;
 import com.edxavier.childgrowthstandards.helpers.constans.Gender;
-import com.getkeepsafe.taptargetview.TapTarget;
-import com.getkeepsafe.taptargetview.TapTargetSequence;
+import com.edxavier.childgrowthstandards.helpers.constans.Units;
+import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdRequest;
-import com.google.android.gms.ads.AdSize;
-import com.google.android.gms.ads.NativeExpressAdView;
+import com.google.android.gms.ads.AdView;
+import com.google.android.gms.ads.InterstitialAd;
 import com.google.firebase.analytics.FirebaseAnalytics;
-import com.jakewharton.rxbinding.view.RxView;
-import com.jakewharton.rxbinding.widget.RxTextView;
-import com.pixplicity.easyprefs.library.Prefs;
-import com.rohitarya.glide.facedetection.transformation.FaceCenterCrop;
-import com.rohitarya.glide.facedetection.transformation.core.GlideFaceDetector;
-import com.trello.rxlifecycle.components.support.RxAppCompatActivity;
-import com.wdullaer.materialdatetimepicker.date.DatePickerDialog;
+import com.jakewharton.rxbinding2.view.RxView;
+import com.jakewharton.rxbinding2.widget.RxTextView;
+import com.tsongkha.spinnerdatepicker.DatePicker;
+import com.tsongkha.spinnerdatepicker.DatePickerDialog;
+import com.tsongkha.spinnerdatepicker.SpinnerDatePickerDialogBuilder;
+
+import org.joda.time.LocalDate;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -52,15 +48,16 @@ import java.util.concurrent.TimeUnit;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import co.ceryle.radiorealbutton.library.RadioRealButtonGroup;
+import co.ceryle.radiorealbutton.RadioRealButtonGroup;
+import io.reactivex.Observable;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.schedulers.Schedulers;
 import io.realm.Realm;
-import rx.Observable;
-import rx.Subscription;
-import rx.android.schedulers.AndroidSchedulers;
 
 import static android.text.TextUtils.isEmpty;
 
-public class NewChild extends RxAppCompatActivity implements DatePickerDialog.OnDateSetListener {
+public class NewChild extends AppCompatActivity implements DatePickerDialog.OnDateSetListener {
 
     @BindView(R.id.toolbar)
     Toolbar toolbar;
@@ -72,8 +69,6 @@ public class NewChild extends RxAppCompatActivity implements DatePickerDialog.On
     RadioRealButtonGroup childGender;
     @BindView(R.id.txtChildBirthday)
     EditText txtChildBirthday;
-    @BindView(R.id.chk_record_after_save)
-    CheckBox chkRecordAfterSave;
     @BindView(R.id.btnSave)
     Button btnSave;
     @BindView(R.id.calendar)
@@ -81,54 +76,51 @@ public class NewChild extends RxAppCompatActivity implements DatePickerDialog.On
 
     Child newChild;
     @BindView(R.id.ic_camera)
-    ImageView icCamera;
+    FloatingActionButton icCamera;
     @BindView(R.id.childPicture)
     ImageView childPicture;
     @BindView(R.id.collapsing_toolbar)
     CollapsingToolbarLayout collapsingToolbar;
     @BindView(R.id.coordinator)
     CoordinatorLayout coordinator;
-    @BindView(R.id.admob_container)
-    LinearLayout admobContainer;
-    @BindView(R.id.toolbar_title)
-    MyTextView toolbarTitle;
+    @BindView(R.id.appbarLayout)
+    AppBarLayout appbarLayout;
+    @BindView(R.id.adView)
+    AdView adView;
     private Observable<CharSequence> nameObservable;
     private Observable<CharSequence> dateObservable;
-    private Subscription mSubscription;
-    private Subscription pictureSubs;
     FirebaseAnalytics mFirebaseAnalytics;
     boolean gotNewPic = false;
     Bundle args;
     Realm realm;
     Child existentChild;
-    private RxBus eventBus;
+    //private RxBus eventBus;
+    private boolean appBarExpanded = false;
+    private Menu collapsedMenu;
+    private Calendar now;
+    private Disposable pictureSubs;
+    private InterstitialAd mInterstitialAd;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_child);
         ButterKnife.bind(this);
-        eventBus = RxBus.getInstance();
+        //eventBus = RxBus.getInstance();
         args = getIntent().getExtras();
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setTitle("");
+        //getSupportActionBar().setTitle("");
         mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
-        Bundle bundle = new Bundle();
         if (args != null) {
-            bundle.putString("edit_child", "");
-            toolbarTitle.setText(getResources().getString(R.string.edit));
-        } else
-            bundle.putString("new_child", "");
-        mFirebaseAnalytics.logEvent("child_activity", bundle);
+            getSupportActionBar().setTitle(getString(R.string.edit));
+        }
         realm = Realm.getDefaultInstance();
-        GlideFaceDetector.initialize(this);
         nameObservable = RxTextView.textChanges(txtChildName).skip(1);
         dateObservable = RxTextView.textChanges(txtChildBirthday).skip(1);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             btnSave.setAlpha(0.5f);
         }
-        startSecuence();
         setupWidgets();
         setupInputObservers();
         combineLatestEvents();
@@ -137,23 +129,23 @@ public class NewChild extends RxAppCompatActivity implements DatePickerDialog.On
         if (args != null) {
             try {
                 existentChild = realm.where(Child.class).equalTo("id", args.getString("id")).findFirst();
-                txtChildName.setText(existentChild.getChild_name());
-                SimpleDateFormat time_format = new SimpleDateFormat("dd-MMM-yyy", Locale.getDefault());
-                txtChildBirthday.setText(time_format.format(existentChild.getBirthday()));
-                newChild.setBirthday(existentChild.getBirthday());
-                newChild.setGender(existentChild.getGender());
-                newChild.setPhoto_uri(existentChild.getPhoto_uri());
-                ChildPicture childPicture = new ChildPicture(Uri.parse(existentChild.getPhoto_uri()));
-                loadPic(childPicture);
-                if (existentChild.getGender() == Gender.MALE)
-                    childGender.setPosition(0);
-                else
-                    childGender.setPosition(1);
+                if (existentChild != null) {
+                    txtChildName.setText(existentChild.getChild_name());
+                    SimpleDateFormat time_format = new SimpleDateFormat("dd MMM yyyy", Locale.getDefault());
+                    txtChildBirthday.setText(time_format.format(existentChild.getBirthday()));
+                    newChild.setBirthday(existentChild.getBirthday());
+                    newChild.setGender(existentChild.getGender());
+                    newChild.setPhoto_uri(existentChild.getPhoto_uri());
+                    ChildPicture childPicture = new ChildPicture(Uri.parse(existentChild.getPhoto_uri()));
+                    loadPic(childPicture);
+                    if (existentChild.getGender() == Gender.MALE)
+                        childGender.setPosition(0);
+                    else
+                        childGender.setPosition(1);
+                }
 
             } catch (Exception e) {
-                bundle = new Bundle();
-                bundle.putString("edit_except", "");
-                mFirebaseAnalytics.logEvent("child_activity_except", bundle);
+                Toast.makeText(this, getString(R.string.error), Toast.LENGTH_LONG).show();
             }
         } else {
             newChild.setGender(Gender.MALE);
@@ -164,44 +156,27 @@ public class NewChild extends RxAppCompatActivity implements DatePickerDialog.On
                 //.addTestDevice("45D8AEB3B66116F8F24E001927292BD5")
                 //.addTestDevice(AdRequest.DEVICE_ID_EMULATOR)
                 .build();
-
-        NativeExpressAdView ads = new NativeExpressAdView(this);
-        ads.setAdSize(new AdSize(280, 80));
-        ads.setAdUnitId(getResources().getString(R.string.admob_s001));
-        ads.loadAd(adRequest);
-        admobContainer.addView(ads);
-
+        adView.setAdListener(new AdListener(){
+            @Override
+            public void onAdLoaded() {
+                super.onAdLoaded();
+                adView.setVisibility(View.VISIBLE);
+            }
+        });
+        adView.loadAd(adRequest);
+        if(Units.isTimeToAds()){
+            requestInterstical();
+            showInterstical();
+        }
     }
-
 
     void loadPic(ChildPicture PicUri) {
         try {
-            Glide.with(this).load(PicUri.uri)
-                    .asBitmap()
-                    .centerCrop()
-                    .transform(new FaceCenterCrop())
-                    .placeholder(getResources().getDrawable(R.drawable.kid_on_beach))
-                    .listener(new RequestListener<Uri, Bitmap>() {
-                        @Override
-                        public boolean onException(Exception e, Uri model, Target<Bitmap> target, boolean isFirstResource) {
-                            return false;
-                        }
-
-                        @Override
-                        public boolean onResourceReady(Bitmap resource, Uri model, Target<Bitmap> target, boolean isFromMemoryCache, boolean isFirstResource) {
-                            int primary = getResources().getColor(R.color.primary);
-                            Palette.from(resource).generate(palette -> {
-                                collapsingToolbar.setContentScrimColor(palette.getVibrantColor(ContextCompat.getColor(NewChild.this, R.color.primary)));
-                                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                                    Window window = getWindow();
-                                    window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
-                                    window.setStatusBarColor(palette.getDarkVibrantColor(ContextCompat.getColor(NewChild.this, R.color.primary_dark)));
-                                }
-                            });
-                            return false;
-                        }
-                    })
-                    .into(childPicture);
+            Glide.with(this).load(PicUri.uri).apply(
+                    new RequestOptions()
+                            .centerCrop()
+                            .placeholder(getResources().getDrawable(R.drawable.kid_on_beach))
+            ).into(childPicture);
             newChild.setPhoto_uri(PicUri.uri.toString());
             gotNewPic = true;
         } catch (Exception e) {
@@ -210,8 +185,7 @@ public class NewChild extends RxAppCompatActivity implements DatePickerDialog.On
     }
 
     private void listenForPictures() {
-        pictureSubs = RxBus.getInstance()
-                .registerWithDebounce(500, ChildPicture.class, this::loadPic);
+        pictureSubs = RxBus.getInstance().register(ChildPicture.class, this::loadPic);
     }
 
     private void setupWidgets() {
@@ -221,83 +195,63 @@ public class NewChild extends RxAppCompatActivity implements DatePickerDialog.On
             bsdFragment.show(getSupportFragmentManager(), "BSDialog");
         });
         RxView.clicks(btnSave).subscribe(aVoid -> {
-
-            realm.beginTransaction();
-            if (args != null) {
-                existentChild.setChild_name(newChild.getChild_name());
-                existentChild.setGender(newChild.getGender());
-                existentChild.setBirthday(newChild.getBirthday());
-                existentChild.setPhoto_uri(newChild.getPhoto_uri());
-                mFirebaseAnalytics.logEvent("child_edited", null);
-            } else {
-                Bundle bundle = new Bundle();
-                if (newChild.getGender() == Gender.MALE)
-                    bundle.putString("new_child_gender", "MALE");
-                else
-                    bundle.putString("new_child_gender", "FEMALE");
-                SimpleDateFormat time_year = new SimpleDateFormat("yyy", Locale.getDefault());
-                SimpleDateFormat time_month = new SimpleDateFormat("MM", Locale.getDefault());
-                bundle.putString("new_child_birth_year", time_year.format(newChild.getBirthday()));
-                bundle.putString("new_child_birth_month", time_month.format(newChild.getBirthday()));
-
-                mFirebaseAnalytics.setUserProperty("gender", bundle.getString("new_child_gender"));
-                mFirebaseAnalytics.setUserProperty("month", bundle.getString("new_child_birth_month"));
-                mFirebaseAnalytics.setUserProperty("year", bundle.getString("new_child_birth_year"));
-
-                mFirebaseAnalytics.logEvent("new_child_record", bundle);
-                realm.copyToRealm(newChild);
-            }
-            realm.commitTransaction();
-            if(gotNewPic) {
-                eventBus.post(new Child());
-                mFirebaseAnalytics.logEvent("picture_choose", null);
-            }
-            if (chkRecordAfterSave.isChecked()) {
-                Intent intent = new Intent(this, NewHistoryRecord.class);
-                Bundle args2 = new Bundle();
+            realm.executeTransaction(realm1 -> {
                 if (args != null) {
-                    args2.putString("name", existentChild.getChild_name());
-                    args2.putString("id", existentChild.getId());
-                    args2.putString("pic_uri", existentChild.getPhoto_uri());
+                    existentChild.setChild_name(newChild.getChild_name());
+                    existentChild.setGender(newChild.getGender());
+                    existentChild.setBirthday(newChild.getBirthday());
+                    existentChild.setPhoto_uri(newChild.getPhoto_uri());
+                    Bundle bundle = new Bundle();
+                    if (newChild.getGender() == Gender.MALE)
+                        bundle.putString("edited_child_gender", "MALE");
+                    else
+                        bundle.putString("edited_child_gender", "FEMALE");
+                    mFirebaseAnalytics.logEvent("child_edited", bundle);
                 } else {
-                    args2.putString("name", newChild.getChild_name());
-                    args2.putString("id", newChild.getId());
-                    args2.putString("pic_uri", newChild.getPhoto_uri());
+                    Bundle bundle = new Bundle();
+                    if (newChild.getGender() == Gender.MALE)
+                        bundle.putString("new_child_gender", "MALE");
+                    else
+                        bundle.putString("new_child_gender", "FEMALE");
+                    SimpleDateFormat time_year = new SimpleDateFormat("yyyy", Locale.getDefault());
+                    SimpleDateFormat time_month = new SimpleDateFormat("MMM", Locale.getDefault());
+                    bundle.putString("new_child_birth_year", time_year.format(newChild.getBirthday()));
+                    bundle.putString("new_child_birth_month", time_month.format(newChild.getBirthday()));
+
+                    mFirebaseAnalytics.logEvent("new_child_record", bundle);
+                    realm.copyToRealm(newChild);
                 }
-                intent.putExtras(args2);
-                startActivity(intent);
-            }
+
+            });
             this.finish();
         });
 
-        txtChildBirthday.setText("dd-mmm-yyyy");
-        childGender.setOnClickedButtonPosition(position -> {
-            if (position == 0)
+        txtChildBirthday.setText("dd mm yyyy");
+        childGender.setOnPositionChangedListener((button, currentPosition, lastPosition) -> {
+            if (currentPosition == 0)
                 newChild.setGender(Gender.MALE);
-            else if (position == 1)
+            else if (currentPosition == 1)
                 newChild.setGender(Gender.FEMALE);
         });
 
         RxView.clicks(calendar).subscribe(aVoid -> {
-            Calendar now = Calendar.getInstance();
-            Calendar ago = Calendar.getInstance();
-            DatePickerDialog dpd = DatePickerDialog.newInstance(
-                    this,
-                    now.get(Calendar.YEAR),
-                    now.get(Calendar.MONTH),
-                    now.get(Calendar.DAY_OF_MONTH)
-            );
-            dpd.setMaxDate(now);
-            ago.set(Calendar.YEAR, now.get(Calendar.YEAR) - 19);
-            dpd.setMinDate(ago);
-            dpd.show(getFragmentManager(), "Datepickerdialog");
+            now = Calendar.getInstance();
+            if (newChild.getBirthday() != null)
+                now.setTime(newChild.getBirthday());
+            //dpd.show(getFragmentManager(), "Datepickerdialog");
+            new SpinnerDatePickerDialogBuilder()
+                    .context(this)
+                    .callback(this)
+                    .year(now.get(Calendar.YEAR))
+                    .monthOfYear(now.get(Calendar.MONTH))
+                    .dayOfMonth(now.get(Calendar.DAY_OF_MONTH))
+                    .build()
+                    .show();
         });
     }
 
     private void setupInputObservers() {
-        nameObservable.debounce(500, TimeUnit.MILLISECONDS)
-                .observeOn(AndroidSchedulers.mainThread())
-                .compose(bindToLifecycle())
+        nameObservable
                 .subscribe(name -> {
                     if (!(!isEmpty(name) && name.length() >= 2)) {
                         nameContainer.setErrorEnabled(true);
@@ -312,7 +266,8 @@ public class NewChild extends RxAppCompatActivity implements DatePickerDialog.On
 
 
     private void combineLatestEvents() {
-        mSubscription = Observable.combineLatest(nameObservable, dateObservable, (name, date) -> {
+        //mSubscription =
+        Observable.combineLatest(nameObservable, dateObservable, (name, date) -> {
             boolean nameValid = !isEmpty(name) && name.length() >= 2;
             boolean dateValid = !date.toString().startsWith("dd");
             return nameValid && dateValid;
@@ -337,48 +292,98 @@ public class NewChild extends RxAppCompatActivity implements DatePickerDialog.On
             // Respond to the action bar's Up/Home button
             case android.R.id.home:
                 supportFinishAfterTransition();
-                return true;
+                break;
         }
         return super.onOptionsItemSelected(item);
     }
 
-    @Override
-    public void onDateSet(DatePickerDialog view, int year, int monthOfYear, int dayOfMonth) {
-        Calendar ca = Calendar.getInstance();
-        ca.set(year, monthOfYear, dayOfMonth);
-        SimpleDateFormat time_format = new SimpleDateFormat("dd-MMM-yyyy", Locale.getDefault());
-        txtChildBirthday.setText(time_format.format(ca.getTime()));
-        newChild.setBirthday(ca.getTime());
-    }
 
     @Override
     protected void onDestroy() {
-        GlideFaceDetector.releaseDetector();
-        if (!mSubscription.isUnsubscribed())
-            mSubscription.unsubscribe();
-        if (!pictureSubs.isUnsubscribed())
-            pictureSubs.unsubscribe();
+        if (!pictureSubs.isDisposed())
+            pictureSubs.dispose();
+        if (!realm.isClosed())
+            realm.close();
         super.onDestroy();
     }
 
-    private void startSecuence() {
-        if(!Prefs.getBoolean("secuence_new_child", false)) {
-            final int[] sec = {0};
-            new TapTargetSequence(this)
-                    .targets(
-                            TapTarget.forView(findViewById(R.id.ic_camera),
-                                     getResources().getString(R.string.sec_new_childs_title), getResources().getString(R.string.sec_new_childs_content))
-                                    .dimColor(R.color.md_black_1000)
-                                    .outerCircleColor(R.color.md_pink_500_25)
-                                    .cancelable(false),
-                            TapTarget.forView(this.findViewById(R.id.calendar),
-                                    getResources().getString(R.string.sec_new_childs_title2))
-                                    .dimColor(R.color.md_black_1000)
-                                    .outerCircleColor(R.color.md_blue_500_25)
-                                    .cancelable(false)
-                    ).start();
-            Prefs.putBoolean("secuence_new_child", true);
+    @Override
+    public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+        Calendar ca = Calendar.getInstance();
+        Calendar ca2 = Calendar.getInstance();
+        Calendar minDate = Calendar.getInstance();
+        ca2.add(Calendar.DATE, 1);
+        minDate.add(Calendar.YEAR, -19);
+        ca.set(year, monthOfYear, dayOfMonth);
+
+        LocalDate selectedDate = new LocalDate(ca.getTime());
+        LocalDate now = new LocalDate(ca2.getTime());
+        LocalDate ago = new LocalDate(minDate.getTime());
+
+        if (selectedDate.isBefore(now) && selectedDate.isAfter(ago)) {
+            SimpleDateFormat time_format = new SimpleDateFormat("dd MMM yyyy", Locale.getDefault());
+            txtChildBirthday.setText(time_format.format(ca.getTime()));
+            newChild.setBirthday(ca.getTime());
+        } else {
+            new MaterialDialog.Builder(this)
+                    .title(R.string.error)
+                    .content(R.string.date_error)
+                    .positiveText(R.string.ok)
+                    .show();
         }
     }
 
+
+    public void showInterstical() {
+        if(mInterstitialAd.isLoaded()) {
+            try {
+                MaterialDialog dlg = new MaterialDialog.Builder(this)
+                        .title(R.string.ads_notice)
+                        .cancelable(false)
+                        .progress(true, 0)
+                        .progressIndeterminateStyle(true)
+                        .build();
+                dlg.show();
+                Observable.interval(1, TimeUnit.MILLISECONDS).take(2500)
+                        .subscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(aLong -> {},
+                                throwable -> {}, () -> {
+                                    dlg.dismiss();
+                                    mInterstitialAd.show();
+                                });
+            }catch (Exception ignored){}
+        }else {
+            Observable.interval(1, TimeUnit.SECONDS).take(4)
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(aLong -> {},
+                            throwable -> {}, this::showInterstical);
+        }
+    }
+
+    public  void requestInterstical(){
+        AdRequest adRequest = new AdRequest.Builder()
+                .addTestDevice(AdRequest.DEVICE_ID_EMULATOR)
+                .build();
+        mInterstitialAd = new InterstitialAd(getApplicationContext());
+        mInterstitialAd.setAdUnitId(getApplicationContext().getResources().getString(R.string.admob_interstical));
+        mInterstitialAd.setAdListener(new AdListener() {
+
+            @Override
+            public void onAdFailedToLoad(int i) {
+                super.onAdFailedToLoad(i);
+                //SystemClock.sleep(5000);
+                Observable.interval(1, TimeUnit.SECONDS).take(4)
+                        .subscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(aLong -> {},
+                                throwable -> {}, () -> {
+                                    requestInterstical();
+                                });
+            }
+        });
+        if(!mInterstitialAd.isLoaded())
+            mInterstitialAd.loadAd(adRequest);
+    }
 }

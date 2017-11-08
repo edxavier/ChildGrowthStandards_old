@@ -5,9 +5,7 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,18 +14,15 @@ import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.balysv.materialripple.MaterialRippleLayout;
 import com.edxavier.childgrowthstandards.R;
 import com.edxavier.childgrowthstandards.db.percentiles.BmiForAge;
 import com.edxavier.childgrowthstandards.db.percentiles.HeadCircForAge;
 import com.edxavier.childgrowthstandards.db.percentiles.HeightForAge;
 import com.edxavier.childgrowthstandards.db.percentiles.WeightForAge;
 import com.edxavier.childgrowthstandards.db.percentiles.WeightForHeight;
-import com.edxavier.childgrowthstandards.helpers.MyTextView;
 import com.edxavier.childgrowthstandards.helpers.constans.Gender;
 import com.edxavier.childgrowthstandards.helpers.constans.Units;
 import com.github.mikephil.charting.charts.LineChart;
-import com.github.mikephil.charting.components.AxisBase;
 import com.github.mikephil.charting.components.MarkerView;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.data.Entry;
@@ -39,12 +34,9 @@ import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdSize;
 import com.google.android.gms.ads.NativeExpressAdView;
-import com.jakewharton.rxbinding.view.RxView;
-import com.jakewharton.rxbinding.widget.RxTextView;
-import com.jaredrummler.materialspinner.MaterialSpinner;
+import com.jakewharton.rxbinding2.view.RxView;
+import com.jakewharton.rxbinding2.widget.RxTextView;
 import com.pixplicity.easyprefs.library.Prefs;
-import com.trello.rxlifecycle.components.RxFragment;
-import com.wdullaer.materialdatetimepicker.date.DatePickerDialog;
 
 import org.joda.time.Interval;
 import org.joda.time.LocalDate;
@@ -61,16 +53,16 @@ import java.util.concurrent.TimeUnit;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import co.ceryle.radiorealbutton.library.RadioRealButtonGroup;
+import co.ceryle.radiorealbutton.RadioRealButtonGroup;
+import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.realm.Realm;
 import io.realm.RealmResults;
-import rx.android.schedulers.AndroidSchedulers;
 
 
 /**
  * A simple {@link Fragment} subclass.
  */
-public class PercentilesFragment extends com.trello.rxlifecycle.components.support.RxFragment implements DatePickerDialog.OnDateSetListener {
+public class PercentilesFragment extends Fragment  {
 
 
     @BindView(R.id.calendar)
@@ -79,18 +71,12 @@ public class PercentilesFragment extends com.trello.rxlifecycle.components.suppo
     EditText txtChildBirthday;
     @BindView(R.id.childGender)
     RadioRealButtonGroup childGender;
-    @BindView(R.id.spinner)
-    MaterialSpinner spinner;
     @BindView(R.id.chart)
     LineChart chart;
     @BindView(R.id.zoom_in_btn)
-    ImageButton zoomInBtn;
-    @BindView(R.id.zoom_in)
-    MaterialRippleLayout zoomIn;
+    ImageButton zoomIn;
     @BindView(R.id.zoom_out_btn)
-    ImageButton zoomOutBtn;
-    @BindView(R.id.zoom_out)
-    MaterialRippleLayout zoomOut;
+    ImageButton zoomOut;
     @BindView(R.id.admob_container)
     LinearLayout admobContainer;
 
@@ -170,38 +156,19 @@ public class PercentilesFragment extends com.trello.rxlifecycle.components.suppo
 
         admobContainer.addView(ads);
 
-        MaterialSpinner spinner = (MaterialSpinner) getActivity().findViewById(R.id.spinner);
-        spinner.setItems(getContext().getString(R.string.weightForage), getContext().getString(R.string.len_for_age),
-                getContext().getString(R.string.weightForlen), getContext().getString(R.string.imc_for_age),
-                getContext().getString(R.string.cefalic_perimeter_for_age));
-
 
         RxView.clicks(calendar).subscribe(aVoid -> {
             Calendar now = Calendar.getInstance();
             Calendar ago = Calendar.getInstance();
-            DatePickerDialog dpd = DatePickerDialog.newInstance(
-                    this,
-                    now.get(Calendar.YEAR),
-                    now.get(Calendar.MONTH),
-                    now.get(Calendar.DAY_OF_MONTH)
-            );
-            dpd.setMaxDate(now);
-            ago.set(Calendar.YEAR, now.get(Calendar.YEAR) - 19);
-            dpd.setMinDate(ago);
-            dpd.show(getActivity().getFragmentManager(), "Datepickerdialog");
+
         });
-        childGender.setOnClickedButtonPosition(position -> {
-            if (position == 0)
+        childGender.setOnPositionChangedListener((button, currentPosition, lastPosition) -> {
+            if (currentPosition == 0)
                 gender = Gender.MALE;
             else
                 gender = Gender.FEMALE;
             drawLines();
         });
-
-        spinner.setOnItemSelectedListener((view1, position, id, item) -> {
-            drawLines();
-        });
-
 
         chart.setDrawGridBackground(true);
         chart.getLegend().setEnabled(true);
@@ -222,20 +189,10 @@ public class PercentilesFragment extends com.trello.rxlifecycle.components.suppo
         setupFocusListener();
     }
 
-    @Override
-    public void onDateSet(DatePickerDialog view, int year, int monthOfYear, int dayOfMonth) {
-        Date date = new Date(year, monthOfYear, dayOfMonth);
-        SimpleDateFormat time_format = new SimpleDateFormat("dd-MMM-yy", Locale.getDefault());
-        txtChildBirthday.setText(time_format.format(date));
-        birthdate = new LocalDate(date.getYear(), date.getMonth() + 1, date.getDate());
-        p = new Period(birthdate, new LocalDate(), PeriodType.days());
-        if(!is_first_time)
-            drawLines();
-    }
+
 
     public void setupInputs(){
         RxTextView.textChangeEvents(txtPounds)
-                .compose(bindToLifecycle())
                 .subscribe(value -> {
             if (!kg_has_focus) {
                 if (value.text().length() > 0) {
@@ -248,7 +205,7 @@ public class PercentilesFragment extends com.trello.rxlifecycle.components.suppo
         RxTextView.textChangeEvents(txtKilogram)
                 .debounce(500, TimeUnit.MILLISECONDS)
                 .observeOn(AndroidSchedulers.mainThread())
-                .compose(bindToLifecycle()).subscribe(value -> {
+                .subscribe(value -> {
             if (value.text().length() > 0) {
                 weight = Float.valueOf(value.text().toString());
                 if(!is_first_time)
@@ -265,7 +222,7 @@ public class PercentilesFragment extends com.trello.rxlifecycle.components.suppo
         RxTextView.textChangeEvents(txtEstaturaCms)
                 .debounce(500, TimeUnit.MILLISECONDS)
                 .observeOn(AndroidSchedulers.mainThread())
-                .compose(bindToLifecycle()).subscribe(value -> {
+                .subscribe(value -> {
             if (value.text().length() > 0) {
                 height = Float.valueOf(value.text().toString());
                 if(!is_first_time)
@@ -280,7 +237,7 @@ public class PercentilesFragment extends com.trello.rxlifecycle.components.suppo
             }
         });
         RxTextView.textChangeEvents(txtEstaturaInches)
-                .compose(bindToLifecycle()).subscribe(value -> {
+                .subscribe(value -> {
             if (inches_has_focus) {
                 if (value.text().length() > 0) {
                     try {
@@ -296,7 +253,7 @@ public class PercentilesFragment extends com.trello.rxlifecycle.components.suppo
         RxTextView.textChangeEvents(txtCefalCm)
                 .debounce(500, TimeUnit.MILLISECONDS)
                 .observeOn(AndroidSchedulers.mainThread())
-                .compose(bindToLifecycle()).subscribe(value -> {
+                .subscribe(value -> {
             if (value.text().length() > 0) {
                 cefalic = Float.valueOf(value.text().toString());
                 drawLines();
@@ -311,7 +268,7 @@ public class PercentilesFragment extends com.trello.rxlifecycle.components.suppo
             }
         });
         RxTextView.textChangeEvents(txtcefalInch)
-                .compose(bindToLifecycle()).subscribe(value -> {
+                .subscribe(value -> {
             if (inches2_has_focus) {
                 if (value.text().length() > 0) {
                     float inches = Float.valueOf(value.text().toString());
@@ -352,23 +309,7 @@ public class PercentilesFragment extends com.trello.rxlifecycle.components.suppo
     }
 
     public void drawLines(){
-        switch (spinner.getSelectedIndex()){
-            case 0:
-                drawWeightLines();
-                break;
-            case 1:
-                drawHeightLines();
-                break;
-            case 2:
-                drawWeightforHeightLines();
-                break;
-            case 3:
-                drawIMCLines();
-                break;
-            case 4:
-                drawCefalicLines();
-                break;
-        }
+
     }
 
     public void drawWeightLines() {
@@ -753,13 +694,13 @@ public class PercentilesFragment extends com.trello.rxlifecycle.components.suppo
     public class WeightForHeigthMarkerView extends MarkerView {
 
         private TextView tvContent;
-        private MyTextView age;
+        private TextView age;
 
         public WeightForHeigthMarkerView(Context context, int layoutResource) {
             super(context, layoutResource);
             // this markerview only displays a textview
             tvContent = (TextView) findViewById(R.id.weight);
-            age = (MyTextView) findViewById(R.id.age);
+            age = (TextView) findViewById(R.id.age);
         }
 
         // callbacks everytime the MyMarkerView is redrawn, can be used to update the
@@ -795,13 +736,13 @@ public class PercentilesFragment extends com.trello.rxlifecycle.components.suppo
     public class WeightMarkerView extends MarkerView {
 
         private TextView tvContent;
-        private MyTextView age;
+        private TextView age;
 
         public WeightMarkerView(Context context, int layoutResource) {
             super(context, layoutResource);
             // this markerview only displays a textview
             tvContent = (TextView) findViewById(R.id.weight);
-            age = (MyTextView) findViewById(R.id.age);
+            age = (TextView) findViewById(R.id.age);
         }
 
         // callbacks everytime the MyMarkerView is redrawn, can be used to update the
@@ -834,13 +775,13 @@ public class PercentilesFragment extends com.trello.rxlifecycle.components.suppo
     public class HeightMarkerView extends MarkerView {
 
         private TextView tvContent;
-        private MyTextView age;
+        private TextView age;
 
         public HeightMarkerView(Context context, int layoutResource) {
             super(context, layoutResource);
             // this markerview only displays a textview
             tvContent = (TextView) findViewById(R.id.weight);
-            age = (MyTextView) findViewById(R.id.age);
+            age = (TextView) findViewById(R.id.age);
         }
 
         // callbacks everytime the MyMarkerView is redrawn, can be used to update the
@@ -872,13 +813,13 @@ public class PercentilesFragment extends com.trello.rxlifecycle.components.suppo
     public class ImcMarkerView extends MarkerView {
 
         private TextView tvContent;
-        private MyTextView age;
+        private TextView age;
 
         public ImcMarkerView(Context context, int layoutResource) {
             super(context, layoutResource);
             // this markerview only displays a textview
             tvContent = (TextView) findViewById(R.id.weight);
-            age = (MyTextView) findViewById(R.id.age);
+            age = (TextView) findViewById(R.id.age);
         }
 
         // callbacks everytime the MyMarkerView is redrawn, can be used to update the
@@ -901,13 +842,13 @@ public class PercentilesFragment extends com.trello.rxlifecycle.components.suppo
     public class CefalicMarkerView extends MarkerView {
 
         private TextView tvContent;
-        private MyTextView age;
+        private TextView age;
 
         public CefalicMarkerView(Context context, int layoutResource) {
             super(context, layoutResource);
             // this markerview only displays a textview
             tvContent = (TextView) findViewById(R.id.weight);
-            age = (MyTextView) findViewById(R.id.age);
+            age = (TextView) findViewById(R.id.age);
         }
 
         // callbacks everytime the MyMarkerView is redrawn, can be used to update the

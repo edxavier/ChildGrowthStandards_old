@@ -54,37 +54,33 @@
         app:rrbg_selectorColor="@color/colorAccent"
         app:rrbg_selectorSize="1dp"
         app:rrbg_radius="4dp"
-        app:rrbg_shadow="true"
-        app:rrbg_shadowElevation="2dp"
-        app:rrbg_shadowMargin="3dp"
         android:id="@+id/childGender">
 
         <co.ceryle.radiorealbutton.library.RadioRealButton
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:rrb_image="@drawable/baby_boy"
-            app:rrb_imageHeight="24dp"
-            app:rrb_imageWidth="24dp"
+            app:rrb_drawable="@drawable/baby_boy"
+            app:rrb_drawableHeight="24dp"
+            app:rrb_drawableWidth="24dp"
             app:rrb_ripple="true"
-            app:rrb_rippleColor="@color/pink_200"
+            app:rrb_rippleColor="@color/md_pink_200"
             app:rrb_text="@string/boy"
             app:rrb_textColor="@color/primary_text"/>
 
         <co.ceryle.radiorealbutton.library.RadioRealButton
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:rrb_image="@drawable/baby_girl"
-            app:rrb_imageHeight="24dp"
-            app:rrb_imageWidth="24dp"
+            app:rrb_drawable="@drawable/baby_girl"
+            app:rrb_drawableHeight="24dp"
+            app:rrb_drawableWidth="24dp"
             app:rrb_ripple="true"
-            app:rrb_rippleColor="@color/pink_200"
+            app:rrb_rippleColor="@color/md_pink_200"
             app:rrb_text="@string/girl"
             app:rrb_textColor="@color/primary_text"/>
     </co.ceryle.radiorealbutton.library.RadioRealButtonGroup>
 
 
-    <com.edxavier.childgrowthstandards.helpers.MyTextView
-        app:font="@string/FontRobotoRegular"
+    <TextView
         android:layout_marginStart="@dimen/dimen_16_dp"
         android:layout_marginLeft="@dimen/dimen_16_dp"
         android:layout_width="match_parent"
@@ -144,8 +140,7 @@
 
     </LinearLayout>
 
-    <com.edxavier.childgrowthstandards.helpers.MyTextView
-        app:font="@string/FontRobotoRegular"
+    <TextView
         android:layout_marginStart="@dimen/dimen_16_dp"
         android:layout_marginLeft="@dimen/dimen_16_dp"
         android:layout_width="match_parent"
@@ -205,8 +200,7 @@
 
     </LinearLayout>
 
-    <com.edxavier.childgrowthstandards.helpers.MyTextView
-        app:font="@string/FontRobotoRegular"
+    <TextView
         android:gravity="center"
         android:layout_marginStart="@dimen/dimen_16_dp"
         android:layout_marginLeft="@dimen/dimen_16_dp"
@@ -275,8 +269,7 @@
         android:layout_height="wrap_content">
     </LinearLayout>
 
-    <com.edxavier.childgrowthstandards.helpers.MyTextView
-        app:font="@string/FontRobotoRegular"
+    <TextView
         android:layout_marginBottom="@dimen/dimen_8_dp"
         android:layout_marginTop="@dimen/dimen_8_dp"
         android:layout_marginStart="@dimen/dimen_16_dp"
@@ -285,15 +278,6 @@
         android:text="@string/perc_chart"
         android:layout_height="wrap_content" />
 
-    <com.jaredrummler.materialspinner.MaterialSpinner
-        android:id="@+id/spinner"
-        android:layout_marginBottom="@dimen/dimen_8_dp"
-        android:layout_marginStart="@dimen/dimen_8_dp"
-        android:layout_marginLeft="@dimen/dimen_8_dp"
-        app:ms_arrow_tint="@color/accent"
-        app:ms_background_color="@color/md_blue_grey_50"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
 
         <com.github.mikephil.charting.charts.LineChart
         android:id="@+id/chart"
@@ -306,26 +290,13 @@
         android:layout_width="match_parent"
         android:layout_height="8dp">
 
-        <com.balysv.materialripple.MaterialRippleLayout
-            android:id="@+id/zoom_in"
-            android:visibility="gone"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:mrl_rippleColor="@color/pink_300">
 
             <ImageButton
                 android:id="@+id/zoom_in_btn"
                 app:srcCompat="@drawable/ic_zoom_in"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
-        </com.balysv.materialripple.MaterialRippleLayout>
 
-        <com.balysv.materialripple.MaterialRippleLayout
-            android:id="@+id/zoom_out"
-            android:visibility="gone"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:mrl_rippleColor="@color/pink_300">
 
             <ImageButton
                 android:layout_marginLeft="@dimen/dimen_8_dp"
@@ -334,7 +305,6 @@
                 app:srcCompat="@drawable/ic_zoom_out"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
-        </com.balysv.materialripple.MaterialRippleLayout>
     </LinearLayout>
 
 

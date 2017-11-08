@@ -17,8 +17,7 @@
             android:layout_height="@dimen/img_width_height"
             app:srcCompat="@drawable/ic_kids_couple" />
 
-        <com.edxavier.childgrowthstandards.helpers.MyTextView
-            app:font="@string/FontPierRegular"
+        <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/slide_1_title"
@@ -26,8 +25,7 @@
             android:textSize="30sp"
             android:textStyle="bold" />
 
-        <com.edxavier.childgrowthstandards.helpers.MyTextView
-            app:font="@string/FontPierRegular"
+        <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"

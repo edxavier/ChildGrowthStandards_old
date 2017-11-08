@@ -6,8 +6,7 @@
     android:layout_height="match_parent">
 
 
-            <com.edxavier.childgrowthstandards.helpers.MyTextView
-                app:font="@string/FontPierRegular"
+            <TextView
                 android:id="@+id/graph_title"
                 android:layout_marginTop="@dimen/dimen_8_dp"
                 android:layout_width="match_parent"
@@ -33,24 +32,11 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <com.balysv.materialripple.MaterialRippleLayout
-            android:id="@+id/zoom_in"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:mrl_rippleColor="@color/pink_300">
-
             <ImageButton
                 android:id="@+id/zoom_in_btn"
                 app:srcCompat="@drawable/ic_zoom_in"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
-        </com.balysv.materialripple.MaterialRippleLayout>
-
-        <com.balysv.materialripple.MaterialRippleLayout
-            android:id="@+id/zoom_out"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:mrl_rippleColor="@color/pink_300">
 
             <ImageButton
                 android:layout_marginLeft="@dimen/dimen_8_dp"
@@ -59,7 +45,6 @@
                 app:srcCompat="@drawable/ic_zoom_out"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
-        </com.balysv.materialripple.MaterialRippleLayout>
     </LinearLayout>
 
     <LinearLayout
@@ -84,19 +69,15 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-        <com.edxavier.childgrowthstandards.helpers.MyTextView
+        <TextView
             android:padding="@dimen/dimen_8_dp"
-            android:textColor="@color/textColorPrimary"
-            app:font="@string/FontPierRegular"
             android:text="@string/percentil_desc"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
 
-        <com.edxavier.childgrowthstandards.helpers.MyTextView
+        <TextView
             android:id="@+id/perc_desc"
             android:padding="@dimen/dimen_8_dp"
-            android:textColor="@color/textColorPrimary"
-            app:font="@string/FontPierRegular"
             android:text="@string/weight_desc"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />

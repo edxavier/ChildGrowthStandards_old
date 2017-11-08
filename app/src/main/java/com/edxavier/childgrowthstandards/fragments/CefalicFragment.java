@@ -1,9 +1,9 @@
 package com.edxavier.childgrowthstandards.fragments;
 
 
-import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -16,40 +16,23 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.afollestad.materialdialogs.MaterialDialog;
-import com.balysv.materialripple.MaterialRippleLayout;
 import com.edxavier.childgrowthstandards.R;
 import com.edxavier.childgrowthstandards.db.ChildHistory;
 import com.edxavier.childgrowthstandards.db.percentiles.HeadCircForAge;
-import com.edxavier.childgrowthstandards.helpers.MyTextView;
 import com.edxavier.childgrowthstandards.helpers.constans.Gender;
-import com.edxavier.childgrowthstandards.helpers.constans.Units;
 import com.edxavier.childgrowthstandards.libs.ChartStyler;
 import com.edxavier.childgrowthstandards.libs.formatter.LeftHeightValueFormatter;
 import com.edxavier.childgrowthstandards.libs.formatter.RightHeightValueFormatter;
 import com.edxavier.childgrowthstandards.libs.formatter.XDaysValuesFormatter;
-import com.edxavier.childgrowthstandards.libs.marker.HeightMarkerView;
 import com.edxavier.childgrowthstandards.libs.marker.PerimeterMarkerView;
 import com.github.mikephil.charting.charts.LineChart;
-import com.github.mikephil.charting.components.AxisBase;
-import com.github.mikephil.charting.components.MarkerView;
-import com.github.mikephil.charting.components.XAxis;
-import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.realm.implementation.RealmLineDataSet;
-import com.github.mikephil.charting.highlight.Highlight;
 import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdSize;
 import com.google.android.gms.ads.NativeExpressAdView;
 import com.pixplicity.easyprefs.library.Prefs;
-
-import org.joda.time.Interval;
-import org.joda.time.Period;
-import org.joda.time.PeriodType;
-
-import java.util.Calendar;
-import java.util.Date;
-import java.util.Locale;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -69,18 +52,14 @@ public class CefalicFragment extends Fragment {
     RealmResults<ChildHistory> hist;
     @BindView(R.id.admob_container)
     LinearLayout admobContainer;
-    @BindView(R.id.zoom_in)
-    MaterialRippleLayout zoomIn;
-    @BindView(R.id.zoom_out)
-    MaterialRippleLayout zoomOut;
-    @BindView(R.id.graph_title)
-    MyTextView graphTitle;
     @BindView(R.id.zoom_in_btn)
-    ImageButton zoomInBtn;
+    ImageButton zoomIn;
     @BindView(R.id.zoom_out_btn)
-    ImageButton zoomOutBtn;
+    ImageButton zoomOut;
+    @BindView(R.id.graph_title)
+    TextView graphTitle;
     @BindView(R.id.perc_desc)
-    MyTextView percDesc;
+    TextView percDesc;
     Realm realm;
 
     public CefalicFragment() {

@@ -6,10 +6,8 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.graphics.Target;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,10 +18,11 @@ import com.edxavier.childgrowthstandards.R;
 import com.edxavier.childgrowthstandards.db.Child;
 import com.edxavier.childgrowthstandards.fragments.childs.adapter.AdapterChilds;
 import com.edxavier.childgrowthstandards.fragments.childs.impl.ChildsPresenterImpl;
-import com.edxavier.childgrowthstandards.helpers.RxBus;
 import com.edxavier.childgrowthstandards.main.MainActivity;
-import com.getkeepsafe.taptargetview.TapTarget;
-import com.getkeepsafe.taptargetview.TapTargetSequence;
+
+import com.google.android.gms.ads.AdListener;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
 import com.pixplicity.easyprefs.library.Prefs;
 
 import butterknife.BindView;
@@ -31,7 +30,6 @@ import butterknife.ButterKnife;
 import io.realm.Realm;
 import io.realm.RealmChangeListener;
 import io.realm.RealmResults;
-import rx.Subscription;
 
 
 /**
@@ -47,9 +45,9 @@ public class Childs extends Fragment implements Contracts.ChildsView, RealmChang
     Contracts.ChildsPresenter presenter;
     @BindView(R.id.swipe)
     SwipeRefreshLayout swipe;
+    @BindView(R.id.adView)
+    AdView adView;
     private Realm realm;
-    private RxBus eventBus;
-    private Subscription mEvents;
 
     public Childs() {
         // Required empty public constructor
@@ -67,7 +65,6 @@ public class Childs extends Fragment implements Contracts.ChildsView, RealmChang
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        eventBus = RxBus.getInstance();
         presenter = new ChildsPresenterImpl(this);
         realm = Realm.getDefaultInstance();
         setChilds(realm.where(Child.class).findAll());
@@ -79,37 +76,7 @@ public class Childs extends Fragment implements Contracts.ChildsView, RealmChang
             presenter.getChilds();
         });
 
-        startSecuence();
-    }
-
-    private void startSecuence() {
-        if(!Prefs.getBoolean("secuence_childs", false)) {
-            MainActivity activity = (MainActivity) getActivity();
-            final int[] sec = {0};
-            new TapTargetSequence(getActivity())
-                    .targets(
-                            TapTarget.forView(getActivity().findViewById(R.id.fabBtn),
-                                    getActivity().getResources().getString(R.string.sec_childs_title))
-                                    .dimColor(R.color.md_black_1000)
-                                    .outerCircleColor(R.color.md_green_500_25)
-                                    .cancelable(false),
-                            TapTarget.forToolbarNavigationIcon(activity.toolbar,
-                                    getActivity().getResources().getString(R.string.sec_childs_title2))
-                    ).listener(new TapTargetSequence.Listener() {
-                @Override
-                public void onSequenceFinish() {}
-
-                @Override
-                public void onSequenceStep(TapTarget lastTarget) {
-                    sec[0]++;
-                    if(sec[0]==2)
-                        activity.openDrawer();
-                }
-                @Override
-                public void onSequenceCanceled(TapTarget lastTarget) {}
-            }).start();
-            Prefs.putBoolean("secuence_childs", true);
-        }
+        setupAds();
     }
 
     private void setupFabBtn() {
@@ -144,7 +111,7 @@ public class Childs extends Fragment implements Contracts.ChildsView, RealmChang
     public void onDestroy() {
         realm.removeChangeListener(this);
         realm.close();
-        mEvents.unsubscribe();
+        //mEvents.unsubscribe();
         super.onDestroy();
     }
 
@@ -154,8 +121,32 @@ public class Childs extends Fragment implements Contracts.ChildsView, RealmChang
     }
 
     void listenEvents() {
-        mEvents = eventBus.register(Child.class, child -> {
-            presenter.getChilds();
+        //mEvents = eventBus.register(Child.class, child -> {
+        //presenter.getChilds();
+        //});
+    }
+
+
+    private void setupAds() {
+        adView.setVisibility(View.GONE);
+        AdRequest adRequest = new AdRequest.Builder()
+                .build();
+        adView.setAdListener(new AdListener() {
+            @Override
+            public void onAdLoaded() {
+                super.onAdLoaded();
+                try {
+                    adView.setVisibility(View.VISIBLE);
+                    recyclerChilds.setPadding(8,120,8,8);
+                } catch (Exception ignored) {
+                }
+            }
         });
+        adView.loadAd(adRequest);
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
     }
 }

@@ -6,9 +6,9 @@
     <dimen name="status_bar_lollipop_height">0dp</dimen>
     <dimen name="status_bar_margin_top">0dp</dimen>
     <dimen name="card_view_margin_bottom">2dp</dimen>
+    <dimen name="dimen_16_dp">16dp</dimen>
+    <dimen name="dimen_8_dp">8dp</dimen>
+    <dimen name="dimen_32_dp">32dp</dimen>
 
-    <declare-styleable name="MyTextView">
-        <attr name="font" format="string" />
-    </declare-styleable>
 
 </resources>

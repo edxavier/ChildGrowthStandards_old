@@ -48,13 +48,12 @@
     <string name="week">\u0020week\u0020</string>
     <string name="weeks">" weeks "</string>
     <string name="weight">Weight \u0020</string>
-    <string name="weightForage">Weight for age</string>
-    <string name="weightForlen">Weight for Length/Height</string>
+
     <string name="weightHeight">Weight/Height</string>
     <string name="year">\u0020year\u0020</string>
     <string name="years">\u0020Years\u0020</string>
     <string name="perc_chart">Percentiles chart</string>
-    <string name="main.empty.suggest">Register to one or more childs and start to follow-up their growth</string>
+    <string name="main.empty.suggest">Register one or more childs and start to follow-up their growth</string>
     <string name="dif_date">You can choose a different date</string>
     <string name="delete_dialog_title">Delete?</string>
     <string name="delete_dialog_content">This action will delete this child and every associated register permantly</string>
@@ -235,7 +234,6 @@ Lead to health problems.
     <string name="rate_dlg_title">What do you think?</string>
     <string name="title_activity_settings">Settings</string>
     <string name="activity.chil.name.error">Enter a minimum of 2 characters</string>
-    <string name="in_av">In</string>
     <string name="measure">Measure</string>
     <string name="p15">Percentile 15</string>
     <string name="p3">Percentile 3</string>
@@ -267,4 +265,31 @@ Lead to health problems.
     <string name="sec_quick_percentil_title">Select the type of chart</string>
     <string name="sec_quick_percentil_title2">Check measurements on different charts</string>
     <string name="info">Information</string>
+    <string name="date_error">Selected date is invalid or out of range</string>
+    <string name="error">Error</string>
+    <string name="above_normal">"Above normal: "</string>
+    <string name="altura_ideal_cm">Ideal height: %1$s cm</string>
+    <string name="altura_ideal_in">Ideal height: %1$s in</string>
+    <string name="below_normal">"Below normal: "</string>
+    <string name="imc_ideal">Ideal BMI: %1$s</string>
+    <string name="normal">"Normal: "</string>
+    <string name="pc_ideal_cm">Ideal cephalic perimeter: %1$s cm</string>
+    <string name="pc_ideal_in">Ideal cephalic perimeter: %1$s in</string>
+    <string name="peso_ideal_kg">Ideal weight: %1$s kg</string>
+    <string name="peso_ideal_lb">Ideal weight: %1$s lb</string>
+
+    <string name="well_above_normal">Far above normal: \u0020</string>
+    <string name="well_below_normal">"Far below normal: "</string>
+
+    <string name="weightForage">Weight for age</string>
+    <string name="weightForlen">Weight for Length/Height</string>
+
+    <string-array name="chart_options">
+        <item>Weight for age</item>
+        <item>Height for age</item>
+        <item>Weight for Height</item>
+        <item>BMI for age</item>
+        <item>Head circumference for age</item>
+    </string-array>
+    <string name="ads_notice">Advertising</string>
 </resources>

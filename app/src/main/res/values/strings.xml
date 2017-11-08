@@ -1,30 +1,16 @@
 <resources>
 
-    <string name="FontBigJohn" translatable="false">BigJohn.otf</string>
-    <string name="FontMadrasExtraLight" translatable="false">MadrasExtraLight.otf</string>
-    <string name="FontPierBold" translatable="false">pierBold.otf</string>
-    <string name="FontPierItalic" translatable="false">PierItalic.otf</string>
-    <string name="FontPierRegular" translatable="false">pierRegular.otf</string>
-    <string name="FontRobotoBold" translatable="false">RobotoBold.ttf</string>
-    <string name="FontRobotoItalic" translatable="false">RobotoItalic.ttf</string>
-    <string name="FontRobotoLight" translatable="false">RobotoLight.ttf</string>
-    <string name="FontRobotoMedium" translatable="false">RobotoMedium.ttf</string>
-    <string name="FontRobotoRegular" translatable="false">RobotoRegular.ttf</string>
-    <string name="FontRobotoThin" translatable="false">RobotoThin.ttf</string>
-    <string name="FontRobotoCondensedRegular" translatable="false">RobotoCondensedRegular.ttf</string>
-    <string name="FontSlimJoe" translatable="false">Slimjoe.otf</string>
-
     <string name="admob_app_id" translatable="false">ca-app-pub-9964109306515647~8922665812</string>
     <string name="admob_m001" translatable="false">ca-app-pub-9964109306515647/5829598610</string>
     <string name="admob_s001" translatable="false">ca-app-pub-9964109306515647/1199092619</string>
     <string name="admob_banner" translatable="false">ca-app-pub-9964109306515647/4012958215</string>
-
-    <string name="app_name">Patrones de Crecimiento Infantil</string>
+    <string name="admob_interstical" translatable="false">ca-app-pub-9964109306515647/3416838476</string>
+    <string name="app_name">Control de Crecimiento Infantil</string>
     <string name="action_add_favourite" translatable="false">Add to Favourites</string>
     <string name="action_play_next" translatable="false">Play Next</string>
     <string name="backdrop_title" translatable="false">LISTADO DE NIÑOS</string>
     <string name="backdrop_subtitle" translatable="false">Child Growth Standards</string>
-    <string name="splash_subtitle">Patrones de Crecimiento Infantil</string>
+    <string name="splash_subtitle">Control de Crecimiento Infantil</string>
 
     <string-array name="weight_units">
         <item>Kilogramos</item>
@@ -87,10 +73,27 @@
     <string name="kg" translatable="false">%1$s kg</string>
     <string name="centimeter">Centímetros</string>
     <string name="cm" translatable="false">%1$s cm</string>
-    <string name="cm_av" translatable="false">Cm</string>
-    <string name="kg_av" translatable="false">Kg</string>
-    <string name="in_av">Pulg</string>
-    <string name="lb_av" translatable="false">Lb</string>
+    <string name="cm_av" translatable="false">CM</string>
+    <string name="kg_av" translatable="false">KG</string>
+    <string name="in_av" translatable="false">IN</string>
+    <string name="lb_av" translatable="false">LB</string>
+
+
+    <string name="peso_ideal_lb">Peso ideal: %1$s lb</string>
+    <string name="peso_ideal_kg">Peso ideal: %1$s kg</string>
+    <string name="altura_ideal_cm">Altura ideal: %1$s cm</string>
+    <string name="altura_ideal_in">Altura ideal: %1$s in</string>
+    <string name="pc_ideal_cm">Perímetro cefálico  ideal: %1$s cm</string>
+    <string name="pc_ideal_in">Perímetro cefálico  ideal: %1$s in</string>
+
+    <string name="above_normal">Por encima de lo normal: \u0020</string>
+    <string name="well_above_normal">Muy por encima de lo normal: \u0020</string>
+
+    <string name="below_normal">Por debajo de lo normal: \u0020</string>
+    <string name="well_below_normal">Muy por debajo de lo normal: \u0020</string>
+    <string name="normal">Normal:\u0020</string>
+
+    <string name="imc_ideal">IMC ideal: %1$s</string>
 
 
     <string name="pounds">Libras</string>
@@ -115,7 +118,7 @@
     <string name="show_perc"> Ver percentiles</string>
     <string name="edit">Editar infante</string>
     <string name="delete">Eliminar</string>
-    <string name="len_Height">Longitud/Altura</string>
+    <string name="len_Height">Altura</string>
     <string name="len_Height_cm">Longitud/Altura (cm)</string>
 
     <string name="cefalic_perimeter"> Perímetro cefálico</string>
@@ -221,7 +224,7 @@
     <string name="delete_dialog_title">¿Eliminar?</string>
     <string name="delete_dialog_content">Esta accion borrara al infante seleccionado y todo registro asociado al mismo</string>
     <string name="duplicate_register">Ya existe registro para la fecha seleccionada</string>
-    <string name="title_activity_settings">Configuracion</string>
+    <string name="title_activity_settings">Configuración</string>
 
     <!-- Strings related to Settings -->
 
@@ -296,7 +299,7 @@
     <string name="pref_title_vibrate" translatable="false">Vibrate</string>
     <string name="pref_weight_unit_title">Unidad de peso</string>
     <string name="pref_height_unit_title">Unidad de longitud</string>
-    <string name="action_settings">Configuracion</string>
+    <string name="action_settings">Configuración</string>
     <string name="pref_summary">Selecciona la unidad de media para mostrar</string>
 
     <string name="hellp">El crecimiento no es solo resultado de la nutrición sino de factores heredados.\n
@@ -354,8 +357,8 @@ llevar a problemas de salud.
     <string name="rate2">Valorar</string>
     <string name="later">Luego</string>
     <string name="no_thank">No gracias</string>
-    <string name="rate_dlg_title">¿Que te ha parecido?</string>
-    <string name="rate_dlg_desc">Gracias por usar esta aplicacion, si te ha gustado o piensas que es de utilidad, por favor comenta que te parece o si tienes alguna sugerencia.</string>
+    <string name="rate_dlg_title">¿Qué te ha parecido?</string>
+    <string name="rate_dlg_desc">Gracias por utilizar esta aplicación, si te ha gustado o piensas que es de utilidad, por favor registra una reseña en la ficha de Google Play.</string>
 
     <string name="share_app_msg">\nDa seguimiento al crecimiento de tus niños de manera fácil con esta app. \n\n</string>
     <string name="share_using">Compartir usando:</string>
@@ -386,9 +389,20 @@ llevar a problemas de salud.
     <string name="sec_quick_percentil_title">Selecciona el tipo de gráfico</string>
     <string name="sec_quick_percentil_title2">Verifica las medidas en los diferentes gráficos</string>
     <string name="info">Información</string>
+    <string name="error">Error</string>
+    <string name="date_error">La fecha seleccionada es inválida o fuera de rango</string>
+    <string name="ads_notice">Publicidad</string>
 
     <string-array name="measure_options">
         <item>Editar</item>
         <item>Eliminar</item>
+    </string-array>
+
+    <string-array name="chart_options">
+        <item>Peso para la edad</item>
+        <item>Altura para la edad</item>
+        <item>Peso para la altura</item>
+        <item>IMC para la edad</item>
+        <item>Perimetro cefalico para la edad</item>
     </string-array>
 </resources>

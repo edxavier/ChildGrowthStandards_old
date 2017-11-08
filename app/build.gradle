@@ -1,13 +1,31 @@
+buildscript {
+    repositories {
+        maven { url 'https://maven.fabric.io/public' }
+    }
+
+    dependencies {
+        classpath 'io.fabric.tools:gradle:1.+'
+    }
+}
+plugins {
+    id 'com.github.ben-manes.versions' version '0.15.0'
+}
 apply plugin: 'com.android.application'
-apply plugin: 'android-apt'
+apply plugin: 'io.fabric'
+
+repositories {
+    maven { url 'https://maven.fabric.io/public' }
+}
+
+//apply plugin: 'android-apt'
 apply plugin: 'realm-android'
-apply plugin: 'com.neenbedankt.android-apt'
-apply plugin: 'me.tatarka.retrolambda'
+//apply plugin: 'com.neenbedankt.android-apt'
+//apply plugin: 'me.tatarka.retrolambda'
 
 
 android {
-    compileSdkVersion 25
-    buildToolsVersion '25.0.0'
+    compileSdkVersion 27
+    buildToolsVersion '27.0.1'
 
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
@@ -17,15 +35,19 @@ android {
     defaultConfig {
         vectorDrawables.useSupportLibrary = true
         applicationId "com.edxavier.childgrowthstandards"
-        minSdkVersion 16
-        targetSdkVersion 25
-        versionCode 5
-        versionName "1.2.0.1703"
+        minSdkVersion 19
+        targetSdkVersion 26
+        versionCode 9
+        versionName "1.3.0.1711"
+        multiDexEnabled true
     }
+    dexOptions {
 
+        javaMaxHeapSize "4g"
+    }
     buildTypes {
         release {
-            minifyEnabled true
+            minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
 
@@ -38,7 +60,7 @@ android {
         abi {
             enable true
             reset()
-            include 'armeabi', 'armeabi-v7a', 'arm64-v8a', 'mips', 'x86', 'x86_64'
+            include 'armeabi-v7a', 'arm64-v8a', 'mips', 'x86', 'x86_64'
             universalApk false
         }
     }
@@ -46,7 +68,7 @@ android {
 }
 
 // map for the version code that gives each ABI a value. make sure to list all ABIs mentioned in splits block, an keep the order.
-ext.versionCodes = ['armeabi': 3, 'armeabi-v7a': 4, 'arm64-v8a': 5, mips: 6, 'x86': 7, 'x86_64': 8]
+ext.versionCodes = [ 'armeabi-v7a': 4, 'arm64-v8a': 5, mips: 6, 'x86': 7, 'x86_64': 8]
 import com.android.build.OutputFile
 
 // For each APK output variant, override versionCode with a combination of
@@ -61,50 +83,65 @@ android.applicationVariants.all { variant ->
 
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
-    //Librerias para binding de controles
-    //Librerias de soporte de diseño
-    //Libreria para mostras indicadores de progreso
-    //Dependency injection
     //compile 'com.android.support.constraint:constraint-layout:+'
-    compile 'com.google.firebase:firebase-core:9.4.0'
-    compile 'com.google.firebase:firebase-crash:9.4.0'
-    compile 'com.google.firebase:firebase-ads:9.4.0'
-    compile 'com.jakewharton:butterknife:8.2.1'
-    compile 'com.android.support:palette-v7:25.2.0'
-    compile 'com.android.support:appcompat-v7:25.2.0'
-    compile 'com.android.support:design:25.2.0'
-    compile 'com.android.support:recyclerview-v7:25.2.0'
-    compile 'com.android.support:cardview-v7:25.2.0'
-    compile 'com.android.support:support-v4:25.2.0'
-    compile 'com.wang.avi:library:2.1.2'
-    compile 'com.afollestad.material-dialogs:core:0.9.0.1'
-    compile 'com.mlsdev.rximagepicker:library:1.3.1'
-    compile 'io.reactivex:rxjava:1.1.8'
-    compile 'io.reactivex:rxandroid:1.2.1'
-    compile 'com.jakewharton.rxbinding:rxbinding-design:0.4.0'
-    compile 'com.jakewharton.rxbinding:rxbinding:0.4.0'
-    compile 'com.google.dagger:dagger:2.5'
-    compile 'com.github.PhilJay:MPAndroidChart:v3.0.1'
+
+    //La uso en la splash screen
+
+    /*compile('com.trello.rxlifecycle2:rxlifecycle-components:2.2.0') {
+         exclude group: 'com.android.support', module: 'appcompat-v7'
+        exclude group: 'com.android.support', module: 'design'
+    }*/
+    //compile 'com.trello.rxlifecycle2:rxlifecycle-components:2.2.0'
+
+    //compile 'com.android.support:palette-v7:26.0.1'
+    compile 'com.android.support:appcompat-v7:27.0.0'
+    compile 'com.android.support:design:27.0.0'
+    compile 'com.android.support:recyclerview-v7:27.0.0'
+    compile 'com.android.support:cardview-v7:27.0.0'
+    //compile 'com.android.support:support-v4:26.1.0'
+
+    compile 'com.google.firebase:firebase-core:11.4.2'
+    compile 'com.google.firebase:firebase-crash:11.4.2'
+    compile 'com.google.firebase:firebase-ads:11.4.2'
+
+    compile 'com.jakewharton:butterknife:8.8.1'
+    compile ('com.afollestad.material-dialogs:core:0.9.5.0') {
+        exclude group: 'com.android.support', module: 'appcompat-v7'
+        exclude group: 'com.android.support', module: 'design' }
+
+    compile 'com.github.PhilJay:MPAndroidChart:v3.0.2'
     compile 'com.github.PhilJay:MPAndroidChart-Realm:v2.0.2@aar'
-    compile 'com.melnykov:floatingactionbutton:1.3.0'
-    compile 'com.github.ceryle:RadioRealButton:v1.3'
-    compile 'com.wdullaer:materialdatetimepicker:2.5.0'
-    compile 'com.appyvet:materialrangebar:1.3'
-    compile 'rebus:bottom-dialog:0.0.5'
-    compile 'com.github.bumptech.glide:glide:3.7.0'
-    compile 'joda-time:joda-time:2.9.4'
-    compile 'com.github.aryarohit07:glide-facedetection-transformation:0.3.0'
-    compile 'de.hdodenhof:circleimageview:2.1.0'
-    compile 'com.trello:rxlifecycle:0.4.0'
-    compile 'com.trello:rxlifecycle-components:0.4.0'
-    compile 'com.balysv:material-ripple:1.0.2'
-    compile 'com.yarolegovich:lovely-dialog:1.0.4'
-    compile 'com.pixplicity.easyprefs:library:1.8.1@aar'
-    compile 'com.jaredrummler:material-spinner:1.1.0'
-    compile 'com.android.support:support-vector-drawable:25.2.0'
-    compile 'com.getkeepsafe.taptargetview:taptargetview:1.8.0'
+    compile 'com.github.ceryle:RadioRealButton:v2.1.1'
+    compile 'com.github.bumptech.glide:glide:4.3.0'
+    compile 'joda-time:joda-time:2.9.9'
+    compile 'de.hdodenhof:circleimageview:2.2.0'
+    compile 'com.pixplicity.easyprefs:library:1.9.0@aar'
+
+    compile 'io.reactivex.rxjava2:rxjava:2.1.6'
+    compile 'io.reactivex.rxjava2:rxandroid:2.0.1'
+    compile ('com.jakewharton.rxbinding2:rxbinding:2.0.0')
+            {
+                exclude group: 'com.android.support', module: 'appcompat-v7'
+                exclude group: 'com.android.support', module: 'design' }
+    compile ('com.jakewharton.rxbinding2:rxbinding-appcompat-v7:2.0.0')
+            {
+                exclude group: 'com.android.support', module: 'appcompat-v7'
+                exclude group: 'com.android.support', module: 'design' }
+    compile 'com.trello.rxlifecycle2:rxlifecycle:2.2.0'
+    compile 'com.android.support:multidex:1.0.2'
+    compile 'com.github.drawers:SpinnerDatePicker:0.0.8'
+    compile 'com.mlsdev.rximagepicker:library:2.0.2'
+    compile 'us.belka:androidtoggleswitch:1.2.2'
+    compile 'com.android.support.constraint:constraint-layout:1.0.2'
+    //compile 'io.reactivex:rxjava:1.2.6'
+    compile ('com.roughike:bottom-bar:2.3.1'){
+        exclude group: 'com.android.support', module: 'appcompat-v7'
+        exclude group: 'com.android.support', module: 'design' }
     testCompile 'junit:junit:4.12'
-    apt 'com.jakewharton:butterknife-compiler:8.2.1'
-    apt 'com.google.dagger:dagger-compiler:2.5'
+    annotationProcessor 'com.github.bumptech.glide:compiler:4.2.0'
+    annotationProcessor  'com.jakewharton:butterknife-compiler:8.8.1'
+    compile('com.crashlytics.sdk.android:crashlytics:2.7.1@aar') {
+        transitive = true;
+    }
 }
 apply plugin: 'com.google.gms.google-services'

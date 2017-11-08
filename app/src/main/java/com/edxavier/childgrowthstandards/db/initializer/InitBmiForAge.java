@@ -22,7 +22,6 @@ public class InitBmiForAge {
     public static Integer initializeTable(Context context){
         Realm realm = Realm.getDefaultInstance();
         RealmResults<BmiForAge> isEmpty = realm.where(BmiForAge.class).findAll();
-        Log.e("EDER-records", String.valueOf(isEmpty.size()));
         if(isEmpty.size()<2024){
             realm.executeTransaction(realm1 -> {
                 realm.delete(BmiForAge.class);

@@ -10,14 +10,12 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.afollestad.materialdialogs.MaterialDialog;
-import com.edxavier.childgrowthstandards.MeasuresList;
 import com.edxavier.childgrowthstandards.R;
 import com.edxavier.childgrowthstandards.db.ChildHistory;
-import com.edxavier.childgrowthstandards.helpers.constans.Gender;
+import com.edxavier.childgrowthstandards.fragments.RecordsFragment;
 import com.edxavier.childgrowthstandards.helpers.constans.Units;
-import com.jakewharton.rxbinding.view.RxView;
+import com.jakewharton.rxbinding2.view.RxView;
 import com.pixplicity.easyprefs.library.Prefs;
-import com.yarolegovich.lovelydialog.LovelyStandardDialog;
 
 import java.text.SimpleDateFormat;
 import java.util.Locale;
@@ -34,10 +32,10 @@ import io.realm.RealmResults;
 public class AdapterReadings extends RecyclerView.Adapter<AdapterReadings.ViewHolder>
         implements RealmChangeListener<RealmResults<ChildHistory>> {
 
-    private MeasuresList context;
-    RealmResults<ChildHistory> list;
+    private RecordsFragment context;
+    private RealmResults<ChildHistory> list;
 
-    public AdapterReadings(MeasuresList context, @NonNull RealmResults<ChildHistory> list) {
+    public AdapterReadings(RecordsFragment context, @NonNull RealmResults<ChildHistory> list) {
         this.context = context;
         this.list = list;
         list.addChangeListener(this);
@@ -76,7 +74,7 @@ public class AdapterReadings extends RecyclerView.Adapter<AdapterReadings.ViewHo
         SimpleDateFormat time_format = new SimpleDateFormat("ddMMMyy", Locale.getDefault());
         ChildHistory entry = list.get(position);
         if( (position + 1) % 2 !=0) {
-            holder.readingRowContainer.setBackgroundColor(ContextCompat.getColor(context, R.color.md_blue_grey_50));
+            holder.readingRowContainer.setBackgroundColor(ContextCompat.getColor(context.getContext(), R.color.md_blue_grey_50));
         }
         int len_unit = Integer.valueOf(Prefs.getString("height_unit", "2"));
         int wei_unit = Integer.valueOf(Prefs.getString("weight_unit", "0"));
@@ -103,7 +101,7 @@ public class AdapterReadings extends RecyclerView.Adapter<AdapterReadings.ViewHo
         holder.txtImc.setText(String.format(Locale.getDefault(), "%.1f", entry.getBmi()));
 
         RxView.clicks(holder.readingRowContainer).subscribe(aVoid -> {
-            new MaterialDialog.Builder(context)
+            new MaterialDialog.Builder(context.getContext())
                     .title(time_format.format(entry.getCreated()))
                     .items(R.array.measure_options)
                     .itemsCallback((dialog, itemView, position1, text) -> {

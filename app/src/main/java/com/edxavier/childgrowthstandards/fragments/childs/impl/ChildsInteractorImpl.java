@@ -8,12 +8,11 @@ import com.edxavier.childgrowthstandards.db.ChildHistory;
 import com.edxavier.childgrowthstandards.fragments.childs.Contracts;
 import com.edxavier.childgrowthstandards.helpers.RxBus;
 
+import org.reactivestreams.Subscription;
+
 import io.realm.Realm;
 import io.realm.RealmResults;
 import io.realm.Sort;
-import rx.Subscription;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.schedulers.Schedulers;
 
 /**
  * Created by Eder Xavier Rojas on 17/09/2016.
@@ -36,8 +35,8 @@ public class ChildsInteractorImpl implements Contracts.ChildsInteractor {
     @Override
     public void onDestroy() {
         realm.close();
-        if(!apiSubscription.isUnsubscribed())
-            apiSubscription.unsubscribe();
+        //if(!apiSubscription.isUnsubscribed())
+            //apiSubscription.unsubscribe();
     }
 
 }

@@ -19,6 +19,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
@@ -27,21 +28,26 @@ import android.widget.FrameLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.afollestad.materialdialogs.MaterialDialog;
 import com.edxavier.childgrowthstandards.HelpActivity;
 import com.edxavier.childgrowthstandards.MyPreferencesActivity;
 import com.edxavier.childgrowthstandards.R;
-import com.edxavier.childgrowthstandards.fragments.PercentilesFragment;
 import com.edxavier.childgrowthstandards.fragments.childs.Childs;
-import com.edxavier.childgrowthstandards.helpers.MyTextView;
+import com.edxavier.childgrowthstandards.helpers.constans.Units;
 import com.edxavier.childgrowthstandards.main.interfaces.MainView;
+import com.google.android.gms.ads.AdListener;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.InterstitialAd;
 import com.google.firebase.analytics.FirebaseAnalytics;
 import com.pixplicity.easyprefs.library.Prefs;
-import com.yarolegovich.lovelydialog.LovelyStandardDialog;
 
-import java.util.Random;
+import java.util.concurrent.TimeUnit;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import io.reactivex.Observable;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.schedulers.Schedulers;
 import io.realm.Realm;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, MainView {
@@ -53,7 +59,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     @BindView(R.id.main_content)
     CoordinatorLayout mainContent;
     @BindView(R.id.toolbar_title)
-    MyTextView toolbarTitle;
+    TextView toolbarTitle;
     @BindView(R.id.navview)
     NavigationView navview;
     @BindView(R.id.drawer_layout)
@@ -63,6 +69,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     public FloatingActionButton fabBtn;
 
     private FragmentManager fragmentManager;
+    private InterstitialAd mInterstitialAd;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -104,73 +111,18 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         //initCollapsingToolbar();
         int ne =  Prefs.getInt("num_excecutions", 0);
         Prefs.putInt("num_excecutions", ne + 1);
-        String rate = getString(R.string.rate2);
-        String later = getString(R.string.later);
-        String no_tnx = getString(R.string.no_thank);
-        String dlg_title = getString(R.string.rate_dlg_title);
-        String dlg_desc = getString(R.string.rate_dlg_desc);
-
-
-        if(!Prefs.getBoolean("rated", false) &&  Prefs.getInt("num_excecutions", 0) == Prefs.getInt("show_after", 5)){
-            new LovelyStandardDialog(this)
-                    .setTopColorRes(R.color.md_teal_600)
-                    .setIcon(R.drawable.ic_star)
-                    .setTitle(dlg_title)
-                    .setMessage(dlg_desc)
-                    .setPositiveButton(rate, view -> {
-                        rate();
-                        Prefs.putBoolean("rated", true);
-
-                        FirebaseAnalytics mFirebaseAnalytics;
-                        mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
-                        Bundle bundle = new Bundle();
-                        mFirebaseAnalytics.logEvent("rate_app_dlg", bundle);
-                    })
-                    .setNegativeButtonColor(getResources().getColor(R.color.deep_orange_400))
-                    .setNeutralButtonColor(getResources().getColor(R.color.md_blue_grey_600))
-                    .setPositiveButtonColor(getResources().getColor(R.color.md_teal_500))
-                    .setNegativeButton(no_tnx, view -> {
-                        Prefs.putBoolean("rated", true);
-
-                        FirebaseAnalytics mFirebaseAnalytics;
-                        mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
-                        Bundle bundle = new Bundle();
-                        mFirebaseAnalytics.logEvent("negative_response_dlg", bundle);
-
-                    })
-                    .setNeutralButton(later, view -> {
-                        Prefs.putInt("num_excecutions", 0);
-                        Random r = new Random();
-                        int Low = 6;int High = 9;
-                        int rnd = r.nextInt(High-Low) + Low;
-                        Prefs.putInt("show_after", rnd);
-
-                        FirebaseAnalytics mFirebaseAnalytics;
-                        mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
-                        Bundle bundle = new Bundle();
-                        mFirebaseAnalytics.logEvent("neutral_response_on_dlg", bundle);
-                    })
-                    .show();
+        if (Units.isTimeToAds()) {
+            requestInterstical();
+            showInterstical();
+        }else {
+            Units.requesRate(this);
         }
+        FirebaseAnalytics analytics = FirebaseAnalytics.getInstance(this);
+        analytics.logEvent("main_activity", null);
 
     }
 
 
-    void rate(){
-        Uri uri = Uri.parse("market://details?id=" + getPackageName());
-        Intent goToMarket = new Intent(Intent.ACTION_VIEW, uri);
-        // To count with Play market backstack, After pressing back button,
-        // to taken back to our application, we need to refresh following flags to intent.
-        goToMarket.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY |
-                Intent.FLAG_ACTIVITY_CLEAR_WHEN_TASK_RESET |
-                Intent.FLAG_ACTIVITY_MULTIPLE_TASK);
-        try {
-            startActivity(goToMarket);
-        } catch (ActivityNotFoundException e) {
-            startActivity(new Intent(Intent.ACTION_VIEW,
-                    Uri.parse("http://play.google.com/store/apps/details?id=" + getPackageName())));
-        }
-    }
     /**
      * Initializing collapsing toolbar
      * Will show and hide the toolbar title on scroll
@@ -234,7 +186,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 startActivity(i2);
                 break;
             case R.id.menu_opcion_3:
-                rate();
+                Units.rate(this);
                 FirebaseAnalytics mFirebaseAnalytics2;
                 mFirebaseAnalytics2 = FirebaseAnalytics.getInstance(this);
                 mFirebaseAnalytics2.logEvent("rate_app_nav", bundle);
@@ -271,5 +223,64 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     public void openDrawer(){
         drawerLayout.openDrawer(GravityCompat.START);
+    }
+
+    public void showInterstical() {
+        if (mInterstitialAd.isLoaded()) {
+            try {
+                MaterialDialog dlg = new MaterialDialog.Builder(this)
+                        .title(R.string.ads_notice)
+                        .cancelable(false)
+                        .progress(true, 0)
+                        .progressIndeterminateStyle(true)
+                        .build();
+                dlg.show();
+                Observable.interval(1, TimeUnit.MILLISECONDS).take(2500)
+                        .subscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(aLong -> {
+                                },
+                                throwable -> {
+                                }, () -> {
+                                    dlg.dismiss();
+                                    mInterstitialAd.show();
+                                });
+            } catch (Exception ignored) {
+            }
+        } else {
+            Observable.interval(1, TimeUnit.SECONDS).take(4)
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(aLong -> {
+                            },
+                            throwable -> {
+                            }, this::showInterstical);
+        }
+    }
+    public void requestInterstical() {
+        AdRequest adRequest = new AdRequest.Builder()
+                .addTestDevice(AdRequest.DEVICE_ID_EMULATOR)
+                .build();
+        mInterstitialAd = new InterstitialAd(getApplicationContext());
+        mInterstitialAd.setAdUnitId(getApplicationContext().getResources().getString(R.string.admob_interstical));
+        mInterstitialAd.setAdListener(new AdListener() {
+
+            @Override
+            public void onAdFailedToLoad(int i) {
+                super.onAdFailedToLoad(i);
+                //SystemClock.sleep(5000);
+                Observable.interval(1, TimeUnit.SECONDS).take(4)
+                        .subscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(aLong -> {
+                                },
+                                throwable -> {
+                                }, () -> {
+                                    requestInterstical();
+                                });
+            }
+        });
+        if (!mInterstitialAd.isLoaded())
+            mInterstitialAd.loadAd(adRequest);
     }
 }

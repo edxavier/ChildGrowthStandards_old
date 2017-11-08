@@ -3,6 +3,7 @@ package com.edxavier.childgrowthstandards.libs;
 import android.content.Context;
 
 import com.edxavier.childgrowthstandards.R;
+import com.edxavier.childgrowthstandards.db.ChildHistory;
 import com.edxavier.childgrowthstandards.db.percentiles.BmiForAge;
 import com.edxavier.childgrowthstandards.db.percentiles.HeadCircForAge;
 import com.edxavier.childgrowthstandards.db.percentiles.HeightForAge;
@@ -226,5 +227,23 @@ public class QuickChart {
                 context.getResources().getString(R.string.p3)));
         return lineData;
     }
+
+    public static RealmLineDataSet<ChildHistory> getHistoryLineDataset(RealmResults<ChildHistory> results, Context context, String fieldX, String fieldY){
+        RealmLineDataSet<ChildHistory> histLineDataSet = new RealmLineDataSet<ChildHistory>(results, fieldX, fieldY);
+        int color = context.getResources().getColor(R.color.md_blue_grey_500);
+        histLineDataSet.setColors(color);
+        histLineDataSet.setCircleColor(color);
+        histLineDataSet.setCircleColorHole(color);
+        histLineDataSet.setLabel(context.getString(R.string.measure));
+        histLineDataSet.setHighlightEnabled(true);
+        // set this to false to disable the drawing of highlight indicator (lines)
+        histLineDataSet.setDrawHighlightIndicators(true);
+        histLineDataSet.setHighLightColor(color);
+        histLineDataSet.setHighlightLineWidth(0.99f);
+        histLineDataSet.setLineWidth(2);
+
+        return histLineDataSet;
+    }
+
 
 }

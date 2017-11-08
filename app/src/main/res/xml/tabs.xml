@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<tabs>
+    <tab
+        id="@+id/tab_profile"
+        icon="@drawable/ic_child_details"
+        title="Perfil" />
+    <tab
+        id="@+id/tab_percentils"
+        icon="@drawable/ic_timeline"
+        title="@string/title_activity_main2" />
+    <tab
+        id="@+id/tab_measures"
+        icon="@drawable/ic_list_"
+        title="@string/measures" />
+</tabs>

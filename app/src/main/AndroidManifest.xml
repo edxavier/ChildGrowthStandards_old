@@ -1,11 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="com.edxavier.childgrowthstandards">
+
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="com.android.vending.BILLING" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
 
     <application
         android:name=".BaseApplication"
         android:allowBackup="true"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@mipmap/ic_launcher3"
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
@@ -20,7 +26,10 @@
             </intent-filter>
         </activity>
         <activity android:name=".WelcomeActivity" />
-        <activity android:name=".NewChild" />
+        <activity
+            android:name=".NewChild"
+            android:label="@string/record_child"
+            android:theme="@style/AppTheme" />
         <activity
             android:name=".NewHistoryRecord"
             android:label="@string/title_activity_new_history_record"
@@ -29,20 +38,26 @@
             android:name=".PercentilesActivity"
             android:label="@string/title_activity_percentiles"
             android:theme="@style/AppTheme" />
-        <activity android:name=".MyPreferencesActivity" />
-        <activity android:name=".HelpActivity" />
+        <activity android:name=".HelpActivity" android:theme="@style/AppTheme" android:label="@string/help"/>
+
         <activity
+            android:icon="@mipmap/ic_launcher5"
             android:name=".LaunchPercentil"
             android:label="@string/title_activity_percentiles"
             android:theme="@style/AppTheme.Fullscreen">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".MeasuresList" />
 
+        <activity android:name=".MeasuresList" />
+        <activity android:name=".ChildDetailsActivity" />
+        <activity android:name=".MyPreferencesActivity" android:theme="@style/AppTheme" android:label="@string/action_settings"/>
+
+        <meta-data
+            android:name="io.fabric.ApiKey"
+            android:value="4124b2e7a8f5eb8f27a14edcb51751f9b8e26cd9" />
     </application>
 
 </manifest>

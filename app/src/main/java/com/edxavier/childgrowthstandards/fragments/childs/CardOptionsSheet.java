@@ -8,9 +8,11 @@ import android.support.design.widget.BottomSheetDialogFragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.afollestad.materialdialogs.MaterialDialog;
-import com.balysv.materialripple.MaterialRippleLayout;
+import com.edxavier.childgrowthstandards.ChildDetailsActivity;
 import com.edxavier.childgrowthstandards.MeasuresList;
 import com.edxavier.childgrowthstandards.NewChild;
 import com.edxavier.childgrowthstandards.NewHistoryRecord;
@@ -18,7 +20,6 @@ import com.edxavier.childgrowthstandards.PercentilesActivity;
 import com.edxavier.childgrowthstandards.R;
 import com.edxavier.childgrowthstandards.db.Child;
 import com.edxavier.childgrowthstandards.db.ChildHistory;
-import com.edxavier.childgrowthstandards.helpers.MyTextView;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -30,19 +31,17 @@ import io.realm.Realm;
 public class CardOptionsSheet extends BottomSheetDialogFragment {
 
     @BindView(R.id.add_measures)
-    MaterialRippleLayout addMeasures;
-    @BindView(R.id.show_measures)
-    MaterialRippleLayout showMeasures;
+    LinearLayout addMeasures;
     @BindView(R.id.edit_child)
-    MaterialRippleLayout editChild;
+    LinearLayout editChild;
     @BindView(R.id.delete_child)
-    MaterialRippleLayout deleteChild;
+    LinearLayout deleteChild;
     @BindView(R.id.childName)
-    MyTextView childName;
+    TextView childName;
 
     Bundle args;
-    @BindView(R.id.show_measures_list)
-    MaterialRippleLayout showMeasuresList;
+    @BindView(R.id.show_child_details)
+    LinearLayout show_child_details;
 
     public static CardOptionsSheet newInstance() {
         return new CardOptionsSheet();
@@ -65,8 +64,8 @@ public class CardOptionsSheet extends BottomSheetDialogFragment {
             startActivity(intent);
             CardOptionsSheet.this.dismiss();
         });
-        showMeasuresList.setOnClickListener(view1 -> {
-            Intent intent = new Intent(getActivity(), MeasuresList.class);
+        show_child_details.setOnClickListener(view1 -> {
+            Intent intent = new Intent(getActivity(), ChildDetailsActivity.class);
             intent.putExtras(args);
             startActivity(intent);
             CardOptionsSheet.this.dismiss();
@@ -92,12 +91,6 @@ public class CardOptionsSheet extends BottomSheetDialogFragment {
                         realm.commitTransaction();
                     })
                     .show();
-        });
-        showMeasures.setOnClickListener(view1 -> {
-            Intent intent = new Intent(getActivity(), PercentilesActivity.class);
-            intent.putExtras(args);
-            startActivity(intent);
-            CardOptionsSheet.this.dismiss();
         });
         args = getArguments();
         childName.setText(args.getString("name"));
