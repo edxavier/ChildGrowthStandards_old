@@ -71,6 +71,7 @@ public class PercentilesActivity extends AppCompatActivity {
     private float imc = 0f;
     private float pc = 0f;
     private InterstitialAd mInterstitialAd;
+    private boolean activityVisible;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -269,13 +270,15 @@ public class PercentilesActivity extends AppCompatActivity {
                         .progress(true, 0)
                         .progressIndeterminateStyle(true)
                         .build();
-                dlg.show();
+                if(activityVisible)
+                    dlg.show();
                 Observable.interval(1, TimeUnit.MILLISECONDS).take(2500)
                         .subscribeOn(Schedulers.io())
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribe(aLong -> {},
                                 throwable -> {}, () -> {
-                                    dlg.dismiss();
+                                    if(activityVisible && dlg.isShowing())
+                                        dlg.dismiss();
                                     mInterstitialAd.show();
                                 });
             }catch (Exception ignored){}
@@ -311,6 +314,18 @@ public class PercentilesActivity extends AppCompatActivity {
         });
         if(!mInterstitialAd.isLoaded())
             mInterstitialAd.loadAd(adRequest);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        activityVisible = false;
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        activityVisible = true;
     }
 
 }

@@ -70,6 +70,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     private FragmentManager fragmentManager;
     private InterstitialAd mInterstitialAd;
+    private boolean activityVisible;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -234,15 +235,15 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                         .progress(true, 0)
                         .progressIndeterminateStyle(true)
                         .build();
-                dlg.show();
+                if(activityVisible)
+                    dlg.show();
                 Observable.interval(1, TimeUnit.MILLISECONDS).take(2500)
                         .subscribeOn(Schedulers.io())
                         .observeOn(AndroidSchedulers.mainThread())
-                        .subscribe(aLong -> {
-                                },
-                                throwable -> {
-                                }, () -> {
-                                    dlg.dismiss();
+                        .subscribe(aLong -> {},
+                                throwable -> {}, () -> {
+                                    if(activityVisible && dlg.isShowing())
+                                        dlg.dismiss();
                                     mInterstitialAd.show();
                                 });
             } catch (Exception ignored) {
@@ -282,5 +283,16 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         });
         if (!mInterstitialAd.isLoaded())
             mInterstitialAd.loadAd(adRequest);
+    }
+    @Override
+    protected void onPause() {
+        super.onPause();
+        activityVisible = false;
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        activityVisible = true;
     }
 }

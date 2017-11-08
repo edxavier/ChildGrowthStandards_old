@@ -100,6 +100,7 @@ public class NewChild extends AppCompatActivity implements DatePickerDialog.OnDa
     private Calendar now;
     private Disposable pictureSubs;
     private InterstitialAd mInterstitialAd;
+    private boolean activityVisible;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -343,13 +344,15 @@ public class NewChild extends AppCompatActivity implements DatePickerDialog.OnDa
                         .progress(true, 0)
                         .progressIndeterminateStyle(true)
                         .build();
-                dlg.show();
+                if(activityVisible)
+                    dlg.show();
                 Observable.interval(1, TimeUnit.MILLISECONDS).take(2500)
                         .subscribeOn(Schedulers.io())
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribe(aLong -> {},
                                 throwable -> {}, () -> {
-                                    dlg.dismiss();
+                                    if(activityVisible && dlg.isShowing())
+                                        dlg.dismiss();
                                     mInterstitialAd.show();
                                 });
             }catch (Exception ignored){}
@@ -385,5 +388,17 @@ public class NewChild extends AppCompatActivity implements DatePickerDialog.OnDa
         });
         if(!mInterstitialAd.isLoaded())
             mInterstitialAd.loadAd(adRequest);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        activityVisible = false;
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        activityVisible = true;
     }
 }

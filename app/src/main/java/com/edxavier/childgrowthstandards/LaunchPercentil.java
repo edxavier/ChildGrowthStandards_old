@@ -129,6 +129,7 @@ public class LaunchPercentil extends AppCompatActivity implements DatePickerDial
     private float living_days = 0f;
     private InterstitialAd mInterstitialAd;
 
+    private boolean activityVisible = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -565,7 +566,6 @@ public class LaunchPercentil extends AppCompatActivity implements DatePickerDial
     }
 
     public void showInterstical() {
-        Log.e("EDER", "showInterstical");
             if(mInterstitialAd.isLoaded()) {
                 try {
                     MaterialDialog dlg = new MaterialDialog.Builder(this)
@@ -574,13 +574,15 @@ public class LaunchPercentil extends AppCompatActivity implements DatePickerDial
                             .progress(true, 0)
                             .progressIndeterminateStyle(true)
                             .build();
-                    dlg.show();
+                    if(activityVisible)
+                        dlg.show();
                     Observable.interval(1, TimeUnit.MILLISECONDS).take(2500)
                             .subscribeOn(Schedulers.io())
                             .observeOn(AndroidSchedulers.mainThread())
                             .subscribe(aLong -> {},
                                     throwable -> {}, () -> {
-                                        dlg.dismiss();
+                                        if(activityVisible && dlg.isShowing())
+                                            dlg.dismiss();
                                         mInterstitialAd.show();
                                     });
                 }catch (Exception ignored){}
@@ -617,5 +619,18 @@ public class LaunchPercentil extends AppCompatActivity implements DatePickerDial
         });
         if(!mInterstitialAd.isLoaded())
             mInterstitialAd.loadAd(adRequest);
+    }
+
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        activityVisible = false;
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        activityVisible = true;
     }
 }

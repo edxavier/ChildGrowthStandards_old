@@ -47,8 +47,8 @@ public class Units {
     }
 
     private static int INSTERSTICAL_SHOW_AFTER = 5;
-    private static int INSTERSTICAL_MIN = 7;
-    private static int INSTERSTICAL_MAX = 12;
+    private static int INSTERSTICAL_MIN = 8;
+    private static int INSTERSTICAL_MAX = 14;
 
 
     public static boolean isTimeToAds(){

@@ -45,6 +45,7 @@ public class ChildDetailsActivity extends AppCompatActivity implements TabSelect
     private Bundle args;
     private FragmentManager manager;
     private InterstitialAd mInterstitialAd;
+    private boolean activityVisible;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -121,15 +122,15 @@ public class ChildDetailsActivity extends AppCompatActivity implements TabSelect
                         .progress(true, 0)
                         .progressIndeterminateStyle(true)
                         .build();
-                dlg.show();
+                if(activityVisible)
+                    dlg.show();
                 Observable.interval(1, TimeUnit.MILLISECONDS).take(2500)
                         .subscribeOn(Schedulers.io())
                         .observeOn(AndroidSchedulers.mainThread())
-                        .subscribe(aLong -> {
-                                },
-                                throwable -> {
-                                }, () -> {
-                                    dlg.dismiss();
+                        .subscribe(aLong -> {},
+                                throwable -> {}, () -> {
+                                    if(activityVisible && dlg.isShowing())
+                                        dlg.dismiss();
                                     mInterstitialAd.show();
                                 });
             } catch (Exception ignored) {
@@ -170,5 +171,16 @@ public class ChildDetailsActivity extends AppCompatActivity implements TabSelect
         });
         if (!mInterstitialAd.isLoaded())
             mInterstitialAd.loadAd(adRequest);
+    }
+    @Override
+    protected void onPause() {
+        super.onPause();
+        activityVisible = false;
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        activityVisible = true;
     }
 }

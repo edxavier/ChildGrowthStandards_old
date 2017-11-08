@@ -137,6 +137,7 @@ public class NewHistoryRecord extends AppCompatActivity implements com.tsongkha.
     private Observable<CharSequence> alturaObservable;
     private Observable<CharSequence> pcObservable;
     private InterstitialAd mInterstitialAd;
+    private boolean activityVisible;
 
     @Override
     protected void onDestroy() {
@@ -527,13 +528,15 @@ public class NewHistoryRecord extends AppCompatActivity implements com.tsongkha.
                         .progress(true, 0)
                         .progressIndeterminateStyle(true)
                         .build();
-                dlg.show();
+                if(activityVisible)
+                    dlg.show();
                 Observable.interval(1, TimeUnit.MILLISECONDS).take(2500)
                         .subscribeOn(Schedulers.io())
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribe(aLong -> {},
                                 throwable -> {}, () -> {
-                                    dlg.dismiss();
+                                    if(activityVisible && dlg.isShowing())
+                                        dlg.dismiss();
                                     mInterstitialAd.show();
                                 });
             }catch (Exception ignored){}
@@ -569,5 +572,16 @@ public class NewHistoryRecord extends AppCompatActivity implements com.tsongkha.
         });
         if(!mInterstitialAd.isLoaded())
             mInterstitialAd.loadAd(adRequest);
+    }
+    @Override
+    protected void onPause() {
+        super.onPause();
+        activityVisible = false;
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        activityVisible = true;
     }
 }
