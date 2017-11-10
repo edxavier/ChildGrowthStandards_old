@@ -235,7 +235,7 @@ public class LaunchPercentil extends AppCompatActivity implements DatePickerDial
                     .dayOfMonth(now.get(Calendar.DAY_OF_MONTH))
                     .build()
                     .show();
-        });
+        }, throwable -> {});
         childGender.setOnPositionChangedListener((button, currentPosition, lastPosition) -> {
             if (currentPosition == 0)
                 gender = Gender.MALE;
@@ -292,7 +292,7 @@ public class LaunchPercentil extends AppCompatActivity implements DatePickerDial
             bundle.putString("child_birth_month", time_month.format(birthdate.toDate()));
             analytics.logEvent("quick_percentil_review", bundle);
             startActivity(intent);
-        });
+        }, throwable -> {});
 
     }
 
@@ -371,7 +371,7 @@ public class LaunchPercentil extends AppCompatActivity implements DatePickerDial
                         val_imc = (0f);
                         txtImc.setText("0");
                     }
-                });
+                }, throwable -> {});
     }
 
 
