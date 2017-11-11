@@ -516,7 +516,10 @@ public class NewHistoryRecord extends AppCompatActivity implements com.tsongkha.
                 history.setBmi(0);
                 txtImc.setText("0");
             }
-        });
+        }, throwable -> {
+                    history.setBmi(0);
+                    txtImc.setText("0");
+                });
     }
 
     public void showInterstical() {

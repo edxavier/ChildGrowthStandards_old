@@ -225,7 +225,7 @@ public class NewChild extends AppCompatActivity implements DatePickerDialog.OnDa
 
             });
             this.finish();
-        });
+        }, throwable -> { Toast.makeText(this, "ERROR", Toast.LENGTH_LONG).show();});
 
         txtChildBirthday.setText("dd mm yyyy");
         childGender.setOnPositionChangedListener((button, currentPosition, lastPosition) -> {
@@ -262,7 +262,7 @@ public class NewChild extends AppCompatActivity implements DatePickerDialog.OnDa
                         nameContainer.setError("");
                         newChild.setChild_name(name.toString());
                     }
-                });
+                }, throwable -> { Toast.makeText(this, "ERROR", Toast.LENGTH_LONG).show();});
     }
 
 
@@ -284,7 +284,7 @@ public class NewChild extends AppCompatActivity implements DatePickerDialog.OnDa
                 }
                 btnSave.setEnabled(false);
             }
-        });
+        }, throwable -> { Toast.makeText(this, "ERROR", Toast.LENGTH_LONG).show();});
     }
 
     @Override
