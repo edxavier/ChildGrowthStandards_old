@@ -429,6 +429,7 @@ public class NewHistoryRecord extends AppCompatActivity implements com.tsongkha.
         LocalDate selectedDate = new LocalDate(ca.getTime());
         LocalDate now = new LocalDate(ca2.getTime());
         LocalDate ago = new LocalDate(children.getBirthday().getTime());
+        ago = ago.minusDays(1);
 
         if (selectedDate.isBefore(now) && selectedDate.isAfter(ago)) {
             SimpleDateFormat time_format = new SimpleDateFormat("dd MMM yyyy", Locale.getDefault());

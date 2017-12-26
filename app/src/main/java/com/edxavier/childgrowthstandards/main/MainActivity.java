@@ -1,5 +1,6 @@
 package com.edxavier.childgrowthstandards.main;
 
+import android.Manifest;
 import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
@@ -7,11 +8,13 @@ import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.GravityCompat;
@@ -19,6 +22,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.InputType;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
@@ -29,10 +33,12 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.afollestad.materialdialogs.MaterialDialog;
+import com.codekidlabs.storagechooser.StorageChooser;
 import com.edxavier.childgrowthstandards.HelpActivity;
 import com.edxavier.childgrowthstandards.MyPreferencesActivity;
 import com.edxavier.childgrowthstandards.R;
 import com.edxavier.childgrowthstandards.fragments.childs.Childs;
+import com.edxavier.childgrowthstandards.helpers.CSVHelper;
 import com.edxavier.childgrowthstandards.helpers.constans.Units;
 import com.edxavier.childgrowthstandards.main.interfaces.MainView;
 import com.google.android.gms.ads.AdListener;
@@ -41,6 +47,9 @@ import com.google.android.gms.ads.InterstitialAd;
 import com.google.firebase.analytics.FirebaseAnalytics;
 import com.pixplicity.easyprefs.library.Prefs;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
 import java.util.concurrent.TimeUnit;
 
 import butterknife.BindView;
@@ -71,6 +80,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private FragmentManager fragmentManager;
     private InterstitialAd mInterstitialAd;
     private boolean activityVisible;
+    private static final int REQUEST_WRITE_STORAGE_PERMISSIONS = 100;
+    private static final int REQUEST_READ_STORAGE_PERMISSIONS = 200;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -128,35 +139,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
      * Initializing collapsing toolbar
      * Will show and hide the toolbar title on scroll
      */
-    private void initCollapsingToolbar() {
-        final CollapsingToolbarLayout collapsingToolbar =
-                (CollapsingToolbarLayout) findViewById(R.id.collapsing_toolbar);
-        collapsingToolbar.setTitle(" ");
-        AppBarLayout appBarLayout = (AppBarLayout) findViewById(R.id.appbar);
-        appBarLayout.setExpanded(true);
-
-        // hiding & showing the title when toolbar expanded & collapsed
-        appBarLayout.addOnOffsetChangedListener(new AppBarLayout.OnOffsetChangedListener() {
-            boolean isShow = false;
-            int scrollRange = -1;
-
-            @Override
-            public void onOffsetChanged(AppBarLayout appBarLayout, int verticalOffset) {
-                if (scrollRange == -1) {
-                    scrollRange = appBarLayout.getTotalScrollRange();
-                }
-                if (scrollRange + verticalOffset == 0) {
-                    //collapsingToolbar.setTitle(getStr(R.string.app_name));
-                    toolbarTitle.setText(getString(R.string.app_name));
-                    isShow = true;
-                } else if (isShow) {
-                    collapsingToolbar.setTitle(" ");
-                    toolbarTitle.setText(" ");
-                    isShow = false;
-                }
-            }
-        });
-    }
 
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
@@ -181,6 +163,26 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             case R.id.menu_opcion_1:
                 Intent i = new Intent(this, MyPreferencesActivity.class);
                 startActivityForResult(i, 0);
+                break;
+            case R.id.nav_export:
+                if( ContextCompat.checkSelfPermission(this,
+                        Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
+                    showFolderChooseDialog();
+                }else {
+                    ActivityCompat.requestPermissions(this,
+                            new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
+                            REQUEST_WRITE_STORAGE_PERMISSIONS);
+                }
+                break;
+            case R.id.nav_import:
+                if( ContextCompat.checkSelfPermission(this,
+                        Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
+                    showFileChooseDialog();
+                }else {
+                    ActivityCompat.requestPermissions(this,
+                            new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
+                            REQUEST_WRITE_STORAGE_PERMISSIONS);
+                }
                 break;
             case R.id.menu_opcion_2:
                 Intent i2 = new Intent(this, HelpActivity.class);
@@ -295,4 +297,115 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         super.onResume();
         activityVisible = true;
     }
+
+    private void showFolderChooseDialog() {
+        // Initialize Builder
+        StorageChooser chooser = new StorageChooser.Builder()
+                .withActivity(this)
+                .withFragmentManager(getFragmentManager())
+                .withMemoryBar(true)
+                .allowAddFolder(true)
+                .allowCustomPath(true)
+                .setType(StorageChooser.DIRECTORY_CHOOSER)
+                .build();
+        chooser.show();
+        // get path that the user has chosen
+        chooser.setOnSelectListener(new StorageChooser.OnSelectListener() {
+            @Override
+            public void onSelect(String path) {
+                SimpleDateFormat time_format = new SimpleDateFormat(getString(R.string.date_format_save), Locale.getDefault());
+                String name = getString(R.string.app_name) + time_format.format(new Date());
+                name = name.replace(' ', '_');
+                new MaterialDialog.Builder(MainActivity.this)
+                        .title(R.string.save_as)
+                        .content(path)
+                        .inputType(InputType.TYPE_CLASS_TEXT)
+                        .input("", name, new MaterialDialog.InputCallback() {
+                            @Override
+                            public void onInput(@NonNull MaterialDialog dialog, CharSequence input) {
+                                // Do something
+                                if (!CSVHelper.saveAllToCSV(path, input.toString(), getApplicationContext())){
+                                    new MaterialDialog.Builder(MainActivity.this)
+                                            .title("Error!")
+                                            .content(R.string.export_error)
+                                            .positiveText(R.string.agree)
+                                            .show();
+                                }else {
+                                    Prefs.putString("last_path", path);
+                                    new MaterialDialog.Builder(MainActivity.this)
+                                            .title(R.string.export_succes)
+                                            .content(path+"/"+input.toString())
+                                            .positiveText(R.string.agree)
+                                            .show();
+                                }
+                            }
+                        }).show();
+            }
+        });
+    }
+
+
+    private void showFileChooseDialog() {
+        // Initialize Builder
+        StorageChooser chooser = new StorageChooser.Builder()
+                .withActivity(this)
+                .withFragmentManager(getFragmentManager())
+                .withMemoryBar(true)
+                .allowCustomPath(true)
+                .setType(StorageChooser.FILE_PICKER)
+                .build();
+        // Show dialog whenever you want by
+        chooser.show();
+        // get path that the user has chosen
+        chooser.setOnSelectListener(new StorageChooser.OnSelectListener() {
+            @Override
+            public void onSelect(String path) {
+
+                if (!CSVHelper.restoreAllFromCSV(path, getApplicationContext())){
+                    new MaterialDialog.Builder(MainActivity.this)
+                            .title("Error!")
+                            .content(R.string.import_error)
+                            .positiveText(R.string.agree)
+                            .show();
+                }else {
+                    new MaterialDialog.Builder(MainActivity.this)
+                            .title(R.string.import_succes)
+                            .content(path)
+                            .positiveText(R.string.agree)
+                            .show();
+                }
+            }
+        });
+    }
+
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode,
+                                           @NonNull String permissions[], @NonNull int[] grantResults) {
+        switch (requestCode) {
+            case REQUEST_WRITE_STORAGE_PERMISSIONS: {
+                // If request is cancelled, the result arrays are empty.
+                if (grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    // permission was granted, yay! Do the
+                    showFolderChooseDialog();
+                } else {
+                    Toast.makeText(this, "NO PERMISSIONS GRANTED", Toast.LENGTH_LONG).show();
+                }
+            }
+            case REQUEST_READ_STORAGE_PERMISSIONS:
+                if (grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    // permission was granted, yay! Do the
+                    showFileChooseDialog();
+                } else {
+                    Toast.makeText(this, "NO PERMISSIONS GRANTED", Toast.LENGTH_LONG).show();
+                }
+                break;
+
+            // other 'case' lines to check for other
+            // permissions this app might request
+        }
+    }
+
 }

@@ -17,16 +17,25 @@ import io.realm.annotations.PrimaryKey;
 public class Child extends RealmObject{
 
     @PrimaryKey
-    String id;
-    String child_name;
-    String photo_uri;
-    double weight_pnds;
-    double height_cms;
-    Date birthday;
-    int gender;
-    Date created;
+    public String id;
+    public String child_name;
+    public String photo_uri;
+    public double weight_pnds;
+    public double height_cms;
+    public Date birthday;
+    public int gender;
+    public Date created;
 
-
+    public Child(String id, String child_name, String photo_uri, Date birthday, int gender, Date created) {
+        this.id = id;
+        this.child_name = child_name;
+        this.photo_uri = photo_uri;
+        this.weight_pnds = weight_pnds;
+        this.height_cms = height_cms;
+        this.birthday = birthday;
+        this.gender = gender;
+        this.created = created;
+    }
 
     public Child() {
         this.id = UUIDGenerator.nextUUID();

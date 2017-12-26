@@ -11,6 +11,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 import com.edxavier.childgrowthstandards.NewChild;
@@ -19,11 +20,9 @@ import com.edxavier.childgrowthstandards.db.Child;
 import com.edxavier.childgrowthstandards.fragments.childs.adapter.AdapterChilds;
 import com.edxavier.childgrowthstandards.fragments.childs.impl.ChildsPresenterImpl;
 import com.edxavier.childgrowthstandards.main.MainActivity;
-
 import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
-import com.pixplicity.easyprefs.library.Prefs;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -47,6 +46,10 @@ public class Childs extends Fragment implements Contracts.ChildsView, RealmChang
     SwipeRefreshLayout swipe;
     @BindView(R.id.adView)
     AdView adView;
+    @BindView(R.id.image_bgnd)
+    ImageView imageBgnd;
+    @BindView(R.id.image_bgnd2)
+    ImageView imageBgnd2;
     private Realm realm;
 
     public Childs() {
@@ -89,12 +92,16 @@ public class Childs extends Fragment implements Contracts.ChildsView, RealmChang
     @Override
     public void showEmptyMessage() {
         messageBody.setVisibility(View.VISIBLE);
+        imageBgnd.setVisibility(View.VISIBLE);
+        imageBgnd2.setVisibility(View.VISIBLE);
         swipe.setRefreshing(false);
     }
 
     @Override
     public void hideEmptyMessage() {
         messageBody.setVisibility(View.GONE);
+        imageBgnd.setVisibility(View.GONE);
+        imageBgnd2.setVisibility(View.GONE);
     }
 
     @Override
@@ -137,7 +144,7 @@ public class Childs extends Fragment implements Contracts.ChildsView, RealmChang
                 super.onAdLoaded();
                 try {
                     adView.setVisibility(View.VISIBLE);
-                    recyclerChilds.setPadding(8,120,8,8);
+                    recyclerChilds.setPadding(8, 120, 8, 8);
                 } catch (Exception ignored) {
                 }
             }

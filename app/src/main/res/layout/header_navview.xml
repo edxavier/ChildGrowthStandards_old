@@ -7,27 +7,36 @@
     <ImageView
         android:layout_width="match_parent"
         android:layout_height="160dp"
-        android:src="@drawable/kid_on_beach"
+        android:src="@drawable/sleeping_kid"
+        android:scaleType="centerCrop" />
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="160dp"
+        android:src="@drawable/scrim"
         android:scaleType="centerCrop" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/app_name"
-        android:textAppearance="@style/TextAppearance.AppCompat.Title"
         android:layout_gravity="start|bottom"
         android:layout_marginBottom="40dp"
+        android:layout_marginLeft="16dp"
         android:layout_marginStart="16dp"
-        android:layout_marginLeft="16dp"/>
+        android:fontFamily="sans-serif-condensed"
+        android:text="@string/app_name"
+        android:textAppearance="@style/TextAppearance.AppCompat.Title" />
 
     <TextView
         android:id="@+id/drawer_veersion"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Version 1.0.1"
-        android:textAppearance="@style/TextAppearance.AppCompat.Caption"
         android:layout_gravity="start|bottom"
         android:layout_marginBottom="20dp"
         android:layout_marginLeft="16dp"
-        android:layout_marginStart="16dp"/>
+        android:layout_marginStart="16dp"
+        android:fontFamily="sans-serif-condensed"
+        android:text="Version 1.0.1"
+        android:textAppearance="@style/TextAppearance.AppCompat.Caption"
+        android:textStyle="bold|italic" />
 </FrameLayout>

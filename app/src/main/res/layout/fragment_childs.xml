@@ -27,6 +27,22 @@
         android:scrollbars="vertical" />
     </android.support.v4.widget.SwipeRefreshLayout>
 
+    <ImageView
+        android:id="@+id/image_bgnd"
+        android:layout_gravity="center"
+        android:scaleType="centerCrop"
+        app:srcCompat="@drawable/markus"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        />
+    <ImageView
+        android:id="@+id/image_bgnd2"
+        android:layout_gravity="center"
+        android:scaleType="centerCrop"
+        app:srcCompat="@drawable/scrim"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        />
 
     <LinearLayout
         android:id="@+id/message_body"
@@ -45,23 +61,26 @@
             />
 
         <TextView
-            android:layout_gravity="center"
-            android:text="@string/main.emty.title"
-            android:gravity="center"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            />
+            android:layout_gravity="center"
+            android:fontFamily="sans-serif-condensed"
+            android:gravity="center"
+            android:text="@string/main.emty.title"
+            android:textColor="@color/md_white_1000"
+            android:textStyle="bold" />
 
 
         <TextView
-            android:layout_gravity="center"
-            android:layout_marginTop="8dp"
-            android:text="@string/main.empty.suggest"
-            android:gravity="center"
             style="@style/Base.TextAppearance.AppCompat.Caption"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            />
+            android:layout_gravity="center"
+            android:layout_marginTop="8dp"
+            android:fontFamily="sans-serif"
+            android:gravity="center"
+            android:text="@string/main.empty.suggest"
+            android:textColor="@color/md_white_1000" />
 
     </LinearLayout>
 </RelativeLayout>

@@ -4,7 +4,7 @@ buildscript {
     }
 
     dependencies {
-        classpath 'io.fabric.tools:gradle:1.24.4'
+        classpath 'io.fabric.tools:gradle:1.25.1'
     }
 }
 plugins {
@@ -25,7 +25,7 @@ apply plugin: 'realm-android'
 
 android {
     compileSdkVersion 27
-    buildToolsVersion '27.0.1'
+    buildToolsVersion '27.0.2'
 
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
@@ -37,8 +37,8 @@ android {
         applicationId "com.edxavier.childgrowthstandards"
         minSdkVersion 19
         targetSdkVersion 26
-        versionCode 10
-        versionName "1.3.1.1711"
+        versionCode 11
+        versionName "1.4.0.1712"
         multiDexEnabled true
     }
     dexOptions {
@@ -82,33 +82,28 @@ android.applicationVariants.all { variant ->
 }
 
 dependencies {
-    compile fileTree(dir: 'libs', include: ['*.jar'])
+    compile fileTree(include: ['*.jar'], dir: 'libs')
     //compile 'com.android.support.constraint:constraint-layout:+'
-
     //La uso en la splash screen
-
     /*compile('com.trello.rxlifecycle2:rxlifecycle-components:2.2.0') {
-         exclude group: 'com.android.support', module: 'appcompat-v7'
-        exclude group: 'com.android.support', module: 'design'
-    }*/
+             exclude group: 'com.android.support', module: 'appcompat-v7'
+            exclude group: 'com.android.support', module: 'design'
+        }*/
     //compile 'com.trello.rxlifecycle2:rxlifecycle-components:2.2.0'
-
     //compile 'com.android.support:palette-v7:26.0.1'
-    compile 'com.android.support:appcompat-v7:27.0.1'
-    compile 'com.android.support:design:27.0.1'
-    compile 'com.android.support:recyclerview-v7:27.0.1'
-    compile 'com.android.support:cardview-v7:27.0.1'
+    compile 'com.android.support:appcompat-v7:27.0.2'
+    compile 'com.android.support:design:27.0.2'
+    compile 'com.android.support:recyclerview-v7:27.0.2'
+    compile 'com.android.support:cardview-v7:27.0.2'
     //compile 'com.android.support:support-v4:26.1.0'
-
-    compile 'com.google.firebase:firebase-core:11.6.0'
-    compile 'com.google.firebase:firebase-crash:11.6.0'
-    compile 'com.google.firebase:firebase-ads:11.6.0'
-
+    compile 'com.google.firebase:firebase-core:11.6.2'
+    compile 'com.google.firebase:firebase-crash:11.6.2'
+    compile 'com.google.firebase:firebase-ads:11.6.2'
     compile 'com.jakewharton:butterknife:8.8.1'
-    compile ('com.afollestad.material-dialogs:core:0.9.5.0') {
+    compile('com.afollestad.material-dialogs:core:0.9.5.0') {
         exclude group: 'com.android.support', module: 'appcompat-v7'
-        exclude group: 'com.android.support', module: 'design' }
-
+        exclude group: 'com.android.support', module: 'design'
+    }
     compile 'com.github.PhilJay:MPAndroidChart:v3.0.2'
     compile 'com.github.PhilJay:MPAndroidChart-Realm:v2.0.2@aar'
     compile 'com.github.ceryle:RadioRealButton:v2.1.1'
@@ -116,17 +111,16 @@ dependencies {
     compile 'joda-time:joda-time:2.9.9'
     compile 'de.hdodenhof:circleimageview:2.2.0'
     compile 'com.pixplicity.easyprefs:library:1.9.0@aar'
-
     compile 'io.reactivex.rxjava2:rxjava:2.1.6'
     compile 'io.reactivex.rxjava2:rxandroid:2.0.1'
-    compile ('com.jakewharton.rxbinding2:rxbinding:2.0.0')
-            {
-                exclude group: 'com.android.support', module: 'appcompat-v7'
-                exclude group: 'com.android.support', module: 'design' }
-    compile ('com.jakewharton.rxbinding2:rxbinding-appcompat-v7:2.0.0')
-            {
-                exclude group: 'com.android.support', module: 'appcompat-v7'
-                exclude group: 'com.android.support', module: 'design' }
+    compile('com.jakewharton.rxbinding2:rxbinding:2.0.0') {
+        exclude group: 'com.android.support', module: 'appcompat-v7'
+        exclude group: 'com.android.support', module: 'design'
+    }
+    compile('com.jakewharton.rxbinding2:rxbinding-appcompat-v7:2.0.0') {
+        exclude group: 'com.android.support', module: 'appcompat-v7'
+        exclude group: 'com.android.support', module: 'design'
+    }
     compile 'com.trello.rxlifecycle2:rxlifecycle:2.2.0'
     compile 'com.android.support:multidex:1.0.2'
     compile 'com.github.drawers:SpinnerDatePicker:0.0.8'
@@ -134,14 +128,18 @@ dependencies {
     compile 'us.belka:androidtoggleswitch:1.2.2'
     compile 'com.android.support.constraint:constraint-layout:1.0.2'
     //compile 'io.reactivex:rxjava:1.2.6'
-    compile ('com.roughike:bottom-bar:2.3.1'){
+    compile('com.roughike:bottom-bar:2.3.1') {
         exclude group: 'com.android.support', module: 'appcompat-v7'
-        exclude group: 'com.android.support', module: 'design' }
+        exclude group: 'com.android.support', module: 'design'
+    }
     testCompile 'junit:junit:4.12'
     annotationProcessor 'com.github.bumptech.glide:compiler:4.2.0'
-    annotationProcessor  'com.jakewharton:butterknife-compiler:8.8.1'
+    annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.1'
     compile('com.crashlytics.sdk.android:crashlytics:2.7.1@aar') {
         transitive = true;
     }
+    implementation files('libs/opencsv-4.1.jar')
+    compile 'com.github.codekidX:storage-chooser:2.0.3'
+
 }
 apply plugin: 'com.google.gms.google-services'

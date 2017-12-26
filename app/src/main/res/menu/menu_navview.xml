@@ -21,6 +21,15 @@
                 android:icon="@drawable/ic_settings_1"
                 android:id="@+id/menu_opcion_1"
                 android:title="@string/action_settings"/>
+
+            <item
+                android:id="@+id/nav_export"
+                android:icon="@drawable/ic_file_upload"
+                android:title="@string/export" />
+            <item
+                android:id="@+id/nav_import"
+                android:icon="@drawable/ic_file_download"
+                android:title="@string/_import" />
             <item
                 android:icon="@drawable/ic_help"
                 android:id="@+id/menu_opcion_2"

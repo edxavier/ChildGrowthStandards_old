@@ -14,20 +14,30 @@ import io.realm.annotations.PrimaryKey;
  */
 public class ChildHistory extends RealmObject{
     @PrimaryKey
-    String id;
-    Child child;
-    float weight_pnds;
-    float height_cms;
-    float head_circ;
-    float bmi;
-    float living_days;
-    Date created;
+    public String id;
+    public Child child;
+    public float weight_pnds;
+    public float height_cms;
+    public float head_circ;
+    public float bmi;
+    public float living_days;
+    public Date created;
 
     public ChildHistory() {
         this.id = UUIDGenerator.nextUUID();
         this.created = new Date();
     }
 
+    public ChildHistory(String id, Child child, float weight_pnds, float height_cms, float head_circ, float bmi, float living_days, Date created) {
+        this.id = id;
+        this.child = child;
+        this.weight_pnds = weight_pnds;
+        this.height_cms = height_cms;
+        this.head_circ = head_circ;
+        this.bmi = bmi;
+        this.living_days = living_days;
+        this.created = created;
+    }
 
     public String getId() {
         return id;

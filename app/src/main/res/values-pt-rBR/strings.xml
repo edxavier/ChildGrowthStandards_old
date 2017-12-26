@@ -1,0 +1,317 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Controle de crescimento infantil</string>
+    <string name="app_version">Versão %1$s</string>
+    <string name="splash_subtitle">Controle de crescimento infantil</string>
+
+    <string-array name="weight_units">
+        <item>Quilogramas</item>
+        <item>Libras</item>
+    </string-array>
+
+
+
+    <string-array name="height_units">
+        <item>Centimetros</item>
+        <item>Polegadas</item>
+    </string-array>
+
+
+    <string name="next">Continuar</string>
+    <string name="skip">Ignorar</string>
+    <string name="start">Eu entendi</string>
+
+    <string name="slide_1_title">¡Seja bem vindo!</string>
+    <string name="slide_1_desc">¡A maneira mais fácil de acompanhar o desenvolvimento do seu
+     Crianças do primeiro dia de vida aos 19 anos de idade! \n\n Você pode rastrear um ou mais filhos de cada vez.</string>
+
+    <string name="slide_2_title">Dados da OMS</string>
+    <string name="slide_2_desc">Os dados utilizados nos gráficos são retirados do site oficial
+         da Organização Mundial de Saúde</string>
+
+    <string name="slide_3_title">Percentis</string>
+    <string name="slide_3_desc">Gráficos de curvas percentuais permitem que você tenha um melhor controle sobre o desenvolvimento de seus filhos, além disso, eles permitirão detectar tendências em seu crescimento!</string>
+
+    <string name="slide_4_title">Medidas</string>
+    <string name="slide_4_desc">Compare as medidas com percentis de IMC e Altura até 19 anos,
+     Peso até 10 anos, perímetro cefálico e peso até a altura até 5 anos. </string>
+
+    <string name="main.emty.title">Não há dados para mostrar.</string>
+    <string name="main.empty.suggest">Registre uma ou mais crianças e comece a rastrear seu crescimento.</string>
+
+
+    <string name="title_activity_new_history_record">Registrar medidas</string>
+    <string name="title_activity_percentiles">Percentis</string>
+    <string name="title_activity_main2">Percentis</string>
+
+
+    <string name="record_child">Registre o bebê</string>
+
+    <string name="kilogram">Quilogramas</string>
+
+    <string name="centimeter">Centimetros</string>
+    <string name="peso_ideal_lb">Peso ideal: %1$s lb</string>
+    <string name="peso_ideal_kg">Peso ideal: %1$s kg</string>
+    <string name="altura_ideal_cm">Altura ideal: %1$s cm</string>
+    <string name="altura_ideal_in">Altura ideal: %1$s in</string>
+    <string name="pc_ideal_cm">Perímetro cefálico  ideal: %1$s cm</string>
+    <string name="pc_ideal_in">Perímetro cefálico  ideal: %1$s in</string>
+
+    <string name="above_normal">Acima do normal: \u0020</string>
+    <string name="well_above_normal">Muito acima do normal: \u0020</string>
+
+    <string name="below_normal">Abaixo do normal: \u0020</string>
+    <string name="well_below_normal">Muito abaixo do normal: \u0020</string>
+    <string name="normal">Normal:\u0020</string>
+
+    <string name="imc_ideal">IMC ideal: %1$s</string>
+
+
+    <string name="pounds">Libras</string>
+    <string name="inches">Polegadas</string>
+
+    <string name="days">\u0020 días \u0020</string>
+    <string name="day">\u0020día</string>
+    <string name="weeks">\u0020 semanas \u0020</string>
+    <string name="week">\u0020semana\u0020</string>
+    <string name="months">\u0020meses\u0020</string>
+    <string name="month">\u0020 mês \u0020</string>
+    <string name="years">\u0020 anos \u0020</string>
+    <string name="year">\u0020 ano \u0020</string>
+
+    <string name="weight">Peso \u0020</string>
+    <string name="height">Altura\u0020</string>
+    <string name="perimeter">Perímetro\u0020</string>
+    <string name="most_recent">Medida mais recente</string>
+    <string name="record_measure"> Registrar medidas</string>
+    <string name="show_perc"> Veja percentis</string>
+    <string name="edit">Editar criança</string>
+    <string name="delete">Excluir</string>
+    <string name="len_Height">Altura</string>
+    <string name="len_Height_cm">Altura (cm)</string>
+
+    <string name="cefalic_perimeter"> Circunferência da cabeça</string>
+    <string name="cefalic_perimeter_cm">Circunferência da cabeça (cm)</string>
+
+    <string name="measure_date">Data de medição</string>
+    <string name="dif_date">Você pode selecionar uma data diferente.</string>
+    <string name="outOfRange">Valor fora do alcance</string>
+    <string name="weightHeight">Peso/Altura</string>
+    <string name="weightForage">Peso para idade</string>
+    <string name="weightForlen">Peso para Altura</string>
+    <string name="len_for_age">Altura para idade</string>
+    <string name="imc_for_age">IMC para idade</string>
+    <string name="cefalic_perimeter_for_age">Circunferência da cabeça para idade</string>
+    <string name="name">Nome</string>
+    <string name="boy">Criança</string>
+    <string name="age">Idade:\u0020</string>
+
+    <string name="girl">Menina</string>
+    <string name="birthday">Data de nascimento</string>
+    <string name="chk_msg">Insira as medidas após salvar</string>
+    <string name="save">Salvar</string>
+    <string name="date_format">dd-mmm-aa</string>
+
+
+    <string name="percentil_desc">
+     Cinco curvas são mostradas nas curvas padrões de crescimento da OMS
+         (vermelho, laranja e verde) que correspondem aos percentis
+         P3, P15, P50, P85 e P97, de baixo para cima. \n\n
+
+       A curva central ou percentil 50 é a média ou a média.
+         Uma criança com crescimento normal normalmente terá uma curva de crescimento aproximadamente paralela à média.
+         Um único ponto não é suficiente para avaliar com precisão o crescimento de uma criança.
+         Uma série de pontos são necessários para entender os padrões e as tendências do crescimento de uma criança ao longo do tempo.
+    </string>
+
+    <string name="weight_desc">
+            As crianças podem ser consideradas abaixo do peso se seu peso para idade for inferior ao percentil 15.
+         Um ponto que cai abaixo do percentil 3 pode indicar peso severamente abaixo do peso, indicando que a criança precisa de cuidados especiais.
+         Peso extremamente baixo pode ser o resultado de crescimento tardio, desnutrição ou ambos.
+        \n\n
+       Em qualquer caso, se as medidas caem em um dos percentis inferiores ou superiores, é aconselhável consultar seu médico sobre saúde.
+         do seu filho.
+    </string>
+
+    <string name="height_desc">
+          O crescimento de uma criança é considerado atrasado se o seu comprimento para a idade for deixado
+         abaixo do percentil 15. Os lactentes e crianças pequenas com crescimento tardio podem recuperar alguns
+         do potencial de crescimento se a sua nutrição for melhorada antes dos 2 anos de idade.
+         Em contraste, para crianças com mais de 2 anos que se encontram em situações de privação nutricional,
+         O atraso no seu crescimento pode ser praticamente irreversível.
+        \n\n
+        Em qualquer caso, se as medidas caem em um dos percentis inferiores ou superiores, é aconselhável consultar seu médico sobre saúde.
+         do seu filho.
+    </string>
+
+    <string name="weight_for_height_desc">
+            As crianças podem ser consideradas em desnutrição se seu peso para altura / comprimento estiver abaixo do percentil 15.
+        A desnutrição é uma das principais causas de morte para crianças com menos de 5 anos de idade
+         então uma criança que é avaliada como [[desnutrida]] requer atenção médica imediata.
+         As crianças com excesso de peso para o comprimento acima do percentil 85 são consideradas com sobrepeso e podem estar em risco de obesidade infantil.
+        \n\n
+        Em qualquer caso, se as medidas caem em um dos percentis inferiores ou superiores, é aconselhável consultar seu médico sobre saúde.
+         do seu filho.
+    </string>
+
+    <string name="cefalic_desc">
+        As crianças cujo perímetro cefálico está abaixo do percentil 15 podem ser consideradas microcefálicas.
+         Em contraste, a macrocefalia é uma condição que é indicada quando o perímetro cefálico é superior ao percentil 85.
+         É importante que um médico avalie crianças que são micro ou macrocefálicas.
+     Poderia haver sérias implicações médicas,
+         uma vez que se supõe que o perímetro cefálico serve como um indicador básico do crescimento cerebral.
+         \n\n
+       Em qualquer caso, se as medidas caem em um dos percentis inferiores ou superiores, é aconselhável consultar seu médico sobre saúde.
+         do seu filho.
+    </string>
+
+    <string name="imc_desc">
+       El índice de Masa Corporal (IMC) es una medida que se asocia el peso y la talla para determinar
+        el estado nutricional de un individuo.\n\n
+
+       Se o IMC do seu filho estiver abaixo do percentil 15, ele é considerado baixo peso. \n
+       Se o IMC do seu filho estiver entre os percentis 15-85, é considerado um peso saudável. \n
+        Se o IMC do seu filho estiver entre os percentis 85-97, ele é considerado com sobrepeso. \n
+        Se estiver acima do percentil 97, é considerado obeso. \n \n
+      Em qualquer caso, se as medidas caem em um dos percentis inferiores ou superiores, é aconselhável consultar seu médico sobre saúde.
+         do seu filho.
+    </string>
+    <string name="initialize">Inicializando&#8230;</string>
+    <string name="gallery">Galería</string>
+    <string name="camera">Câmera</string>
+    <string name="select_from">Selecione a partir de</string>
+    <string name="imc">IMC\u0020</string>
+    <string name="perc_chart">Gráfico do percentil</string>
+    <string name="seguimiento">Acompanhamento</string>
+    <string name="help">Ajuda</string>
+    <string name="share">Compartilhe</string>
+    <string name="rate">Qualificar</string>
+    <string name="aggre">Continuar</string>
+    <string name="cancel">Cancelar</string>
+
+    <string name="delete_dialog_title">¿Excluir?</string>
+    <string name="delete_dialog_content">Esta ação irá apagar o bebê selecionado e todos os registros associados.</string>
+    <string name="duplicate_register">O registro já existe para a data selecionada</string>
+    <string name="title_activity_settings">Configuração</string>
+
+
+
+    <string-array name="multi_select_list_preference_default_value" />
+
+    <string name="pref_weight_unit_title">Unidade de peso</string>
+    <string name="pref_height_unit_title">Unidade de comprimento</string>
+    <string name="action_settings">Configuração</string>
+    <string name="pref_summary">Selecione a unidade de mídia para exibir</string>
+
+    <string name="hellp">O crescimento não é apenas o resultado da nutrição, mas de fatores herdados.\n
+        A etnia pode influenciar os padrões de crescimento de uma criança, então alguns\n
+        países têm suas próprias Curvas de Padrão de Crescimento. No entanto, as curvas de
+         Padrões de crescimento da Organização Mundial da Saúde (OMS) são aqueles usados
+         mais freqüentemente e são considerados o padrão em todo o mundo. \n\n
+
+        <b>\n¿Como tomar as medidas? \n\n
+            Perímetro Cefálico \n\n </b>\n\n A medição deve ser tomada com uma fita métrica que não se estende.\n
+        Normalmente é feita com uma fita métrica de metal flexível. Para medir, enrole a fita\n
+        firmemente alrededor del punto donde el perímetro cefálico sea mayor. Normalmente esto ocurre\n
+        firmemente em torno do ponto onde a circunferência principal é maior. Normalmente, isso ocorre na testa, um a dois dedos acima das sobrancelhas e atrás, na área mais proeminente
+         da parte de trás da cabeça.\n\n
+       Durante os primeiros anos da vida de uma criança, o perímetro cefálico é uma medida importante porque reflete indiretamente o tamanho eo crescimento do cérebro. \n
+    </string>
+    <string name="help2">
+\n\n
+
+        <b>Estatura</b>
+\n\n
+O comprimento é a medida linear de crianças até 24 meses. As medidas de comprimento (em vez de altura) também podem ser tomadas para crianças entre 24 e 36 meses de idade que não podem ficar sem assistência.
+O comprimento é medido com a criança deitada. A maneira mais precisa de medir o comprimento é usar uma tabela de comprimento calibrado. As tabelas de medição de comprimento devem ter uma peça fixa na cabeça e um móvel para os pés, perpendicular à superfície da placa.
+Para medir a criança, coloque-a no quadro com a cabeça tocando na peça fixa. Certifique-se de que não tem sapatos ou nada no seu cabelo. Um assistente pode ajudá-lo a manter a criança em silêncio e focada na mesa. Endireite suas pernas e ajuste a parte móvel para que as solas dos pés estejam fixas contra ela.
+        O comprimento é um determinante importante do estado nutricional de uma criança. É possível que o comprimento de uma criança aumente muito devagar se ele sofreu malnutrição há muito tempo.
+\n\n\n
+      <b>  Peso</b>
+\n\n
+El O peso é uma medida que é tomada ao longo da vida para ajudar a determinar as tendências e o estado nutricional atual.
+O peso de uma criança pode ser medido com precisão usando vários equipamentos. Uma escala pediátrica permite pesar a criança deitada. Essas escalas pediátricas podem ser pesos fixos eletrônicos ou deslizantes e têm precisão de até 10 gramas. Outra opção é uma escala de suspensão, que é fixada em uma estrutura firme (por exemplo, um feixe ou uma moldura da porta) e a criança trava na balança com calças pesadas.
+Para tomar a medida, certifique-se de que a criança tenha a menor quantidade possível de roupas e que ninguém o toque.
+\n\n
+        Se uma escala pediátrica não estiver disponível, pode-se usar uma escala para adultos. Pesar um adulto primeiro e depois pesar o mesmo adulto com a criança nos braços. Calcule a diferença entre os dois pesos para encontrar o peso do bebê.
+\n\n
+        A relação peso-idade é um indicador importante do estado nutricional de uma criança a longo prazo e pode indicar tendências como um peso abaixo do esperado.
+\n\n
+        A relação peso-comprimento, por outro lado, ajuda a determinar o estado nutricional atual. Este é o indicador-chave para a determinação da desnutrição em crianças.
+
+
+\n\n\n
+      <b>Índice de massa corporal (IMC)</b>
+\n\n
+       O índice de massa corporal é um
+número calculado com base no peso e altura de
+um menino ou uma menina O IMC é usado como uma ferramenta de detecção
+para identificar possíveis problemas de peso para crianças que podem
+levar a problemas de saúde.
+
+    </string>
+    <string name="graph_empty">Sem dados para mostrar, você pode não ter inicializado o aplicativo</string>
+    <string name="show_marker">Mostrar marcador</string>
+    <string name="show_marker_desc">Permite o marcador que mostra os valores do ponto selecionado nos gráficos</string>
+    <string name="rate2">Qualificar</string>
+    <string name="later">Então</string>
+    <string name="no_thank">Não, obrigado</string>
+    <string name="rate_dlg_title">¿O que você acha??</string>
+    <string name="rate_dlg_desc">Obrigado por usar este aplicativo, se você gostou ou você acha que é útil, registre uma revisão na guia Google Play.</string>
+
+    <string name="share_app_msg">\nAcompanhe facilmente o crescimento de seus filhos com este aplicativo. \n\n</string>
+    <string name="share_using">Compartilhe usando:</string>
+    <string name="activity.chil.name.error">Insira um mínimo de 2 caracteres</string>
+    <string name="measure">Medida</string>
+    <string name="p50">Percentil 50</string>
+    <string name="p97">Percentil 97</string>
+    <string name="p3">Percentil 3</string>
+    <string name="p85">Percentil 85</string>
+    <string name="p15">Percentil 15</string>
+    <string name="year_av">a</string>
+    <string name="week_av">s</string>
+    <string name="show_measure_list">Ver medidas</string>
+    <string name="measures">Medidas</string>
+    <string name="date">Data</string>
+    <string name="delete_measure_dialog_content">¿Remova a entrada de medidas para esta data?</string>
+    <string name="sec_childs_title">Registre o bebê</string>
+    <string name="sec_childs_title2">Navegación</string>
+    <string name="sec_new_childs_title">Estabeleça uma imagemn</string>
+    <string name="sec_new_childs_content">Selecione uma foto da galeria ou tire uma da câmera</string>
+    <string name="sec_new_childs_title2">Selecione a data de nascimento</string>
+    <string name="sec_new_history_title">Ingrese la medida</string>
+    <string name="sec_new_history_title2">Selecciona la unidad de medida</string>
+    <string name="sec_new_history_title3">Selecciona la fecha de la medida</string>
+    <string name="sec_new_history_title4">Guardar registro</string>
+    <string name="sec_new_history_content">Se sugieren datos basado en la edad del infante</string>
+    <string name="sec_quick_percentil_title">Selecciona el tipo de gráfico</string>
+    <string name="sec_quick_percentil_title2">Verifica las medidas en los diferentes gráficos</string>
+    <string name="info">Informação</string>
+    <string name="error">Erro</string>
+    <string name="date_error">A data selecionada é inválida ou fora do alcance</string>
+    <string name="ads_notice">Publicidade</string>
+
+    <string-array name="measure_options">
+        <item>Editar</item>
+        <item>Excluir</item>
+    </string-array>
+
+    <string-array name="chart_options">
+        <item>Peso para idade</item>
+        <item>Altura para idade</item>
+        <item>Peso para a altura</item>
+        <item>IMC para idade</item>
+        <item>Perímetro cefálico para idade</item>
+    </string-array>
+
+    <string name="save_as">Salvar como…</string>
+    <string name="export_error">Erro ao tentar exportar dados</string>
+    <string name="export_succes">Dados exportados com sucesso!</string>
+    <string name="import_error">Erro ao tentar importar dados</string>
+    <string name="import_succes">Dados importados com sucesso!</string>
+    <string name="export">Exportação</string>
+    <string name="date_format_save">dd_MMM_yyyy</string>
+    <string name="_import">Importação</string>
+    <string name="agree">Continuar</string>
+
+</resources>
